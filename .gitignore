@@ -1,0 +1,16 @@
+#folder
+##editor
+.vscode/
+
+##app_configs
+node_modules/
+
+
+#file
+##editor
+sftp-config.json
+
+##app_configs
+setting.js
+ecosystem.config.js
+env.js

@@ -1,0 +1,33 @@
+# production.yml
+name: production branch auto ci process script
+
+on:
+  push:
+    branches: [ production ]
+
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.SERVER1_IP }} # 인스턴스 IP
+          username: ${{ secrets.SERVER1_USER }} # ssh 아이디
+          key: ${{ secrets.SERVER1_KEY }} # ec2 pem key
+          #password: ${{ secrets.SERVER1_KEY }} # raw password
+          port: 22 # ssh 접속포트
+          script: |
+            cd /home/${{ secrets.SERVER1_USER }}/secrets
+            sudo git reset --hard
+            sudo git pull "https://${{ secrets.GITHUB_USER_TOKEN }}@github.com/${{ secrets.SERVER1_GITHUB_USER }}/deploy-secrects.git" ${{ secrets.APP_NAME }}
+            cd /home/${{ secrets.SERVER1_USER }}/${{ secrets.APP_NAME }}
+            sudo git reset --hard
+            sudo git pull "https://${{ secrets.GITHUB_USER_TOKEN }}@github.com/${{ secrets.SERVER1_GITHUB_USER }}/${{ secrets.APP_NAME }}.git" production
+            sudo npm i --force
+            sudo mv ../secrets/ecosystem.config.js.prod ./ecosystem.config.js
+            sudo mv ../secrets/env.js.prod ./public/js/env.js
+            sudo mv ../secrets/setting.js.prod ./backend/core/setting.js
+            sudo pm2 reload ${{ secrets.APP_NAME }}
