@@ -1,0 +1,203 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+*{
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+textarea{
+    width: 100%;
+    resize: none;
+}
+
+.container{
+    max-width: 80rem;
+    margin: 1.7rem auto;
+}
+
+.container > .documentTitle{
+    font-size: 2rem;
+    border-bottom: 2px solid #AAAAFF;
+    padding: 0.7rem 0;
+}
+
+
+
+.container > .usage,
+.container > .setAuth{
+    border-bottom: 1px solid #AAAAFF;
+}
+
+.container > .usage > .title,
+.container > .setAuth > .title,
+.container > .operations > .title{
+    font-weight: bold;
+    font-size: 1.3rem;
+    margin-top: 2rem;
+}
+
+
+.container > .usage > .path{
+    padding: 1rem 1rem 0 1rem;
+}
+
+.container > .usage > .path > div > span{
+    display: inline-block;
+    background-color: #55AAFF;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.2rem;
+    margin-right: 0.15rem;
+    font-size: 0.8rem;
+}
+
+.container > .usage > div > .label{
+    font-weight: bold;
+    font-size: 1rem;
+    margin-right: 1rem;
+}
+
+.container > .usage > .path > div{
+    display: inline-block;
+}
+
+
+.container > .usage > .body{
+    padding: 0.5rem 1rem 0 1rem;
+}
+
+.container > .usage > .body > pre{
+    background-color: #EEF3F3;
+    padding: 1.2rem 2rem;
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+}
+
+
+.container > .usage > .body > .description,
+.container > .setAuth > .description{
+    padding: 0 1rem;
+}
+.container > .usage > .body > .description > ul,
+.container > .setAuth > .description > ul{
+    color: #575757;
+    font-style: italic;
+}
+
+
+
+.container > .setAuth{
+
+}
+
+.container > .setAuth > .input{
+    padding: 1rem 1rem 0 1rem;
+}
+
+.container > .setAuth > .input > .label{
+    display: inline-block;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-right: 1rem;
+}
+
+.container > .setAuth > .input > input{
+    padding: 0.3rem;
+    border-radius: 0.3rem;
+    width: 30%;
+    outline: none;
+    border: 2px solid #5555FF;
+}
+.container > .setAuth > .input > input:focus{
+    border: 3px solid #AAAAFF;
+}
+
+
+
+
+.container > .operation{
+    margin-top: 0.7rem;
+    background-color: aliceblue;
+    overflow: hidden;
+}
+.container > .operation.folded{
+    height: 3.2rem;
+}
+
+.container > .operation > .title{
+    font-size: 1.5rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+.container > .operation > .title:hover{
+    background: #0000000F;
+}
+
+.container > .operation > .title > i{
+    color: #15753e;
+    font-size: 1.1rem;
+}
+
+.container > .operation > .title > .fold-toggle{
+    float: right;
+    margin: 0.5em;
+}
+
+
+.container > .operation > .param{
+    padding: 1rem;
+}
+
+
+.container > .operation > .param > .requset{
+    border:none;
+    box-shadow:none;
+    padding: .2rem .7rem .15rem;
+    display: inline-block;
+    background-color: #fff;
+    color: #55AAFF;
+    border-radius: .5rem;
+    margin: 0 0.5rem;
+    border: 1px solid;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 0.6rem 2rem 0 0;
+}
+.container > .operation > .param > .requset:hover{
+    background-color: #55AAFF;
+    color: #fff !important;
+}
+
+.container > .operation > .param > .requestAt{
+    margin-top: 0.5rem;
+    font-style: italic;
+    font-size: 0.8rem;
+    opacity: 0.5;
+}
+
+.container > .operation > .param > .API_Response{
+    padding: 0.5rem 2rem;
+    font-style: italic;
+    background-color: #00000007;
+    color: #57AAFF;
+    font-size: 0.95rem;
+    margin-top: 0;
+}
+
+
+.container > .operation > .param > .label,
+.container > .operation > .response > .label{
+    font-size: 1.2rem;
+}
+
+.container > .operation > .response{
+    padding: 1rem;
+}
+
+.container > .operation > .response > .list{
+    padding-left: 1rem;
+}
+
+.container > .operation > .response > .list > div{
+    margin-top: 1rem;
+}
