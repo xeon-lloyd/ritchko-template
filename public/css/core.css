@@ -1,0 +1,328 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+*{
+    font-family: 'Roboto', sans-serif;
+}
+
+:root {
+	font-variant-ligatures: none;
+}
+
+
+/* 커스텀 스크롤바 */
+*::-webkit-scrollbar{
+	width: 7px;
+}
+*::-webkit-scrollbar-track{
+	background: none;
+}
+*::-webkit-scrollbar-thumb{
+	background: #555652;
+	border-radius: 4px;
+}
+
+
+.display{
+    display: block !important;
+}
+
+
+/* 로딩 애니메이션 키프레임 */
+@keyframes loading{
+	0%{ opacity: 1; }
+	50%{ opacity: 0.2; }
+	100%{ opacity: 1; }
+}
+
+
+/* 체크박스를 토글 버튼으로 */
+.toggleSwitch[type="checkbox"] {
+	appearance: none;
+	position: relative;
+    cursor: pointer;
+	border: max(2px, 0.1em) solid gray;
+	border-radius: 1.25em;
+	height: 1.25em;
+    width: 2.25em;
+    display: inline-block;
+
+    opacity: 1;
+    margin-right: 0;
+    float: none;
+    z-index: auto;
+}
+  
+.toggleSwitch[type="checkbox"]::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	width: 1em;
+	height: 1em;
+	border-radius: 50%;
+	transform: scale(0.8);
+	background-color: gray;
+	transition: left 250ms linear;
+}
+  
+.toggleSwitch[type="checkbox"]:checked {
+	background-color: rgb(185, 134, 247);
+	border-color: rgb(185, 134, 247);
+}
+  
+.toggleSwitch[type="checkbox"]:checked::before {
+	background-color: white;
+	left: 1em;
+}
+  
+.toggleSwitch[type="checkbox"]:disabled {
+	border-color: lightgray;
+	opacity: 0.7;
+	cursor: not-allowed;
+}
+  
+.toggleSwitch[type="checkbox"]:disabled:before {
+	background-color: lightgray;
+}
+  
+.toggleSwitch[type="checkbox"]:disabled + span {
+	opacity: 0.7;
+	cursor: not-allowed;
+}
+  
+.toggleSwitch[type="checkbox"]:focus-visible {
+	outline-offset: max(2px, 0.1em);
+	outline: max(2px, 0.1em) solid tomato;
+}
+  
+.toggleSwitch[type="checkbox"]:enabled:hover {
+	box-shadow: 0 0 0 max(2px, 0.1em) lightgray;
+}
+
+
+/* /// alert 관련 CSS /// */
+/* alert 전체 프레임 */
+#alertArea{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	z-index: 22;
+}
+
+#alertArea>div{
+	margin: 70px 10px -60px 10px;
+	padding: 5px 12px;
+	overflow: hidden;
+	text-align: center;
+	border-radius: 5px;
+	color: #FFFFFF;
+	/*display: flex;*/
+	display: table;
+	align-items: center;
+	transition: 0.2s ease;
+	user-select: none;
+}
+#alertArea>div.success{
+	background: #5CB35E;
+}
+#alertArea>div.error{
+	background: #F36157;
+}
+
+
+#cover{
+	width: 100vw;
+	height: 100vh;
+	background-color: #000000;
+	position: fixed;
+	top: 0;
+	left: 0;
+	opacity: 0.45;
+	z-index: 20;
+	display: none;
+}
+
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+body{
+    padding: 0;
+    margin: 0;
+    color: #585858;
+}
+
+/* screen width break point */
+html{
+    font-size: 12.8pt;
+}
+
+main{
+	min-height: 80vh;
+}
+
+.container{
+	padding: 1.75rem;
+}
+.container.center{
+    max-width: 1460px;
+    margin: 0 auto;
+}
+
+.container > #title{
+	font-size: 1.5rem;
+}
+
+
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="tel"],
+select,
+textarea {
+	appearance: none;
+	background-color: transparent;
+	border: none;
+	border-radius: 0;
+	border-bottom: solid 1px #c9c9c9;
+	color: inherit;
+	display: block;
+	outline: 0;
+	padding: 0 0.3rem;
+	text-decoration: none;
+	width: 100%;
+}
+
+input[type="text"]:invalid,
+input[type="password"]:invalid,
+input[type="email"]:invalid,
+input[type="tel"]:invalid,
+select:invalid,
+textarea:invalid {
+	box-shadow: none;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+select:focus,
+textarea:focus {
+	border-bottom-color: rgba(109, 46, 185, 0.8);
+	box-shadow: inset 0 -1px 0 0 rgba(109, 46, 185, 0.8);
+}
+
+select {
+	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' preserveAspectRatio='none' viewBox='0 0 40 40'%3E%3Cpath d='M9.4,12.3l10.4,10.4l10.4-10.4c0.2-0.2,0.5-0.4,0.9-0.4c0.3,0,0.6,0.1,0.9,0.4l3.3,3.3c0.2,0.2,0.4,0.5,0.4,0.9 c0,0.4-0.1,0.6-0.4,0.9L20.7,31.9c-0.2,0.2-0.5,0.4-0.9,0.4c-0.3,0-0.6-0.1-0.9-0.4L4.3,17.3c-0.2-0.2-0.4-0.5-0.4-0.9 c0-0.4,0.1-0.6,0.4-0.9l3.3-3.3c0.2-0.2,0.5-0.4,0.9-0.4S9.1,12.1,9.4,12.3z' fill='%23c9c9c9' /%3E%3C/svg%3E");
+	background-size: 1.25rem;
+	background-repeat: no-repeat;
+	background-position: calc(100% - 1rem) center;
+	height: 2rem;
+	padding-right: 2rem;
+	text-overflow: ellipsis;
+}
+
+select option {
+	background: #ffffff;
+}
+
+select:focus::-ms-value {
+	background-color: transparent;
+}
+
+select::-ms-expand {
+	display: none;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+select {
+	height: 2rem;
+}
+
+textarea {
+	padding: 0;
+	min-height: 3.75rem;
+}
+
+
+
+/* modal 관련 */
+#modals > div{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    max-width: calc(100vw - 3.5rem);
+    max-height: calc(96vh - 3.5rem);
+    transform: translate(-50%, -50%);
+    border-radius: 4px;
+    background-color: #FFFFFF;
+    z-index: 21;
+    padding: 2em;
+    overflow-y: auto;
+    cursor: default;
+    display: none;
+}
+
+#modals > div > #title{
+    margin-bottom: 0.7rem;
+}
+
+#modals > div > #title > #mainTitle{
+    font-size: 1.2rem;
+}
+
+#modals > div > #title > #subtitle{
+    font-size: 0.77rem;
+    opacity: 0.7;
+}
+
+#modals > div > #action{
+    display: flex;
+    margin-top: 0.5rem;
+    justify-content: center;
+}
+
+#modals > div > #action > div{
+    display: inline-block;
+    padding: 0.3rem 1.25rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    margin: 0 0.3rem;
+	user-select: none;
+}
+
+#modals > div > #action > #close{
+    background-color: #F7F7F7;
+}
+#modals > div > #action > #close:hover{
+    background-color: #D7D7D7;
+}
+
+
+
+@media screen and (max-width: 1221px) {
+    html{
+        font-size: 12pt;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    html{
+        font-size: 11.2pt;
+    }
+}
+
+@media screen and (max-width: 670px) {
+    html{
+        font-size: 12pt;
+    }
+}
+
+@media screen and (max-width: 430px) {
+    html{
+        font-size: 12.8pt;
+    }
+}

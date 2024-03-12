@@ -1,0 +1,144 @@
+/* Header */
+#header{
+	position: fixed;
+	top: 0;
+	width: 100vw;
+	overflow: hidden;
+	height: 2.8rem;
+	background-color: #FFFFFF;
+	border-bottom: 1px solid #E2E8F0;
+	z-index: 10;
+}
+
+
+#header > .logo{
+	display: inline-block;
+	margin: 0.5rem 0 0 1.77rem;
+}
+#header > .logo > img{
+	height: 1.9rem;
+}
+
+
+#header > #login{
+	padding: .2rem .7rem .35rem;
+    display: inline-block;
+    background-color: #fff;
+    color: #805ad5;
+    border-radius: .5rem;
+    border: 1px solid;
+    font-weight: 700;
+    cursor: pointer;
+	float: right;
+	font-size: 0.85rem;
+	margin: 0.6rem 2rem 0 0;
+	display: none;
+}
+#header > #login:hover{
+	background-color: #805ad5;
+    color: #fff !important;
+}
+
+#header > #login > i{
+	font-size: 1.2rem;
+	position: relative;
+	top: 0.2rem;
+}
+
+
+#header > #profile{
+	display: inline-block;
+	width: 2.3rem;
+	height: 2.3rem;
+	border-radius: 100%;
+	margin: 0.2rem 1.5rem 0 0;
+	cursor: pointer;
+	float: right;
+	background-color: #c9c9c9;
+	opacity: 0.8;
+	object-fit: cover;
+	border: #333333 0.1rem solid;
+	display: none;
+}
+#header > #profile:hover{
+	opacity: 1;
+}
+
+
+#spacer{
+	height: 2.8rem;
+	width: 100%;
+}
+
+
+#menu{
+	position: fixed;
+	right: 1.1rem;
+	top: 2.7rem;
+	background-color: #FFF;
+	border-radius: 0.5rem;
+	border: 1px solid #333333;
+	padding: 0.5rem;
+	cursor: default;
+	user-select: none;
+	z-index: 10;
+	display: none;
+}
+
+#menu > #nickname{
+	padding: 0.5rem 0.7rem;
+	border-bottom: 1px solid #c9c9c9;
+	margin-bottom: 0.5rem;
+	font-weight: bold;
+}
+
+#menu > ul{
+	margin: 0;
+	padding: 0;
+}
+
+#menu > ul > li{
+	list-style: none;
+	padding-left: 0;
+}
+
+#menu a{
+	border: none;
+	padding: 0.3rem 0.5rem;
+	border-radius: 0.5rem;
+	display: block;
+}
+#menu a:hover{
+	color: inherit !important;
+	background-color: #c9c9c9;
+}
+
+#menu a > i{
+	margin-right: 0.37rem;
+}
+
+#menu > #logoutSection{
+	border-top: 1px solid #c9c9c9;
+	margin-top: 0.5rem;
+	padding: 0.5rem 0 0 0;
+}
+
+
+@media screen and (max-width: 736px) {
+	#header > .logo{
+		margin: 0.5rem 0 0 0.77rem;
+	}
+
+	#header > #profile{
+		margin: 0.35rem 0.7rem 0 0;
+	}
+
+	#header > #login{
+		margin: 0.5rem 0.5rem 0 0;
+	}
+
+	#menu{
+		top: 2.75rem;
+		right: 0.75rem;
+	}
+}

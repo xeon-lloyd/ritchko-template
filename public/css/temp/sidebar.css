@@ -1,0 +1,100 @@
+#sidebar{
+	width: 14rem;
+
+	background: #F8F8F8;
+	height: calc(100vh - 2.8rem);
+	top: 2.8rem;
+	position: fixed;
+	z-index: 3;
+	overflow: hidden;
+
+	transition: width 0.3s ease;
+
+    white-space: nowrap;
+    cursor: default;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.foldedSidebar #sidebar{
+	width: 3rem;
+}
+
+
+#sidebar::-webkit-scrollbar{
+    width: 0.15rem;
+}
+
+
+#sidebar > #control{
+	text-align: right;
+}
+#sidebar > #control > i{
+	font-size: 1.2rem;
+	margin: 0.4rem;
+	padding: 0.3rem;
+	border-radius: 0.2rem;
+	background-color: #0000000A;
+	cursor: pointer;
+}
+#sidebar > #control > i:hover{
+	background-color: #0000001A;
+}
+
+
+#sidebar .linkBox{
+    cursor: pointer;
+    width: 14rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#sidebar .linkBox:hover{
+    background: #00000007;
+}
+
+#sidebar > div > .title{
+    border-top: 1px solid #c9c9c9;
+    margin-top: 0.4rem;
+    opacity: 0.7;
+    font-weight: bold;
+}
+
+#sidebar > div > a{
+    border: none;
+    display: block;
+}
+
+#sidebar > div > a > i,
+#sidebar > div > .title > i{
+    font-size: 1.2rem;
+    margin: 0.3rem 0.5rem;
+    padding: 0.32rem;
+}
+
+@media screen and (max-width: 650px) {
+	.sidebar.before-sidebar-calc #sidebar{
+		width: 3rem;
+	}
+}
+
+
+
+/* 다른 css 수정 */
+#footer,
+main{
+    width: calc(100% - 14rem);
+    margin-left: 14rem;
+}
+
+.foldedSidebar #footer,
+.foldedSidebar main{
+    width: calc(100% - 3rem);
+    margin-left: 3rem;
+}
+
+@media screen and (max-width: 650px) {
+	#footer,
+    main{
+        width: calc(100% - 3rem);
+        margin-left: 3rem;
+    }
+}
