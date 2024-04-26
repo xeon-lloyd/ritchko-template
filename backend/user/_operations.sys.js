@@ -7,6 +7,7 @@ module.exports = {
         authRequire: false,
 
         //documentation
+        description: '유저 로그인',
         group: 'user',
         paramSchema: paramSchema.SignIn,
         responseSchema: [
@@ -21,6 +22,7 @@ module.exports = {
         authRequire: true,
 
         //documentation
+        description: '로그인 유저 정보조회',
         group: 'user',
         paramSchema: null,
         responseSchema: [
