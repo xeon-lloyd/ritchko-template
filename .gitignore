@@ -2,7 +2,7 @@
 ##editor
 .vscode/
 
-##app_configs
+##node_modules
 node_modules/
 
 
@@ -11,6 +11,7 @@ node_modules/
 sftp-config.json
 
 ##app_configs
-setting.js
-ecosystem.config.js
-env.js
+### 실제 사용시 주석 해제하고 github 연결
+#setting.js
+#ecosystem.config.js
+#env.js
