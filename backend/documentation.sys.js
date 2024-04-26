@@ -119,6 +119,7 @@ router.get("/", function(req, res, next){
                 <div class="title">
                     ${opreationList[i]}
                     ${needAuth}
+                    <div class="description">- ${operationSetting[opreationList[i]].description}</div>
                     <i class="fold-toggle fa-solid fa-chevron-down"></i>
                 </div>
                 <div class="param">

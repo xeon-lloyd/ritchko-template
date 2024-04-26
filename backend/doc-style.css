@@ -132,6 +132,13 @@ textarea{
     background: #0000000F;
 }
 
+.container > .operation > .title > .description{
+    display: inline-block;
+    font-size: 0.8rem;
+    margin-left: 0.2rem;
+    color: #7f7f7f;
+}
+
 .container > .operation > .title > i{
     color: #15753e;
     font-size: 1.1rem;
