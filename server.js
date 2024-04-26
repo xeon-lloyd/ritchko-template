@@ -3,6 +3,7 @@ const app = express();
 const server = require('http').createServer(app);
 
 const fs = require('fs');
+const serverInfoPrinter = require('./backend/serverInfoPrinter.sys.js');
 
 const setting = require('./backend/core/setting.js');
 const util = require('./backend/core/util.js');
@@ -59,5 +60,5 @@ server.listen(setting.port, async function(){
     /* DB 연결 */
     util.mysql.connect('database1');
 
-    console.log(`서버 시작\n - Webserver\t:\t${setting.hostName}:${setting.port}\n - API Document\t:\t${setting.hostName}:${setting.port}/API-doc`)
+    serverInfoPrinter();
 })
