@@ -100,6 +100,7 @@ router.get("/", function(req, res, next){
         <div class="title">Operations</div>
         <div class="filter">
             <select class="group">${groupOption}</select>
+            <input type="text" class="keyword" placeholder="Filter... (operationName, description)">
         </div>
     </div>`
 

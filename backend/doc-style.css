@@ -4,6 +4,10 @@
     font-family: 'Noto Sans KR', sans-serif;
 }
 
+body{
+    min-height: 200vh;
+}
+
 textarea{
     width: 100%;
     resize: none;
@@ -120,6 +124,11 @@ textarea{
 
 .container > .operations > .filter > .group{
     padding: 0.1rem 2rem 0.1rem 0.4rem;
+}
+
+.container > .operations > .filter > .keyword{
+    padding: 0.1rem 0 0.1rem 0.4rem;
+    width: 18rem;
 }
 
 

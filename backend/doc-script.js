@@ -13,11 +13,38 @@ const clearFilter = function(){
 /* operation group filter 적용 */
 document.querySelector('.operations > .filter > .group').addEventListener('input', function(){
     clearFilter()
-    
+
+    try{
+        document.querySelector('.operations > .filter > .keyword:not(:focus)').value = '';
+    }catch(e){
+
+    }    
+
     if(this.value=='') return
 
     let hideTarget = document.querySelectorAll(`.operation:not([data-group="${this.value}"])`)
     hideTarget.forEach(ele=>{ ele.classList.add('hide') })
+
+    document.querySelector('.operations').scrollIntoView();
+})
+
+/* operation keyword filter 적용 */
+document.querySelector('.operations > .filter > .keyword').addEventListener('input', function(){
+    document.querySelector('.operations > .filter > .group').dispatchEvent(new Event('input'))
+
+    if(this.value=='') return
+
+    let operations = document.querySelectorAll('.operation:not(.hide)')
+    operations.forEach(ele=>{
+        if(
+            ele.dataset.operation.toLowerCase().indexOf(this.value.toLowerCase())>-1 ||
+            ele.querySelector('.title > .description').innerHTML.slice(2).indexOf(this.value)>-1
+        ) return;
+
+        ele.classList.add('hide')
+    })
+
+    document.querySelector('.operations').scrollIntoView();
 })
 
 /* operation 섹션 fold 적용 */
