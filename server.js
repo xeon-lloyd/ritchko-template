@@ -59,5 +59,5 @@ server.listen(setting.port, async function(){
     /* DB 연결 */
     util.mysql.connect('database1');
 
-    console.log(`서버 시작  - Running ${setting.hostName}:${setting.port}`)
+    console.log(`서버 시작\n - Webserver\t:\t${setting.hostName}:${setting.port}\n - API Document\t:\t${setting.hostName}:${setting.port}/API-doc`)
 })
