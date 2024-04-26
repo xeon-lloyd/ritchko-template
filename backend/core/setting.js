@@ -1,6 +1,8 @@
 const setting = {
 	AppName: 'Ritchko Template',
 	hostName: 'https://example.com',
+	
+	port: 80,
 
 	isProduction: false,
 
