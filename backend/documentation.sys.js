@@ -87,15 +87,21 @@ router.get("/", function(req, res, next){
                         <li>인증키는 POST 요청시 header에 <b>auth</b> 이름으로 포함</li>
                     </ul>
                 </div>
-            </div>
-
-
-            <div class="operations">
-                <div class="title">Operations</div>
-            </div>
-    `;
+            </div>`;
 
     let opreationList = Object.keys(operationSetting);
+
+    let groupOption = '<option value="">ALL</option>';
+    let groupList = [...new Set(opreationList.map((operationName)=> operationSetting[operationName].group ))];
+    groupList.forEach((group)=>{ groupOption += `<option value="${group}">${group}</option>` })
+    
+
+    html += `<div class="operations">
+        <div class="title">Operations</div>
+        <div class="filter">
+            <select class="group">${groupOption}</select>
+        </div>
+    </div>`
 
     for(let i=0;i<opreationList.length;i++){
         let responses = '';
@@ -115,7 +121,7 @@ router.get("/", function(req, res, next){
         let needAuth = ""
         if(operationSetting[opreationList[i]].authRequire) needAuth = `<i class="fa-solid fa-lock"></i>`
         html += `
-            <div class="operation folded" id="${opreationList[i]}" data-operation="${opreationList[i]}">
+            <div class="operation folded" id="${opreationList[i]}" data-group="${operationSetting[opreationList[i]].group}" data-operation="${opreationList[i]}">
                 <div class="title">
                     ${opreationList[i]}
                     ${needAuth}

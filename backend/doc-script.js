@@ -4,6 +4,21 @@ for (let i = 0; i < tx.length; i++) {
     tx[i].setAttribute("style", "height:" + (tx[i].scrollHeight + 10) + "px;overflow-y:hidden;");
 }
 
+/* operation filter 해제 */
+const clearFilter = function(){
+    let hideOperations = document.querySelectorAll('.operation.hide')
+    hideOperations.forEach(ele=>{ ele.classList.remove('hide') })
+}
+
+/* operation group filter 적용 */
+document.querySelector('.operations > .filter > .group').addEventListener('input', function(){
+    clearFilter()
+    
+    if(this.value=='') return
+
+    let hideTarget = document.querySelectorAll(`.operation:not([data-group="${this.value}"])`)
+    hideTarget.forEach(ele=>{ ele.classList.add('hide') })
+})
 
 /* operation 섹션 fold 적용 */
 const opSec = document.querySelectorAll(".operation > .title");

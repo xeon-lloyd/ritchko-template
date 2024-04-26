@@ -113,6 +113,15 @@ textarea{
 
 
 
+.container > .operations > .filter{
+    margin: 0.5rem 0 1rem;
+    padding-left: 0.7rem;
+}
+
+.container > .operations > .filter > .group{
+    padding: 0.1rem 2rem 0.1rem 0.4rem;
+}
+
 
 .container > .operation{
     margin-top: 0.7rem;
@@ -121,6 +130,9 @@ textarea{
 }
 .container > .operation.folded{
     height: 3.2rem;
+}
+.container > .operation.hide{
+    display: none;
 }
 
 .container > .operation > .title{
