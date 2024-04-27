@@ -120,7 +120,7 @@ router.get("/", function(req, res, next){
         }
 
         let needAuth = ""
-        if(operationSetting[opreationList[i]].authRequire) needAuth = `<i class="fa-solid fa-lock"></i>`
+        if(operationSetting[opreationList[i]].authRequire) needAuth = `<i class="auth-icon fa-solid fa-lock"></i>`
         html += `
             <div class="operation folded" id="${opreationList[i]}" data-group="${operationSetting[opreationList[i]].group}" data-operation="${opreationList[i]}">
                 <div class="title">
@@ -128,6 +128,7 @@ router.get("/", function(req, res, next){
                     ${needAuth}
                     <div class="description">- ${operationSetting[opreationList[i]].description}</div>
                     <i class="fold-toggle fa-solid fa-chevron-down"></i>
+                    <i class="copy-icon fa-solid fa-clipboard"></i>
                 </div>
                 <div class="param">
                     <div class="label">Param</div>

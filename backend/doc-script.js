@@ -63,6 +63,19 @@ for (let i = 0; i < opSec.length; i++) {
     })
 }
 
+/* operationName 복사 버튼 적용 */
+const opCopy = document.querySelectorAll(".operation > .title > i.copy-icon");
+for(let i = 0; i < opCopy.length; i++) {
+    opCopy[i].addEventListener('click', function(){
+        this.parentNode.dispatchEvent(new Event('click'))
+
+        let operationName = this.parentNode.parentNode.dataset.operation;
+        window.navigator.clipboard.writeText(operationName)
+
+        alert(`operationName "${operationName}" copied`, true)
+    })
+}
+
 
 /* API 요청 버튼 적용 */
 const RequestButton = document.querySelectorAll(".operation > .param > .requset");

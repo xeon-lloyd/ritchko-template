@@ -160,14 +160,26 @@ textarea{
     color: #7f7f7f;
 }
 
-.container > .operation > .title > i{
+.container > .operation > .title > i.auth-icon{
     color: #15753e;
     font-size: 1.1rem;
 }
 
-.container > .operation > .title > .fold-toggle{
+.container > .operation > .title > i.fold-toggle,
+.container > .operation > .title > i.copy-icon{
     float: right;
     margin: 0.5em;
+    font-size: 1.1rem;
+    color: #7f7faa;
+}
+.container > .operation > .title > i.copy-icon{
+    color: #003399;
+    opacity: 0.5;
+    font-size: 1.5rem;
+    margin-top: 0.3rem;
+}
+.container > .operation > .title > i.copy-icon:hover{
+    opacity: 1;
 }
 
 
