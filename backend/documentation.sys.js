@@ -40,7 +40,7 @@ router.get("/", function(req, res, next){
                     <div class="label">Path</div>
                     <div>
                         <span>POST</span>
-                        ${setting.hostName}/API
+                        ${setting.hostName}:${setting.port}/API
                     </div>
                 </div>
 
