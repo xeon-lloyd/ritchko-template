@@ -134,3 +134,24 @@ function API_Request(operation, param, from){
 
     xhr.send(JSON.stringify(data));
 }
+
+
+
+function alert(content, success){
+	let ele = document.createElement('div');
+	ele.className = success?'success':'error';
+	ele.innerHTML = content || '';
+
+	setTimeout(function(){
+		ele.style.opacity = '0';
+
+		setTimeout(function(){
+			ele.remove();
+		}, 200)
+	}, 7000);
+
+	document.querySelector('#alertArea').appendChild(ele);
+	setTimeout(function(){
+		ele.style.margin = '10px';
+	}, 10);
+}

@@ -151,6 +151,8 @@ router.get("/", function(req, res, next){
     html += `
         </div>
 
+        <div id="alertArea"></div>
+
         <script src="/API-doc/script.js"></script>
 
         </body>

@@ -241,3 +241,32 @@ textarea{
 .container > .operation > .response > .list > div{
     margin-top: 1rem;
 }
+
+
+
+#alertArea{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	z-index: 22;
+}
+
+#alertArea>div{
+	margin: 70px 10px -60px 10px;
+	padding: 5px 12px;
+	overflow: hidden;
+	text-align: center;
+	border-radius: 5px;
+	color: #FFFFFF;
+	/*display: flex;*/
+	display: table;
+	align-items: center;
+	transition: 0.2s ease;
+	user-select: none;
+}
+#alertArea>div.success{
+	background: #5CB35E;
+}
+#alertArea>div.error{
+	background: #F36157;
+}
