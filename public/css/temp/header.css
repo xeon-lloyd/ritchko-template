@@ -13,7 +13,7 @@
 
 #header > .logo{
 	display: inline-block;
-	margin: 0.5rem 0 0 1.77rem;
+	margin: 0.5rem 0 0 1.2rem;
 }
 #header > .logo > img{
 	height: 1.9rem;
@@ -21,17 +21,17 @@
 
 
 #header > #login{
-	padding: .2rem .7rem .35rem;
+	padding: .2rem .7rem .3rem;
     display: inline-block;
     background-color: #fff;
     color: #805ad5;
-    border-radius: .5rem;
+    border-radius: .3rem;
     border: 1px solid;
     font-weight: 700;
     cursor: pointer;
 	float: right;
-	font-size: 0.85rem;
-	margin: 0.6rem 2rem 0 0;
+	font-size: 0.77rem;
+	margin: 0.6rem 1.6rem 0 0;
 	display: none;
 }
 #header > #login:hover{
@@ -40,9 +40,10 @@
 }
 
 #header > #login > i{
-	font-size: 1.2rem;
+	font-size: 0.9rem;
 	position: relative;
-	top: 0.2rem;
+	top: 0.1rem;
+	margin-right: 0.1rem;
 }
 
 

@@ -1,8 +1,9 @@
 /* Footer */
 
 #footer {
-    padding: 3rem 0 1rem 0 ;
-    background-color: #f6f6f6;
+    padding: 2rem 0 1rem 0 ;
+    background-color: #FFFFFF;
+    border-top: solid 1px rgba(88, 88, 88, 0.1);
 }
 
     #footer > .inner {

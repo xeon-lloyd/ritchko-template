@@ -1,7 +1,7 @@
 #sidebar{
-	width: 14rem;
+	width: 13rem;
 
-	background: #F8F8F8;
+	background: #ffffff;
 	height: calc(100vh - 2.8rem);
 	top: 2.8rem;
 	position: fixed;
@@ -16,7 +16,7 @@
     overflow-x: hidden;
 }
 .foldedSidebar #sidebar{
-	width: 3rem;
+	width: 2.8rem;
 }
 
 
@@ -29,7 +29,7 @@
 	text-align: right;
 }
 #sidebar > #control > i{
-	font-size: 1.2rem;
+	font-size: 1rem;
 	margin: 0.4rem;
 	padding: 0.3rem;
 	border-radius: 0.2rem;
@@ -43,9 +43,10 @@
 
 #sidebar .linkBox{
     cursor: pointer;
-    width: 14rem;
+    width: 13rem;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: 0.9rem;
 }
 #sidebar .linkBox:hover{
     background: #00000007;
@@ -53,8 +54,9 @@
 
 #sidebar > div > .title{
     border-top: 1px solid #c9c9c9;
-    margin-top: 0.4rem;
+    margin-top: 0.1rem;
     opacity: 0.7;
+    font-size: 0.85rem;
     font-weight: bold;
 }
 
@@ -65,8 +67,8 @@
 
 #sidebar > div > a > i,
 #sidebar > div > .title > i{
-    font-size: 1.2rem;
-    margin: 0.3rem 0.5rem;
+    font-size: 1.15rem;
+    margin: 0.3rem 0 0.3rem 0.3rem;
     padding: 0.32rem;
 }
 
@@ -81,20 +83,20 @@
 /* 다른 css 수정 */
 #footer,
 main{
-    width: calc(100% - 14rem);
-    margin-left: 14rem;
+    width: calc(100% - 13rem);
+    margin-left: 13rem;
 }
 
 .foldedSidebar #footer,
 .foldedSidebar main{
-    width: calc(100% - 3rem);
-    margin-left: 3rem;
+    width: calc(100% - 2.8rem);
+    margin-left: 2.8rem;
 }
 
 @media screen and (max-width: 650px) {
 	#footer,
     main{
-        width: calc(100% - 3rem);
-        margin-left: 3rem;
+        width: calc(100% - 2.8rem);
+        margin-left: 2.8rem;
     }
 }
