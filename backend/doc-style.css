@@ -222,6 +222,8 @@ textarea{
     color: #57AAFF;
     font-size: 0.95rem;
     margin-top: 0;
+    white-space: break-spaces;
+    word-break: break-all;
 }
 
 
