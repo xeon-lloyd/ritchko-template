@@ -10,6 +10,10 @@ module.exports = {
         errorCode = "(id|pw)"
     },
 
+    'UserNotFound': class UserNotFound extends rootResponse.NotFound {
+        message = "해당 유저를 찾을 수 없음"
+    },
+
     'SignInOK': class SignInOK extends rootResponse.OK {
         constructor(token){
             super()
@@ -23,10 +27,6 @@ module.exports = {
     },
 
     /* GetUserInfo */
-    'UserNotFound': class UserNotFound extends rootResponse.NotFound {
-        message = "해당 유저를 찾을 수 없음"
-    },
-
     'GetUserOK': class GetUserOK extends rootResponse.OK {
         constructor(user){
             super()

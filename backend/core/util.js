@@ -143,7 +143,11 @@ module.exports = {
 	encrypt: {
 		/* 단방향 암호화 */
 		oneWay: function(plainText){
-			return crypto.createHash('sha512').update(plainText).digest('hex');
+			return crypto.createHmac('sha512', setting.encrypt.key).update(plainText).digest('hex');
+		},
+
+		oneWayLite: function(plainText){
+			return crypto.createHmac('sha256', setting.encrypt.key).update(plainText).digest('hex');
 		},
 
 		shortHash: function(plainText, len){
@@ -176,12 +180,12 @@ module.exports = {
 
 	/* 사용자 토큰 */
 	token: {
-		generateToken: function(uid){
-			let token = {
-				uid,
-				createAt: new Date()
-			}
-			return module.exports.encrypt.encode(JSON.stringify(token));
+		generateToken: function(userData){
+			userData._tokenCreateAt = new Date().getTime()
+			
+			let payload = Buffer.from(JSON.stringify(userData)).toString('base64')
+			let hash = module.exports.encrypt.oneWayLite(payload)
+			return `${payload}.${hash}`;
 		}
 	},
 

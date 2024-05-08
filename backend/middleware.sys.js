@@ -36,14 +36,23 @@ module.exports = async function(req, res, next){
             }
 
             try{
-                let token = JSON.parse(util.encrypt.decode(req.header('auth')))
+                let [ userData, hash ] = req.header('auth').split('.')
 
                 //토큰 유효시간 체크
-                if(setting.token.enableTimeExpire && (new Date() - new Date(token.createAt) > setting.token.expire*1000)){
+                if(setting.token.enableTimeExpire && (new Date() - new Date(userData._tokenCreateAt) > setting.token.expire*1000)){
                     throw "expired token"
                 }
 
-                body.param.uid = token.uid;
+                //유저 정보 무결성 체크
+                if(hash!=util.encrypt.oneWayLite(userData)){
+                    throw "user data modified"
+                }
+
+                userData = JSON.parse(Buffer.from(userData, 'base64').toString('utf8'))
+
+                delete userData._tokenCreateAt;
+
+                body.param.loginUser = userData;
             }catch(e){
                 tasks.push(new response.Unauthorized(null, "잘못된 토큰입니다"));
                 continue;

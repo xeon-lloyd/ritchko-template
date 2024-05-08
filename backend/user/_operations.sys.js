@@ -13,7 +13,7 @@ module.exports = {
         responseSchema: [
             responseSchema.FormInputRequired,
             responseSchema.UserNotFound,
-            responseSchema.SignInOK
+            responseSchema.SignInOK,
         ]
     },
 
@@ -26,7 +26,6 @@ module.exports = {
         group: 'user',
         paramSchema: null,
         responseSchema: [
-            responseSchema.UserNotFound,
             responseSchema.GetUserOK,
         ]
     },
