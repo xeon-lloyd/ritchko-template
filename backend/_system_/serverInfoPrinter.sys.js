@@ -1,4 +1,4 @@
-const setting = require('./core/setting.js');
+const setting = require('../core/setting.js');
 
 module.exports = function serverInfoPrinter(){
     let font = {
