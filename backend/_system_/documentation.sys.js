@@ -1,8 +1,8 @@
 const router = require("express").Router();
 
-const setting = require('./core/setting.js');
-const operationSetting = require('./_operations.sys.js');
-const response = require('./_response.sys.js');
+const setting = require('../core/setting.js');
+const operationSetting = require('../_operations.sys.js');
+const response = require('../_response.sys.js');
 
 router.get("/style.css", function(req, res, next){
     res.sendFile(__dirname + '/doc-style.css')

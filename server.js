@@ -3,7 +3,7 @@ const app = express();
 const server = require('http').createServer(app);
 
 const fs = require('fs');
-const serverInfoPrinter = require('./backend/serverInfoPrinter.sys.js');
+const serverInfoPrinter = require('./backend/_system_/serverInfoPrinter.sys.js');
 
 const setting = require('./backend/core/setting.js');
 const util = require('./backend/core/util.js');
@@ -11,12 +11,8 @@ const util = require('./backend/core/util.js');
 /* 쿠키 사용 설정(F/B) */
 app.use(require('cookie-parser')());
 
-/* API 및 API 문서 라우팅 설정(B) */
-const API = require('./backend/middleware.sys.js');
-const API_doc = require('./backend/documentation.sys.js');
-app.use(express.json());
-app.use('/API', API);
-app.use('/API-doc', API_doc);
+/* 백엔드 로직 초기화(api, webhook, socket, api-doc)(B) */
+require('./backend/_system_/initialize.sys.js')(app);
 
 /* 각종 webhook 라우팅(B) */
 //app.get('/webhook/someGetRequest', require('./backend/some/get-request.js'));

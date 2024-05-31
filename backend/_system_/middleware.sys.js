@@ -1,7 +1,7 @@
-const operationSetting = require('./_operations.sys.js');
-const response = require('./_response.sys.js');
-const setting = require('./core/setting.js');
-const util = require("./core/util.js");
+const operationSetting = require('../_operations.sys.js');
+const response = require('../_response.sys.js');
+const setting = require('../core/setting.js');
+const util = require("../core/util.js");
 
 module.exports = async function(req, res, next){
     if(req.method!='POST'){
@@ -59,7 +59,7 @@ module.exports = async function(req, res, next){
             }
         }
 
-        tasks.push(require(__dirname + operation.logic)(body.param, req, res, next))
+        tasks.push(require(__dirname + '/..' + operation.logic)(body.param, req, res, next))
     }
 
 
