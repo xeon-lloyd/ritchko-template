@@ -20,6 +20,7 @@ const setting = {
 			database: 'DBName'
 	    }
 	},
+	sqlCamelToSnakeMapping: false,
 
 	s3: {
         accessKeyId: 's3 accessKeyId',

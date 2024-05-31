@@ -36,11 +36,13 @@ module.exports = {
 			this.connection[db] = mysql.createPool(setting.mysql[db]);;
 		},
 
+		camelToSnake: str => setting.sqlCamelToSnakeMapping?str[0].toLowerCase() + str.slice(1, str.length).replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`):str,
+
 		/* select 실행 */
 		select: async function(db, select, table, where='', params=[], orderBy='', limit=''){
-			let sql = `SELECT ${select} FROM ${table}`;
-			if(where!='') sql += ` WHERE ${where}`;
-			if(orderBy!='') sql += ` ORDER BY ${orderBy}`;
+			let sql = `SELECT ${this.camelToSnake(select)} FROM ${this.camelToSnake(table)}`;
+			if(where!='') sql += ` WHERE ${this.camelToSnake(where)}`;
+			if(orderBy!='') sql += ` ORDER BY ${this.camelToSnake(orderBy)}`;
 			if(limit!='') sql += ` LIMIT ${limit}`;
 
 			let [result] = await this.connection[db].query(sql, params);
@@ -55,7 +57,7 @@ module.exports = {
 			let setter = '(';
 			let value = 'VALUES('
 			for(let i=0;i<keys.length;i++){
-				setter += `\`${keys[i]}\`, `;
+				setter += `\`${this.camelToSnake(keys[i])}\`, `;
 				value += `?, `;
 				params.push(data[keys[i]]);
 			}
@@ -63,7 +65,7 @@ module.exports = {
 			setter = setter.substr(0, setter.length-2)+')';
 			value = value.substr(0, value.length-2)+')';
 
-			let sql = `INSERT INTO ${table} ${setter} ${value}`;
+			let sql = `INSERT INTO ${this.camelToSnake(table)} ${setter} ${value}`;
 
 			let [result] = await this.connection[db].query(sql, params);
 
@@ -71,7 +73,7 @@ module.exports = {
 		},
 
 		insertMany: async function(db, table, name, data){
-			let sql = `INSERT INTO ${table} (${name}) VALUES ?`;
+			let sql = `INSERT INTO ${this.camelToSnake(table)} (${this.camelToSnake(name)}) VALUES ?`;
 
 			try{
 				let [result] = await this.connection[db].query(sql, [data]);
@@ -86,13 +88,13 @@ module.exports = {
 			let params = [];
 			let setter = 'SET ';
 			for(let i=0;i<keys.length;i++){
-				setter += `\`${keys[i]}\` = ?, `;
+				setter += `\`${this.camelToSnake(keys[i])}\` = ?, `;
 				params.push(data[keys[i]]);
 			}
 
 			setter = setter.substr(0, setter.length-2);
 
-			let sql = `UPDATE ${table} ${setter} WHERE ${where}`;
+			let sql = `UPDATE ${this.camelToSnake(table)} ${setter} WHERE ${where}`;
 
 			if(Wparams!=undefined) params = params.concat(Wparams);
 			
@@ -103,8 +105,8 @@ module.exports = {
 
 		/* delete 실행 */
 		delete: async function(db, table, where='', params){
-			let sql = `DELETE FROM ${table}`;
-			if(where!='') sql += ` WHERE ${where}`;
+			let sql = `DELETE FROM ${this.camelToSnake(table)}`;
+			if(where!='') sql += ` WHERE ${this.camelToSnake(where)}`;
 			
 			let [result] = await this.connection[db].query(sql, params);
 
@@ -113,8 +115,8 @@ module.exports = {
 
 		/* 조건 count */
 		count: async function(db, table, where='', params){
-			let sql = `SELECT COUNT(*) as result FROM ${table}`;
-			if(where!='') sql += ` WHERE ${where}`;
+			let sql = `SELECT COUNT(*) as result FROM ${this.camelToSnake(table)}`;
+			if(where!='') sql += ` WHERE ${this.camelToSnake(where)}`;
 
 			let [result] = await this.connection[db].query(sql, params);
 
@@ -123,8 +125,8 @@ module.exports = {
 
 		/* 조건 합계 */
 		sum: async function(db, select, table, where='', params){
-			let sql = `SELECT SUM(${select}) as result FROM ${table}`;
-			if(where!='') sql += ` WHERE ${where}`;
+			let sql = `SELECT SUM(${this.camelToSnake(select)}) as result FROM ${this.camelToSnake(table)}`;
+			if(where!='') sql += ` WHERE ${this.camelToSnake(where)}`;
 
 			let [result] = await this.connection[db].query(sql, params);
 
