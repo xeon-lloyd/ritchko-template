@@ -14,7 +14,7 @@ module.exports = function(req, res, next){
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>API Document</title>
+            <title>Webhook Document</title>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
             <link rel="stylesheet" href="/API-doc/webhook-doc.css">
         </head>
@@ -41,9 +41,9 @@ module.exports = function(req, res, next){
                 <div class="body">
                     <div class="description">
                         <ul>
-                            <li>API 요청 Path는 /API로 고정</li>
-                            <li>요청 정보는 Body에 배열로 담기며 한 번의 요청으로 여러개의 작업을 시행할 수 있음</li>
-                            <li>각각의 요청 정보는 "Operation"과 "param"으로 이루어져 있음</li>
+                            <li>타 서비스로 부터 webhook(소셜 로그인, 결제 등)을 받는 endpoint</li>
+                            <li>해당 기능은 REST API가 아님. API는 Operation으로 구현</li>
+                            <li>"GET"요청의 param은 쿼리 스트링, "POST", "FETCH"등 body가 있는 요청의 param은 body(json)</li>
                         </ul>
                     </div>
                 </div>                
