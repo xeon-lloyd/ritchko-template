@@ -23,6 +23,11 @@ module.exports = function(req, res, next){
         <div class="container">
             <div class="documentTitle">${setting.AppName} Webhook endpoint Document</div>
 
+            <div class="links">
+                <a href="/API-doc">Operations</a>
+                <a href="/API-doc/webhooks">Webhooks</a>
+            </div>
+
             <div class="usage">
                 <div class="title">Usage</div>
 

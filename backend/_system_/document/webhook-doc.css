@@ -25,6 +25,24 @@ textarea{
 }
 
 
+.container > .links{
+    margin-top: 0.3rem;
+}
+
+.container > .links > a{
+    color: white;
+    padding: 0.2rem 0.8rem;
+    border-radius: 0.2rem;
+    margin-right: 0.15rem;
+    font-size: 0.8rem;
+    text-decoration: none;
+    background-color: #3388CC;
+    display: inline-block;
+}
+.container > .links > a:hover{
+    background-color: #5588FF;
+}
+
 
 .container > .usage{
     border-bottom: 1px solid #AAAAFF;
