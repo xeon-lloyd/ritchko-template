@@ -1,18 +1,8 @@
-const router = require("express").Router();
+const setting = require('../../core/setting.js');
+const operationSetting = require('../../_operations.sys.js');
+const response = require('../../_response.sys.js');
 
-const setting = require('../core/setting.js');
-const operationSetting = require('../_operations.sys.js');
-const response = require('../_response.sys.js');
-
-router.get("/style.css", function(req, res, next){
-    res.sendFile(__dirname + '/doc-style.css')
-})
-
-router.get("/script.js", function(req, res, next){
-    res.sendFile(__dirname + '/doc-script.js')
-})
-
-router.get("/", function(req, res, next){
+module.exports = function(req, res, next){
     if(setting.isProduction){
         next();
         return;
@@ -26,7 +16,7 @@ router.get("/", function(req, res, next){
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>API Document</title>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-            <link rel="stylesheet" href="/API-doc/style.css">
+            <link rel="stylesheet" href="/API-doc/operation-doc.css">
         </head>
         <body>
 
@@ -40,7 +30,7 @@ router.get("/", function(req, res, next){
                     <div class="label">Path</div>
                     <div>
                         <span>POST</span>
-                        ${setting.hostName}:${setting.port}/API
+                        ${req.protocol}://${req.get('host')}/API
                     </div>
                 </div>
 
@@ -153,14 +143,11 @@ router.get("/", function(req, res, next){
 
         <div id="alertArea"></div>
 
-        <script src="/API-doc/script.js"></script>
+        <script src="/API-doc/operation-doc.js"></script>
 
         </body>
     </html>
     `
 
     res.send(html)
-})
-
-
-module.exports = router;
+}
