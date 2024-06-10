@@ -129,11 +129,12 @@ function API_Request(webhookPath, method, param, from){
                     result = `:RedirectTo ${target.responseURL}`
                 }
                 
-                from.querySelector('.param > .requestAt').innerHTML = new Date();
                 from.querySelector('.param > .API_Response').innerHTML = JSON.stringify(result, null, 4);
             } else {
-                // 에러가 발생한 경우
+                from.querySelector('.param > .API_Response').innerHTML = `":Error ${status}"`
             }
+
+            from.querySelector('.param > .requestAt').innerHTML = new Date();
         }
     });
 
