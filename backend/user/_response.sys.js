@@ -40,4 +40,14 @@ module.exports = {
             name: "유저 프로필 이름(string)"
         }
     },
+
+
+    /* // webhooks (이름에 Process를 포함하여 webhook의 응답이란것을 명시) // */
+    'SocialLoginProcessOK': class SocialLoginProcessOK extends rootResponse.RedirectTo{
+        path = "# (마지막 접속 페이지)"
+    },
+
+    'UserInfoUpdateProcessOK': class UserInfoUpdateProcessOK extends rootResponse.OK{
+        message = "웹훅 처리 완료"
+    },
 }

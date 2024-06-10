@@ -81,5 +81,16 @@ module.exports = {
         message = "";
         errorCode = null;
         data = null;
+    },
+
+
+    /* // webhooks // */
+    'RedirectTo': class{
+        constructor(redirectPath) {
+            this.path = redirectPath || "";
+        }
+
+        Behavior = "Redirect"
+        path = ""
     }
 }

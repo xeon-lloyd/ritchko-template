@@ -14,10 +14,6 @@ app.use(require('cookie-parser')());
 /* 백엔드 로직 초기화(api, webhook, socket, api-doc)(B) */
 require('./backend/_system_/initialize.sys.js')(app);
 
-/* 각종 webhook 라우팅(B) */
-//app.get('/webhook/someGetRequest', require('./backend/some/get-request.js'));
-//app.post('/webhook/somePostRequest', require('./backend/other/post-request.js'));
-
 /* static 리소스 폴더 설정(F) */
 app.use(express.static('public'));
 

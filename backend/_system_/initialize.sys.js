@@ -6,6 +6,9 @@ module.exports = function(expressApp){
     expressApp.use(express.json());
     expressApp.use('/API', API);
 
+    /* webhook 초기화 */
+    require('./webhookInit.sys.js')(expressApp)
+
     /* 문서 라우팅 설정 */
     const API_doc = require('./document/documentation.sys.js');
     expressApp.use('/API-doc', API_doc);
