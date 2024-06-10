@@ -258,17 +258,72 @@ module.exports = {
 			else await fs.writeFile(option.fileName, data.Body);
 		},
 
+		copy: async function(option){
+			/* {
+				Bucket: "목적지 버킷",
+				CopySource: encodeURI(`/${원본 버킷}/${파일명}`),
+				Key: "목적지 파일명",
+			} */
+			await this.auth.copyObject(option)
+		},
+
 		delete: async function(option){
+			/* {   
+				Bucket: option.Bucket,      
+				Key: option.Key,
+			} */
 			await this.auth.deleteObject(option);
 		},
 
 		headObject: async function(option){
-			let data = await this.auth.headObject({   
+			/* {   
 				Bucket: option.Bucket,      
 				Key: option.Key,
-			});
+			} */
+			let data = await this.auth.headObject(option);
 
 			return data;
+		},
+	},
+
+	fileUpload: {
+		moveTo: async function(token, bucket, key){
+			try{
+				let fileName = module.exports.encrypt.decode(token)
+
+				await module.exports.s3.copy({
+					Bucket: bucket,
+					CopySource: encodeURI(`/${setting.fileUpload.tempBucket}/${fileName}`),
+					Key: key,
+				})
+	
+				await module.exports.s3.delete({   
+					Bucket: setting.fileUpload.tempBucket,      
+					Key: fileName,
+				})
+			}catch(e){
+				throw new Error("유효하지 않은 File Token")
+			}
+		},
+
+		toStream: async function(token){
+			try{
+				let fileName = module.exports.encrypt.decode(token)
+
+				let data = await module.exports.s3.auth.getObject({   
+					Bucket: setting.fileUpload.tempBucket,      
+					Key: fileName,
+				});
+
+				await module.exports.s3.delete({   
+					Bucket: setting.fileUpload.tempBucket,      
+					Key: fileName,
+				})
+
+				return data.Body
+			}catch(e){
+				throw new Error("유효하지 않은 File Token")
+			}
 		},
 	},
 }

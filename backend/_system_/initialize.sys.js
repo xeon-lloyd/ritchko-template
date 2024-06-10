@@ -1,6 +1,9 @@
 const express = require('express');
 
 module.exports = function(expressApp){
+    /* fileUpload 초기화 */
+    const fileUpload = require('./fileUploadInit.sys.js')(expressApp);
+
     /* API 및 API 문서 라우팅 설정(B) */
     const API = require('./middleware.sys.js');    
     expressApp.use(express.json());

@@ -29,6 +29,11 @@ const setting = {
 		endpoint: ''
     },
 
+	fileUpload: {
+		limitSize: 5 * 1000 * 1000, // 5mb
+		tempBucket: 'upload-temp',		
+	},
+
 	gmailSmtp: {
 		user: 'user@gmail.com',
 		fromEmail: 'custom-user@gmail.com',

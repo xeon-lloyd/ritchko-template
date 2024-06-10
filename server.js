@@ -52,5 +52,8 @@ server.listen(setting.port, async function(){
     /* DB 연결 */
     util.mysql.connect('database1');
 
+    /* s3 초기화 */
+    util.s3.setAuth()
+
     serverInfoPrinter();
 })
