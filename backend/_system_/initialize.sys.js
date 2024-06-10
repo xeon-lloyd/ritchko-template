@@ -12,4 +12,5 @@ module.exports = function(expressApp){
     /* 문서 라우팅 설정 */
     const API_doc = require('./document/documentation.sys.js');
     expressApp.use('/API-doc', API_doc);
+    expressApp.use('/API-doc/:type', API_doc);
 }
