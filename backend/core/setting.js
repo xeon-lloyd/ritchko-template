@@ -40,7 +40,8 @@ const setting = {
 		clientId: 'google-api-clientId.apps.googleusercontent.com',
 		clientSecret: 'google-api-clientSecret',
 		accessToken: 'aa00.access_token',
-		refreshToken: '1//refresh-token'
+		refreshToken: '1//refresh-token',
+		fromEmail: 'user@gmail.com'
 	},
 
 	encrypt: {
