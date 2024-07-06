@@ -105,7 +105,7 @@ module.exports = {
 
 			setter = setter.substr(0, setter.length-2);
 
-			let sql = `UPDATE ${this.camelToSnake(table)} ${setter} WHERE ${where}`;
+			let sql = `UPDATE ${this.camelToSnake(table)} ${setter} WHERE ${this.camelToSnake(where)}`;
 
 			if(Wparams!=undefined) params = params.concat(Wparams);
 			
