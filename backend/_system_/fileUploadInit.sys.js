@@ -65,7 +65,10 @@ module.exports = function(app){
                 response: 200,
                 errorCode: null,
                 message: "파일 업로드 완료",
-                data: util.encrypt.encode(fileName)
+                data: util.encrypt.encode(JSON.stringify({
+                    name: fileName,
+                    mimeType: fInfo.mimeType
+                }))
             })
         });
     

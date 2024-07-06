@@ -287,9 +287,13 @@ module.exports = {
 	},
 
 	fileUpload: {
+		decodeFileToken: function(token){
+			return JSON.parse(module.exports.encrypt.decode(token))
+		},
+
 		moveTo: async function(token, bucket, key){
 			try{
-				let fileName = module.exports.encrypt.decode(token)
+				let fileName = this.decodeFileToken(token).name
 
 				await module.exports.s3.copy({
 					Bucket: bucket,
@@ -308,7 +312,7 @@ module.exports = {
 
 		toStream: async function(token){
 			try{
-				let fileName = module.exports.encrypt.decode(token)
+				let fileName = this.decodeFileToken(token).name
 
 				let data = await module.exports.s3.auth.getObject({   
 					Bucket: setting.fileUpload.tempBucket,      
