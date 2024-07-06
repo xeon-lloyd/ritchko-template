@@ -37,6 +37,7 @@ module.exports = {
 		},
 
 		camelToSnake: str => setting.sqlCamelToSnakeMapping?str[0].toLowerCase() + str.slice(1, str.length).replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`):str,
+		snakeToCamel: str => setting.sqlCamelToSnakeMapping?str.toLowerCase().replace(/([_][a-z])/g, group => group.toUpperCase().replace('_', '')):str,
 
 		/* select 실행 */
 		select: async function(db, select, table, where='', params=[], orderBy='', limit=''){
@@ -47,6 +48,16 @@ module.exports = {
 
 			let [result] = await this.connection[db].query(sql, params);
 
+			result = result.map(ele=>{
+				let newObj = {};
+				let keys = Object.keys(ele);
+				for(i=0; i<keys.length; i++){
+					newObj[this.snakeToCamel(keys[i])] = ele[keys[i]]
+				}
+
+				return newObj
+			})
+			
 			return result;
 		},
 
