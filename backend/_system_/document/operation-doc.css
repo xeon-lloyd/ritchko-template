@@ -58,7 +58,8 @@ textarea{
 }
 
 
-.container > .usage > .path{
+.container > .usage > .path,
+.container > .usage > .header{
     padding: 1rem 1rem 0 1rem;
 }
 
@@ -78,7 +79,8 @@ textarea{
     margin-right: 1rem;
 }
 
-.container > .usage > .path > div{
+.container > .usage > .path > div,
+.container > .usage > .header > div{
     display: inline-block;
 }
 

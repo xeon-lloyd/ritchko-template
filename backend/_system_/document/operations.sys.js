@@ -39,6 +39,13 @@ module.exports = function(req, res, next){
                     </div>
                 </div>
 
+                <div class="header">
+                    <div class="label">Header</div>
+                    <div>
+                        Content-Type: application/json
+                    </div>
+                </div>
+
                 <div class="body">
                     <div class="label">Body</div>
                     <pre>[
