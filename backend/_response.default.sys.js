@@ -8,6 +8,7 @@ module.exports = {
         response = 200;
         message = "";
         errorCode = null;
+        target = null;
         data = null;
     },
 
@@ -20,6 +21,7 @@ module.exports = {
         response = 400;
         message = "";
         errorCode = null;
+        target = null;
         data = null;
     },
 
@@ -32,6 +34,7 @@ module.exports = {
         response = 401;
         message = "";
         errorCode = null;
+        target = null;
         data = null;
     },
     
@@ -44,6 +47,7 @@ module.exports = {
         response = 403;
         message = "";
         errorCode = null;
+        target = null;
         data = null;
     },
 
@@ -56,6 +60,7 @@ module.exports = {
         response = 404;
         message = "";
         errorCode = null;
+        target = null;
         data = null;
     },
 
@@ -68,6 +73,7 @@ module.exports = {
         response = 405;
         message = "";
         errorCode = null;
+        target = null;
         data = null;
     },
 
@@ -80,6 +86,7 @@ module.exports = {
         response = 500;
         message = "";
         errorCode = null;
+        target = null;
         data = null;
     },
 
