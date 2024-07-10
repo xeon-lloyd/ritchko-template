@@ -3,6 +3,7 @@ const fs = require("fs");
 
 router.get("/", require('./operations.sys.js'))
 router.get("/webhooks", require('./webhooks.sys.js'))
+router.get("/fileUpload", require('./fileUpload.sys.js'))
 
 router.get("/:filename(*)", function(req, res, next){
     if(fs.existsSync(__dirname + '/' + req.params.filename)){

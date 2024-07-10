@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+*{
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+body{
+    min-height: 200vh;
+}
+
+textarea{
+    width: 100%;
+    resize: none;
+}
+
+.container{
+    max-width: 80rem;
+    margin: 1.7rem auto;
+}
+
+.container > .documentTitle{
+    font-size: 2rem;
+    border-bottom: 2px solid #AAAAFF;
+    padding: 0.7rem 0;
+}
+
+
+.container > .links{
+    margin-top: 0.3rem;
+}
+
+.container > .links > a{
+    color: white;
+    padding: 0.2rem 0.8rem;
+    border-radius: 0.2rem;
+    margin-right: 0.15rem;
+    font-size: 0.8rem;
+    text-decoration: none;
+    background-color: #3388CC;
+    display: inline-block;
+}
+.container > .links > a:hover{
+    background-color: #5588FF;
+}
+
+
+.container > .usage{
+    border-bottom: 1px solid #AAAAFF;
+}
+
+.container > .usage > .title,
+.container > .response > .title{
+    font-weight: bold;
+    font-size: 1.3rem;
+    margin-top: 2rem;
+}
+
+
+.container > .usage > .path,
+.container > .usage > .header{
+    padding: 1rem 1rem 0 1rem;
+}
+
+.container > .usage > .path > div > span{
+    display: inline-block;
+    background-color: #55AAFF;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.2rem;
+    margin-right: 0.15rem;
+    font-size: 0.8rem;
+}
+
+.container > .usage > div > .label{
+    font-weight: bold;
+    font-size: 1rem;
+    margin-right: 1rem;
+}
+
+.container > .usage > .path > div,
+.container > .usage > .header > div{
+    display: inline-block;
+}
+
+
+.container > .response > .section{
+    margin-top: 1.25rem;
+}
+
+.container > .response > .section > .title{
+    
+}
+
+.container > .response > .section > pre{
+    background-color: #EEF3F3;
+    padding: 1.2rem 2rem;
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+}
+
+
+
+
+
+#alertArea{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	z-index: 22;
+}
+
+#alertArea>div{
+	margin: 70px 10px -60px 10px;
+	padding: 5px 12px;
+	overflow: hidden;
+	text-align: center;
+	border-radius: 5px;
+	color: #FFFFFF;
+	/*display: flex;*/
+	display: table;
+	align-items: center;
+	transition: 0.2s ease;
+	user-select: none;
+}
+#alertArea>div.success{
+	background: #5CB35E;
+}
+#alertArea>div.error{
+	background: #F36157;
+}
