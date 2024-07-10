@@ -66,6 +66,7 @@ module.exports = function(req, res, next){
                     <pre>{
     "response": 400,
     "errorCode": "FileNotFound",
+    "target": null,
     "message": "첨부한 파일이 없습니다. 1개의 파일을 첨부해주시기 바랍니다.",
     "data": null
 }</pre>
@@ -77,6 +78,7 @@ module.exports = function(req, res, next){
                     <pre>{
     "response": 413,
     "errorCode": "FileTooLarge",
+    "target": null,
     "message": "첨부된 파일의 용량이 ${setting.fileUpload.limitSize.byteSizeToString()}를 초과하여 업로드가 거부 되었습니다",
     "data": null
 }</pre>
@@ -88,6 +90,7 @@ module.exports = function(req, res, next){
                     <pre>{
     "response": 200,
     "errorCode": null,
+    "target": null,
     "message": "파일 업로드 완료",
     "data": "File Token(String)"
 }</pre>

@@ -19,6 +19,7 @@ module.exports = function(app){
             return res.status(400).json({
                 response: 400,
                 errorCode: "FileNotFound",
+                target: null,
                 message: "첨부한 파일이 없습니다. 1개의 파일을 첨부해주시기 바랍니다.",
                 data: null
             })
@@ -46,6 +47,7 @@ module.exports = function(app){
                 return res.status(413).json({
                     response: 413,
                     errorCode: "FileTooLarge",
+                    target: null,
                     message: `첨부된 파일의 용량이 ${setting.fileUpload.limitSize.byteSizeToString()}를 초과하여 업로드가 거부 되었습니다`,
                     data: null
                 })
@@ -64,6 +66,7 @@ module.exports = function(app){
             res.json({
                 response: 200,
                 errorCode: null,
+                target: null,
                 message: "파일 업로드 완료",
                 data: util.encrypt.encode(JSON.stringify({
                     name: fileName,
