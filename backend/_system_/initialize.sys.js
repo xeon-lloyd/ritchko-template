@@ -1,6 +1,6 @@
 const express = require('express');
 
-module.exports = function(expressApp){
+module.exports = function(expressApp, httpServer){
     /* fileUpload 초기화 */
     const fileUpload = require('./fileUploadInit.sys.js')(expressApp);
 
@@ -11,6 +11,9 @@ module.exports = function(expressApp){
 
     /* webhook 초기화 */
     require('./webhookInit.sys.js')(expressApp)
+
+    /* socket 초기화 */
+    require('./socketInit.sys.js')(httpServer)
 
     /* 문서 라우팅 설정 */
     const API_doc = require('./document/documentation.sys.js');

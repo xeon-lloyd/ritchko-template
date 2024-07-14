@@ -50,4 +50,20 @@ module.exports = {
     'UserInfoUpdateProcessOK': class UserInfoUpdateProcessOK extends rootResponse.OK{
         message = "웹훅 처리 완료"
     },
+
+
+    /* // sockets (이름에 Messagek, Event를 포함하여 socket의 응답이란것을 명시) // */
+    'SetUserStatusMessageOK': class SetUserStatusMessageOK extends rootResponse.OK {
+        message = "유저 상태 설정 완료"
+    },
+
+    'UserStatusUpdateEvent': class UserStatusUpdateEvent extends rootResponse.OK {
+        constructor(data){
+            super()
+            if(data!=undefined) this.data = data
+        }
+
+        message = "유저 상태가 업데이트 됐습니다"
+        data = "유저 상태(enum:online|sleep|offline)"
+    },
 }

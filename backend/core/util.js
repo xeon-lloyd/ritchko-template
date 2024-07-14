@@ -341,6 +341,10 @@ module.exports = {
 			}
 		},
 	},
+
+	socket: {
+		io: null,
+	},
 }
 
 

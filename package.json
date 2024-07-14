@@ -16,6 +16,7 @@
     "ejs": "^3.1.9",
     "express": "^4.18.3",
     "mysql2": "^3.9.2",
-    "nodemailer": "^6.9.11"
+    "nodemailer": "^6.9.11",
+    "socket.io": "^4.7.5"
   }
 }

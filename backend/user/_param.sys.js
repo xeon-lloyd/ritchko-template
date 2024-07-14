@@ -4,6 +4,7 @@ module.exports = {
         pw: '유저 password(string)'
     },
 
+
     /* // webhooks // */
     '/user/socialLoginProcess': {
         code: '로그인 후 리다이렉트로 받은 코드(string)',
@@ -12,5 +13,11 @@ module.exports = {
 
     '/user/userInfoUpdate': {
         uid: '유저 고유번호(string)'
-    }
+    },
+
+
+    /* // sockets // */
+    'SetUserStatusMessage': {
+        status: '유저 상태(enum:online|sleep|offline)'
+    },
 }
