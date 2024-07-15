@@ -3,9 +3,31 @@ const setting = require('../core/setting.js');
 const util = require("../core/util.js");
 
 module.exports = function(server){
-    util.socket.io = require('socket.io')(server);
+    util.socket.io = require('socket.io')(server, {
+        path: '/socket.io',
+        transports: ['websocket'],
+    });
+
+    /* 클러스팅 (redis로 연결) */
+    if(setting.socket.redisAdapter.enable){
+        const { createClient } = require("redis");
+        const { createAdapter } = require("@socket.io/redis-adapter");
+
+        const pubClient = createClient({
+            socket: {
+                host: setting.socket.redisAdapter.redis.host,
+                port: setting.socket.redisAdapter.redis.port,
+            },
+            password: setting.socket.redisAdapter.redis.password,
+        });
+        const subClient = pubClient.duplicate();
+
+        util.socket.io.adapter(createAdapter(pubClient, subClient));
+    }
+
 
     util.socket.io.on('connection', function(socket) {
+        /* auth에 토크이 있다면 loginUser로 decode */
         try{
             let [ userData, hash ] = socket.handshake.headers.auth.split('.')
 
@@ -35,14 +57,19 @@ module.exports = function(server){
         for(let i=0; i<list.length; i++){
             let operation = socketOperations[list[i]]
 
+            /* receive type의 operation이 아니라면 건너뛰기 */
             if(operation.type!='receive') continue;
 
+            /* 소켓 리스너 설정 */
             socket.on(list[i], async function(data) {
+                /* 로그인 필수 체크 */
                 if(operation.authRequire && socket.loginUser==undefined) return socket.emit("message", new response.Unauthorized())
                 
+                /* 소켓 로직 실행 */
                 let result = await require(__dirname + '/..' + operation.logic)(socket, data)
                 result.name = list[i]
-                    
+                
+                /* 결과 응답 */
                 socket.emit("_result", result)
             });
         }

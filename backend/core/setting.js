@@ -51,7 +51,18 @@ const setting = {
 	token: {
 		enableTimeExpire: false,
 		expire: 3 * 24 * 60 * 60 //s
-	}
+	},
+
+	socket: {
+		redisAdapter: {
+			enable: false,
+			redis: {
+				host: 'localhost',
+				port: 6379,
+				password: 'redisPassword',
+			},
+		}
+	},
 }
 
 module.exports = setting;
