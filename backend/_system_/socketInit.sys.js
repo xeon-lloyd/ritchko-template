@@ -67,10 +67,9 @@ module.exports = function(server){
                 
                 /* 소켓 로직 실행 */
                 let result = await require(__dirname + '/..' + operation.logic)(socket, data)
-                result.name = list[i]
                 
                 /* 결과 응답 */
-                socket.emit("_result", result)
+                socket.emit(list[i], result)
             });
         }
         
