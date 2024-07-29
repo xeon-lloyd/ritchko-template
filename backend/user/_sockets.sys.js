@@ -3,7 +3,7 @@ const responseSchema = require('./_response.sys.js');
 
 module.exports = {
     'SetUserStatusMessage': {
-        type: 'receive',
+        type: 'message',
         logic: '/user/setUserStatusMessage.js',
         authRequire: true,
 
@@ -17,7 +17,7 @@ module.exports = {
     },
 
     'UserStatusUpdateEvent': {
-        type: 'emit',
+        type: 'event',
         authRequire: true,
 
         //documentation

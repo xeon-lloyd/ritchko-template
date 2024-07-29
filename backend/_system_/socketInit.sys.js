@@ -47,18 +47,18 @@ module.exports = function(server){
 
             socket.loginUser = userData
         }catch(e){
-            socket.emit("_result", new response.Unauthorized(null, "잘못된 토큰입니다"));
+            socket.emit("_error", new response.Unauthorized(null, "잘못된 토큰입니다"));
         }
         
 
-        /* type이 receive(client > server)인 socketOpertaion 설정 */
+        /* type이 message(client > server)인 socketOpertaion 설정 */
         let socketOperations = require('../_sockets.sys.js')
         let list = Object.keys(socketOperations)
         for(let i=0; i<list.length; i++){
             let operation = socketOperations[list[i]]
 
-            /* receive type의 operation이 아니라면 건너뛰기 */
-            if(operation.type!='receive') continue;
+            /* message type의 operation이 아니라면 건너뛰기 */
+            if(operation.type!='message') continue;
 
             /* 소켓 리스너 설정 */
             socket.on(list[i], async function(data) {
