@@ -1,0 +1,237 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+*{
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+body{
+    min-height: 200vh;
+}
+
+textarea{
+    width: 100%;
+    resize: none;
+}
+
+.container{
+    max-width: 80rem;
+    margin: 1.7rem auto;
+}
+
+.container > .documentTitle{
+    font-size: 2rem;
+    border-bottom: 2px solid #AAAAFF;
+    padding: 0.7rem 0;
+}
+
+
+.container > .links{
+    margin-top: 0.3rem;
+}
+
+.container > .links > a{
+    color: white;
+    padding: 0.2rem 0.8rem;
+    border-radius: 0.2rem;
+    margin-right: 0.15rem;
+    font-size: 0.8rem;
+    text-decoration: none;
+    background-color: #3388CC;
+    display: inline-block;
+}
+.container > .links > a:hover{
+    background-color: #5588FF;
+}
+
+
+.container > .usage,
+.container > .setAuth{
+    border-bottom: 1px solid #AAAAFF;
+}
+
+.container > .usage > .title,
+.container > .setAuth > .title,
+.container > .operations > .title{
+    font-weight: bold;
+    font-size: 1.3rem;
+    margin-top: 2rem;
+}
+
+
+.container > .usage > .path,
+.container > .usage > .header{
+    padding: 1rem 1rem 0 1rem;
+}
+
+.container > .usage > .path > div > span{
+    display: inline-block;
+    background-color: #384c5f;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.2rem;
+    margin-right: 0.15rem;
+    font-size: 0.8rem;
+}
+
+.container > .usage > div > .label{
+    font-weight: bold;
+    font-size: 1rem;
+    margin-right: 1rem;
+}
+
+.container > .usage > .path > div,
+.container > .usage > .header > div{
+    display: inline-block;
+}
+
+
+.container > .usage > .body{
+    padding: 0.5rem 1rem 0 1rem;
+}
+
+.container > .usage > .body > pre{
+    background-color: #EEF3F3;
+    padding: 1.2rem 2rem;
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+}
+
+
+.container > .usage > .body > .description,
+.container > .setAuth > .description{
+    padding: 0 1rem;
+}
+.container > .usage > .body > .description > ul,
+.container > .setAuth > .description > ul{
+    color: #575757;
+    font-style: italic;
+}
+
+
+
+.container > .setAuth{
+
+}
+
+
+
+.container > .operations > .filter{
+    margin: 0.5rem 0 1rem;
+    padding-left: 0.7rem;
+}
+
+.container > .operations > .filter > .group,
+.container > .operations > .filter > .type{
+    padding: 0.1rem 2rem 0.1rem 0.4rem;
+}
+
+.container > .operations > .filter > .keyword{
+    padding: 0.1rem 0 0.1rem 0.4rem;
+    width: 18rem;
+}
+
+
+.container > .operation{
+    margin-top: 0.7rem;
+    background-color: aliceblue;
+    overflow: hidden;
+}
+.container > .operation.folded{
+    height: 3.2rem;
+}
+.container > .operation.hide{
+    display: none;
+}
+
+.container > .operation > .title{
+    font-size: 1.5rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+.container > .operation > .title:hover{
+    background: #0000000F;
+}
+
+.container > .operation > .title > .description{
+    display: inline-block;
+    font-size: 0.8rem;
+    margin-left: 0.2rem;
+    color: #7f7f7f;
+}
+
+.container > .operation > .title > i.auth-icon{
+    color: #15753e;
+    font-size: 1.1rem;
+}
+
+.container > .operation > .title > i.fold-toggle,
+.container > .operation > .title > i.copy-icon{
+    float: right;
+    margin: 0.5em;
+    font-size: 1.1rem;
+    color: #7f7faa;
+}
+.container > .operation > .title > i.copy-icon{
+    color: #003399;
+    opacity: 0.5;
+    font-size: 1.5rem;
+    margin-top: 0.3rem;
+}
+.container > .operation > .title > i.copy-icon:hover{
+    opacity: 1;
+}
+
+
+.container > .operation > .param{
+    padding: 1rem;
+}
+.container > .operation[data-type="event"] > .param{
+    display: none;
+}
+
+
+.container > .operation > .param > .label,
+.container > .operation > .response > .label{
+    font-size: 1.2rem;
+}
+
+.container > .operation > .response{
+    padding: 1rem;
+}
+
+.container > .operation > .response > .list{
+    padding-left: 1rem;
+}
+
+.container > .operation > .response > .list > div{
+    margin-top: 1rem;
+}
+
+
+
+#alertArea{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	z-index: 22;
+}
+
+#alertArea>div{
+	margin: 70px 10px -60px 10px;
+	padding: 5px 12px;
+	overflow: hidden;
+	text-align: center;
+	border-radius: 5px;
+	color: #FFFFFF;
+	/*display: flex;*/
+	display: table;
+	align-items: center;
+	transition: 0.2s ease;
+	user-select: none;
+}
+#alertArea>div.success{
+	background: #5CB35E;
+}
+#alertArea>div.error{
+	background: #F36157;
+}

@@ -1,5 +1,5 @@
 const setting = require('../../core/setting.js');
-const operationSetting = require('../../_operations.sys.js');
+const operationSetting = require('../../_sockets.sys.js');
 const response = require('../../_response.sys.js');
 
 module.exports = function(req, res, next){
@@ -14,14 +14,14 @@ module.exports = function(req, res, next){
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>API Document</title>
+            <title>Socket Document</title>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-            <link rel="stylesheet" href="/API-doc/operation-doc.css">
+            <link rel="stylesheet" href="/API-doc/socket-doc.css">
         </head>
         <body>
 
         <div class="container">
-            <div class="documentTitle">${setting.AppName} API Document</div>
+            <div class="documentTitle">${setting.AppName} Socket Document</div>
 
             <div class="links">
                 <a href="/API-doc">Operations</a>
@@ -34,46 +34,47 @@ module.exports = function(req, res, next){
                 <div class="title">Usage</div>
 
                 <div class="path">
+                    <div class="label">Host</div>
+                    <div>
+                        ${req.protocol}://${req.get('host')}
+                    </div>
+
+                    <br>
+
                     <div class="label">Path</div>
                     <div>
-                        <span>POST</span>
-                        ${req.protocol}://${req.get('host')}/API
-                    </div>
-                </div>
-
-                <div class="header">
-                    <div class="label">Header</div>
-                    <div>
-                        Content-Type: application/json
+                        <span>socket.io</span>
+                        /socket
                     </div>
                 </div>
 
                 <div class="body">
                     <div class="label">Body</div>
-                    <pre>[
-    {
-        "operation": "OperationOne",
-        "param": {
-            "id": "123",
-            "pw": "test"
-        }        
-    },
-    {
-        "operation": "OperationTwo",
-        "param": {
-            "commentPK": 13
-        }        
-    },
-    {
-        "operation": "OtherOperation",
-        "param": {}        
-    }
-]</pre>
+                    <pre>socket.emit("messageName", param)</pre>
                     <div class="description">
                         <ul>
-                            <li>API 요청 Path는 /API로 고정</li>
-                            <li>요청 정보는 Body에 배열로 담기며 한 번의 요청으로 여러개의 작업을 시행할 수 있음</li>
-                            <li>각각의 요청 정보는 "Operation"과 "param"으로 이루어져 있음</li>
+                            <li>client > server 로 전송되는 소켓 operation은 "Message"라고 지칭됨</li>
+                            <li>해당 소켓 operation의 Param이 param으로 전달됨</li>
+                        </ul>
+                    </div>
+
+                    <br>
+
+                    <pre>socket.on("eventName", data => handler(data))</pre>
+                    <div class="description">
+                        <ul>
+                            <li>server > client 로 전송되는 소켓 operation은 "Event"라고 지칭됨</li>
+                            <li>해당 소켓 operation의 Response가 data로 전달됨</li>
+                        </ul>
+                    </div>
+
+                    <br>
+
+                    <pre>socket.on("_error", data => errorHandler(data))</pre>
+                    <div class="description">
+                        <ul>
+                            <li>시스템 에러는 "_error" 이름의 이벤트로 응답됨</li>
+                            <li>ex) 유효하지 않은 토큰(소켓 연결 시)</li>
                         </ul>
                     </div>
                 </div>                
@@ -82,13 +83,9 @@ module.exports = function(req, res, next){
 
             <div class="setAuth">
                 <div class="title">Set Auth Key</div>
-                <div class="input">
-                    <div class="label">Auth key</div>
-                    <input placeholder="Auth key" type="password">
-                </div>
                 <div class="description">
                     <ul>
-                        <li>인증키는 POST 요청시 header에 <b>auth</b> 이름으로 포함</li>
+                        <li>인증키는 socket.io 연결시(초기화 시) header에 <b>auth</b> 이름으로 포함</li>
                     </ul>
                 </div>
             </div>`;
@@ -101,9 +98,14 @@ module.exports = function(req, res, next){
     
 
     html += `<div class="operations">
-        <div class="title">Operations</div>
+        <div class="title">Sockets</div>
         <div class="filter">
             <select class="group">${groupOption}</select>
+            <select class="type">
+                <option value="">ALL</option>
+                <option value="message">Message</option>
+                <option value="event">Event</option>
+            </select>
             <input type="text" class="keyword" placeholder="Filter... (operationName, description)">
         </div>
     </div>`
@@ -126,7 +128,7 @@ module.exports = function(req, res, next){
         let needAuth = ""
         if(operationSetting[opreationList[i]].authRequire) needAuth = `<i class="auth-icon fa-solid fa-lock"></i>`
         html += `
-            <div class="operation folded" id="${opreationList[i]}" data-group="${operationSetting[opreationList[i]].group}" data-operation="${opreationList[i]}">
+            <div class="operation folded" id="${opreationList[i]}" data-group="${operationSetting[opreationList[i]].group}" data-type="${operationSetting[opreationList[i]].type}" data-operation="${opreationList[i]}">
                 <div class="title">
                     ${opreationList[i]}
                     ${needAuth}
@@ -136,10 +138,7 @@ module.exports = function(req, res, next){
                 </div>
                 <div class="param">
                     <div class="label">Param</div>
-                    <textarea>${JSON.stringify(operationSetting[opreationList[i]].paramSchema, null, 4)}</textarea>
-                    <button class="requset">Test Request</button>
-                    <div class="requestAt"></div>
-                    <pre class="API_Response"></pre>
+                    <textarea readonly>${JSON.stringify(operationSetting[opreationList[i]].paramSchema, null, 4)}</textarea>
                 </div>
 
                 <div class="response">
@@ -157,7 +156,7 @@ module.exports = function(req, res, next){
 
         <div id="alertArea"></div>
 
-        <script src="/API-doc/operation-doc.js"></script>
+        <script src="/API-doc/socket-doc.js"></script>
 
         </body>
     </html>

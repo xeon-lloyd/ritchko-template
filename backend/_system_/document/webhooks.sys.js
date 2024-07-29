@@ -26,6 +26,7 @@ module.exports = function(req, res, next){
             <div class="links">
                 <a href="/API-doc">Operations</a>
                 <a href="/API-doc/webhooks">Webhooks</a>
+                <a href="/API-doc/sockets">Sockets</a>
                 <a href="/API-doc/fileUpload">FileUpload</a>
             </div>
 
