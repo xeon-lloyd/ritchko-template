@@ -4,7 +4,7 @@ const util = require("../core/util.js");
 
 module.exports = function(server){
     util.socket.io = require('socket.io')(server, {
-        path: '/socket.io',
+        path: '/socket',
         transports: ['websocket'],
     });
 
