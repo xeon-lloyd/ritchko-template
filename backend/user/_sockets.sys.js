@@ -18,7 +18,7 @@ module.exports = {
 
     'UserStatusUpdateEvent': {
         type: 'event',
-        authRequire: true,
+        authRequire: false,
 
         //documentation
         description: '유저 상태 업데이트 이벤트',
