@@ -53,6 +53,12 @@ const setting = {
 		expire: 3 * 24 * 60 * 60 //s
 	},
 
+	redis: {
+		host: 'localhost',
+		port: 6379,
+		password: 'redisPassword',
+	},
+
 	socket: {
 		redisAdapter: {
 			enable: false,

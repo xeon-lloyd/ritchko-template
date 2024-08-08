@@ -342,6 +342,36 @@ module.exports = {
 		},
 	},
 
+	redis: {
+		client: null,
+		connect: async function(){
+			const redis = require('redis')
+
+			this.client = redis.createClient({
+				socket: {
+					host: setting.redis.host,
+				  	port: setting.redis.port,
+				},
+				password: setting.redis.password
+			});
+
+			await this.client.connect();
+		},
+
+		get: async function(key){
+			return await this.client.get(key)
+		},
+
+		set: async function(key, value, expire){
+			if(expire!=undefined) return await this.client.set(key, value, { EX: expire }) // s
+			await this.client.set(key, value)
+		},
+
+		del: async function(key){
+			return await this.client.del(key)
+		},
+	},
+
 	socket: {
 		io: null,
 	},
