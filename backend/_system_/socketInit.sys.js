@@ -65,7 +65,7 @@ module.exports = function(server){
             /* 소켓 리스너 설정 */
             socket.on(list[i], async function(data) {
                 /* 로그인 필수 체크 */
-                if(operation.authRequire && socket.loginUser==undefined) return socket.emit("message", new response.Unauthorized())
+                if(operation.authRequire && socket.loginUser==undefined) return socket.emit("_error", new response.Unauthorized())
                 
                 /* 소켓 로직 실행 */
                 let result = await require(__dirname + '/..' + operation.logic)(socket, data)
