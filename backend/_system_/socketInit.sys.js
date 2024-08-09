@@ -28,26 +28,28 @@ module.exports = function(server){
 
     util.socket.io.on('connection', function(socket) {
         /* auth에 토크이 있다면 loginUser로 decode */
-        try{
-            let [ userData, hash ] = socket.handshake.headers.auth.split('.')
-
-            //토큰 유효시간 체크
-            if(setting.token.enableTimeExpire && (new Date() - new Date(userData._tokenCreateAt) > setting.token.expire*1000)){
-                throw "expired token"
+        if(socket.handshake.headers.auth){
+            try{
+                let [ userData, hash ] = socket.handshake.headers.auth.split('.')
+    
+                //토큰 유효시간 체크
+                if(setting.token.enableTimeExpire && (new Date() - new Date(userData._tokenCreateAt) > setting.token.expire*1000)){
+                    throw "expired token"
+                }
+    
+                //유저 정보 무결성 체크
+                if(hash!=util.encrypt.oneWayLite(userData)){
+                    throw "user data modified"
+                }
+    
+                userData = JSON.parse(Buffer.from(userData, 'base64').toString('utf8'))
+    
+                delete userData._tokenCreateAt;
+    
+                socket.loginUser = userData
+            }catch(e){
+                socket.emit("_error", new response.Unauthorized(null, "잘못된 토큰입니다"));
             }
-
-            //유저 정보 무결성 체크
-            if(hash!=util.encrypt.oneWayLite(userData)){
-                throw "user data modified"
-            }
-
-            userData = JSON.parse(Buffer.from(userData, 'base64').toString('utf8'))
-
-            delete userData._tokenCreateAt;
-
-            socket.loginUser = userData
-        }catch(e){
-            socket.emit("_error", new response.Unauthorized(null, "잘못된 토큰입니다"));
         }
         
 
