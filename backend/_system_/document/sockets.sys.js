@@ -118,7 +118,7 @@ module.exports = function(req, res, next){
                 <textarea readonly>${JSON.stringify(new response.Unauthorized(), null, 4)}</textarea>
             </div>`
         }
-        for(let j=0;j<operationSetting[opreationList[i]].responseSchema.length;j++){
+        for(let j=0;j<operationSetting[opreationList[i]].responseSchema?.length;j++){
             responses += `<div>
                 <div class="label">${operationSetting[opreationList[i]].responseSchema[j].name}</div>
                 <textarea readonly>${JSON.stringify(new operationSetting[opreationList[i]].responseSchema[j](), null, 4)}</textarea>
@@ -126,7 +126,7 @@ module.exports = function(req, res, next){
         }
 
         let needAuth = ""
-        if(operationSetting[opreationList[i]].authRequire) needAuth = `<i class="auth-icon fa-solid fa-lock"></i>`
+        if(operationSetting[opreationList[i]].authRequire && operationSetting[opreationList[i]].type=='message') needAuth = `<i class="auth-icon fa-solid fa-lock"></i>`
         html += `
             <div class="operation folded" id="${opreationList[i]}" data-group="${operationSetting[opreationList[i]].group}" data-type="${operationSetting[opreationList[i]].type}" data-operation="${opreationList[i]}">
                 <div class="title">

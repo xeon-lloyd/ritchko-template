@@ -11,14 +11,10 @@ module.exports = {
         description: '유저 상태 설정',
         group: 'user',
         paramSchema: paramSchema.SetUserStatusMessage,
-        responseSchema: [
-            responseSchema.SetUserStatusMessageOK,
-        ]
     },
 
     'UserStatusUpdateEvent': {
         type: 'event',
-        authRequire: false,
 
         //documentation
         description: '유저 상태 업데이트 이벤트',

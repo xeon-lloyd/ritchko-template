@@ -53,10 +53,6 @@ module.exports = {
 
 
     /* // sockets (이름에 Messagek, Event를 포함하여 socket의 응답이란것을 명시) // */
-    'SetUserStatusMessageOK': class SetUserStatusMessageOK extends rootResponse.OK {
-        message = "유저 상태 설정 완료"
-    },
-
     'UserStatusUpdateEvent': class UserStatusUpdateEvent extends rootResponse.OK {
         constructor(data){
             super()
