@@ -142,7 +142,7 @@ module.exports = function(req, res, next){
                 </div>
 
                 <div class="response">
-                    <div class="label">_error</div>
+                    <div class="label">${operationSetting[opreationList[i]].type=='message'?'_error':'Response'}</div>
                     <div class="list">
                         ${responses}
                     </div>
