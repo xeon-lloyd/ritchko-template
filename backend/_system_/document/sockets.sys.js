@@ -142,7 +142,7 @@ module.exports = function(req, res, next){
                 </div>
 
                 <div class="response">
-                    <div class="label">Response</div>
+                    <div class="label">_error</div>
                     <div class="list">
                         ${responses}
                     </div>

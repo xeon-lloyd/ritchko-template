@@ -198,9 +198,6 @@ textarea{
 .container > .operation > .response{
     padding: 1rem;
 }
-.container > .operation[data-type="message"] > .response{
-    display: none;
-}
 
 .container > .operation > .response > .list{
     padding-left: 1rem;

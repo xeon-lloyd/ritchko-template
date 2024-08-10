@@ -11,6 +11,9 @@ module.exports = {
         description: '유저 상태 설정',
         group: 'user',
         paramSchema: paramSchema.SetUserStatusMessage,
+        responseSchema: [
+            
+        ]
     },
 
     'UserStatusUpdateEvent': {
