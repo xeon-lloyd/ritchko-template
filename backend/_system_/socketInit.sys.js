@@ -2,7 +2,7 @@ const response = require('../_response.sys.js');
 const setting = require('../core/setting.js');
 const util = require("../core/util.js");
 
-module.exports = function(server){
+module.exports = async function(server){
     util.socket.io = require('socket.io')(server, {
         path: '/socket',
         transports: ['websocket'],
@@ -20,6 +20,8 @@ module.exports = function(server){
             },
             password: setting.socket.redisAdapter.redis.password,
         });
+        await pubClient.connect();
+
         const subClient = pubClient.duplicate();
 
         util.socket.io.adapter(createAdapter(pubClient, subClient));
