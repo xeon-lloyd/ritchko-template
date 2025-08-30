@@ -518,6 +518,22 @@ Number.prototype.secToTime = function(type){
 	else return `약 ${parseInt(this/(60*60*24*365))}년`;
 }
 
+/* mysql 검색용으로 사용할 UTC 시간 포멧으로 변환 */
+Date.prototype.toSQLDatetime = function() {
+	if (isNaN(this)) throw new Error('Invalid date string');
+  
+	const year = this.getUTCFullYear();
+	const month = this.getUTCMonth() + 1;
+	const day = this.getUTCDate();
+	const hour = this.getUTCHours();
+	const minute = this.getUTCMinutes();
+	const second = this.getUTCSeconds();
+  
+	const pad2 = n => (n < 10 ? '0' + n : n);
+  
+	return `${year}-${pad2(month)}-${pad2(day)} ${pad2(hour)}:${pad2(minute)}:${pad2(second)}`;
+}
+
 /* 숫자를 읽는 숫자로 변경 */
 Number.prototype.toReadFormat = function(){
     if(this<1000) return this;
