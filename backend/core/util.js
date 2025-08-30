@@ -443,6 +443,42 @@ module.exports = {
 		del: async function(key){
 			return await this.client.del(key)
 		},
+
+		incr: async function(key){
+			return await this.client.incr(key)
+		},
+
+		pub: async function(channel, value) {
+			return await this.pubClient.publish(channel, value)
+		},
+
+		sub: async function(channel, func) {
+			return await this.subClient.subscribe(channel, func)
+		},
+
+		queue: async function(queueName, value) {
+			return await this.client.lPush(`sys:queue:${queueName}`, JSON.stringify(value));
+		},
+	
+		consume: async function (queueName, func) {
+			const checkQueue = async () => {
+				try {
+					const message = await this.client.lPop(`sys:queue:${queueName}`);
+		
+					if (message) {
+						await func(JSON.parse(message));
+						checkQueue()
+					} else {
+						setTimeout(checkQueue, 1000);
+					}
+				} catch (err) {
+					console.error('Queue consume error:', err);
+					setTimeout(checkQueue, 1000); // 에러가 나면 1초 후 다시 시도
+				}
+			};
+		
+			checkQueue();
+		},
 	},
 
 	socket: {
