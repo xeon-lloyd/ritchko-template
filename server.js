@@ -8,6 +8,8 @@ const serverInfoPrinter = require('./backend/_system_/serverInfoPrinter.sys.js')
 const setting = require('./backend/core/setting.js');
 const util = require('./backend/core/util.js');
 
+const appCronRegister = require('./backend/worker/registCron.js')
+
 /* 쿠키 사용 설정(F/B) */
 app.use(require('cookie-parser')());
 
@@ -54,6 +56,9 @@ server.listen(setting.port, async function(){
 
     /* s3 초기화 */
     util.s3.setAuth()
+
+    /* cron 등록 */
+    appCronRegister()
 
     serverInfoPrinter();
 })
