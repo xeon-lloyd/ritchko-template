@@ -534,6 +534,36 @@ Date.prototype.toSQLDatetime = function() {
 	return `${year}-${pad2(month)}-${pad2(day)} ${pad2(hour)}:${pad2(minute)}:${pad2(second)}`;
 }
 
+/* 숫자 타입에서 쓸 수 있도록 format() 함수 추가 */
+Number.prototype.format = function(){
+	if(this==0) return 0;
+ 
+	var reg = /(^[+-]?\d+)(\d{3})/;
+	var n = (this + '');
+ 
+	while (reg.test(n)) n = n.replace(reg, '$1' + ',' + '$2');
+ 
+	return n;
+};
+ 
+/* 문자열 타입에서 쓸 수 있도록 format() 함수 추가 */
+String.prototype.format = function(){
+	var num = parseFloat(this);
+	if( isNaN(num) ) return "0";
+ 
+	return num.format();
+};
+
+/* Number(초) 시간 단위로 변환하여 사용할 수 있게 추가 */
+Number.prototype.secToTime = function(type){
+	if(this < 60) return `1분 미만`;
+	if(this < 60*60 || type=='min') return `${parseInt(this/60)}분`;
+	if(this < 60*60*24 || type=='hour') return `약 ${parseInt(this/(60*60))}시간`;
+	if(this < 60*60*24*30.5 || type=='day') return `약 ${parseInt(this/(60*60*24))}일`;
+	if(this < 60*60*24*365 || type=='month') return `약 ${parseInt(this/(60*60*24*30))}달`;
+	else return `약 ${parseInt(this/(60*60*24*365))}년`;
+}
+
 /* 숫자를 읽는 숫자로 변경 */
 Number.prototype.toReadFormat = function(){
     if(this<1000) return this;
