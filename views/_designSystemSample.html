@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>디자인 시스템 색상 팔레트</title>
+    <link rel="stylesheet" href="/css/designSystem/integrate.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg-normal);
+            color: var(--caption-heavy);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--caption-heavy);
+            text-align: center;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin: 2rem 0 1rem 0;
+            color: var(--caption-strong);
+            border-bottom: 2px solid var(--line-neutral);
+            padding-bottom: 0.5rem;
+        }
+        
+        .typo-section {
+            margin-bottom: 3rem;
+        }
+        
+        .typo-item {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .typo-preview {
+            margin-bottom: 0.5rem;
+            color: var(--caption-heavy);
+        }
+        
+        .typo-info {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.8rem;
+            color: var(--caption-neutral);
+            background: var(--bg-system);
+            padding: 0.5rem;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+        }
+        
+        .typo-class {
+            color: var(--primary-normal);
+            font-weight: bold;
+        }
+        
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .color-item {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .color-preview {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .color-info {
+            padding: 1rem;
+            background: white;
+        }
+        
+        .color-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--caption-heavy);
+        }
+        
+        .color-value {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+            color: var(--caption-neutral);
+            background: var(--bg-system);
+            padding: 0.3rem 0.5rem;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        
+        /* Control Components Styles */
+        .control-examples {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .control-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        /* Button Components Styles */
+        .button-examples {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .button-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .button-width-examples {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        /* Input Components Styles */
+        .input-examples {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .input-examples input,
+        .input-examples select,
+        .input-examples textarea {
+            width: 100%;
+            max-width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 디자인 시스템</h1>
+        
+        <!-- Typography Section -->
+        <div class="typo-section">
+            <h2>Typography</h2>
+            
+            <div class="typo-item">
+                <div class="typo-preview font-display1">Display 1 - 가장 큰 제목</div>
+                <div class="typo-info">
+                    <span class="typo-class">.font-display1</span> | font-size: 3rem | line-height: 3.5rem | letter-spacing: -0.02
+                </div>
+            </div>
+            
+            <div class="typo-item">
+                <div class="typo-preview font-display2">Display 2 - 큰 제목</div>
+                <div class="typo-info">
+                    <span class="typo-class">.font-display2</span> | font-size: 2.5rem | line-height: 3rem | letter-spacing: -0.02
+                </div>
+            </div>
+            
+            <div class="typo-item">
+                <div class="typo-preview font-title1">Title 1 - 제목 1</div>
+                <div class="typo-info">
+                    <span class="typo-class">.font-title1</span> | font-size: 2.25rem | line-height: 2.75rem | letter-spacing: -0.02
+                </div>
+            </div>
+            
+            <div class="typo-item">
+                <div class="typo-preview font-title2">Title 2 - 제목 2</div>
+                <div class="typo-info">
+                    <span class="typo-class">.font-title2</span> | font-size: 1.75rem | line-height: 2.25rem | letter-spacing: -0.02
+                </div>
+            </div>
+            
+            <div class="typo-item">
+                <div class="typo-preview font-title3">Title 3 - 제목 3</div>
+                <div class="typo-info">
+                    <span class="typo-class">.font-title3</span> | font-size: 1.5rem | line-height: 2rem | letter-spacing: -0.02
+                </div>
+            </div>
+            
+            <div class="typo-item">
+                <div class="typo-preview font-heading1">Heading 1 - 헤딩 1</div>
+                <div class="typo-info">
+                    <span class="typo-class">.font-heading1</span> | font-size: 1.375rem | line-height: 1.875rem | letter-spacing: -0.02
+                </div>
+            </div>
+            
+            <div class="typo-item">
+                <div class="typo-preview font-heading2">Heading 2 - 헤딩 2</div>
+                <div class="typo-info">
+                    <span class="typo-class">.font-heading2</span> | font-size: 1.25rem | line-height: 1.75rem | letter-spacing: -0.02
+                </div>
+            </div>
+            
+            <div class="typo-item">
+                <div class="typo-preview font-gnb">GNB - 글로벌 네비게이션</div>
+                <div class="typo-info">
+                    <span class="typo-class">.font-gnb</span> | font-size: 1.125rem | line-height: 1.625rem | letter-spacing: -0.02
+                </div>
+            </div>
+            
+            <div class="typo-item">
+                <div class="typo-preview font-body1-normal">Body 1 Normal - 본문 일반</div>
+                <div class="typo-info">
+                    <span class="typo-class">.font-body1-normal</span> | font-size: 1rem | line-height: 1.375rem | letter-spacing: -0.02
+                </div>
+            </div>
+            
+            <div class="typo-item">
+                <div class="typo-preview font-body1-reading">Body 1 Reading - 본문 읽기용</div>
+                <div class="typo-info">
+                    <span class="typo-class">.font-body1-reading</span> | font-size: 1rem | line-height: 1.5rem | letter-spacing: -0.02
+                </div>
+            </div>
+            
+            <div class="typo-item">
+                <div class="typo-preview font-body2-normal">Body 2 Normal - 작은 본문 일반</div>
+                <div class="typo-info">
+                    <span class="typo-class">.font-body2-normal</span> | font-size: 0.875rem | line-height: 1.25rem | letter-spacing: -0.02
+                </div>
+            </div>
+            
+            <div class="typo-item">
+                <div class="typo-preview font-body2-reading">Body 2 Reading - 작은 본문 읽기용</div>
+                <div class="typo-info">
+                    <span class="typo-class">.font-body2-reading</span> | font-size: 0.875rem | line-height: 1.375rem | letter-spacing: -0.02
+                </div>
+            </div>
+            
+            <div class="typo-item">
+                <div class="typo-preview font-label1">Label 1 - 라벨</div>
+                <div class="typo-info">
+                    <span class="typo-class">.font-label1</span> | font-size: 0.75rem | line-height: 1.125rem | letter-spacing: -0.02
+                </div>
+            </div>
+        </div>
+        
+        <!-- Control Components Section -->
+        <div class="typo-section">
+            <h2>Control Components</h2>
+            
+            <!-- Checkbox -->
+            <div class="typo-item">
+                <div class="typo-preview">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <input type="checkbox" id="checkbox1">
+                        <label for="checkbox1">기본 체크박스</label>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <input type="checkbox" id="checkbox2" checked>
+                        <label for="checkbox2">체크된 상태</label>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <input type="checkbox" id="checkbox3" disabled>
+                        <label for="checkbox3">비활성화 상태</label>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <input type="checkbox" id="checkbox4" checked disabled>
+                        <label for="checkbox4">체크된 비활성화 상태</label>
+                    </div>
+                </div>
+                <div class="typo-info">
+                    <span class="typo-class">input[type="checkbox"]</span> | 기본 체크박스 컴포넌트
+                </div>
+            </div>
+            
+            <!-- Radio Button -->
+            <div class="typo-item">
+                <div class="typo-preview">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <input type="radio" id="radio1" name="radioGroup1">
+                        <label for="radio1">옵션 1</label>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <input type="radio" id="radio2" name="radioGroup1" checked>
+                        <label for="radio2">옵션 2 (선택됨)</label>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <input type="radio" id="radio3" name="radioGroup2" disabled>
+                        <label for="radio3">비활성화 옵션</label>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <input type="radio" id="radio4" name="radioGroup2" disabled checked>
+                        <label for="radio4">비활성화 옵션 선택</label>
+                    </div>
+                </div>
+                <div class="typo-info">
+                    <span class="typo-class">input[type="radio"]</span> | 라디오 버튼 컴포넌트
+                </div>
+            </div>
+            
+            <!-- Toggle Switch -->
+            <div class="typo-item">
+                <div class="typo-preview">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <input type="checkbox" id="toggle1" class="toggle">
+                        <label for="toggle1">기본 토글</label>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <input type="checkbox" id="toggle2" class="toggle" checked>
+                        <label for="toggle2">켜진 상태</label>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <input type="checkbox" id="toggle3" class="toggle" disabled>
+                        <label for="toggle3">비활성화 상태</label>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <input type="checkbox" id="toggle4" class="toggle" checked disabled>
+                        <label for="toggle4">켜진 비활성화 상태</label>
+                    </div>
+                </div>
+                <div class="typo-info">
+                    <span class="typo-class">input[type="checkbox"].toggle</span> | 토글 스위치 컴포넌트
+                </div>
+            </div>
+        </div>
+        
+        <!-- Button Components Section -->
+        <div class="typo-section">
+            <h2>Button Components</h2>
+            
+            <!-- Primary Button -->
+            <div class="typo-item">
+                <div class="typo-preview">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                        <button class="btn-solid-primary btn-large">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            Large Primary
+                        </button>
+                        <button class="btn-solid-primary btn-medium">
+                            <i class="fa-solid fa-star"></i>
+                            Medium Primary
+                            <i class="svg" style="--src: url('/img/icon/star.svg');"></i>
+                        </button>
+                        <button class="btn-solid-primary btn-small">
+                            Small Primary
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                        <button class="btn-solid-primary btn-large" disabled>Disabled Large</button>
+                        <button class="btn-solid-primary btn-medium" disabled>Disabled Medium</button>
+                        <button class="btn-solid-primary btn-small" disabled>Disabled Small</button>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn-solid-primary btn-large loading" disabled>Loading Large</button>
+                        <button class="btn-solid-primary btn-medium loading" disabled>Loading Medium</button>
+                        <button class="btn-solid-primary btn-small loading" disabled>Loading Small</button>
+                    </div>
+                </div>
+                <div class="typo-info">
+                    <span class="typo-class">.btn-solid-primary</span> | 기본 버튼 컴포넌트 (Large, Medium, Small 크기 지원)
+                </div>
+            </div>
+
+            <!-- Delete Button -->
+            <div class="typo-item">
+                <div class="typo-preview">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                        <button class="btn-solid-delete btn-large">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            Large delete
+                        </button>
+                        <button class="btn-solid-delete btn-medium">
+                            <i class="svg" style="--src: url('/img/icon/star.svg');"></i>
+                            Medium delete
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                        <button class="btn-solid-delete btn-small">
+                            Small delete
+                            <i class="fa-solid fa-database"></i>
+                        </button>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                        <button class="btn-solid-delete btn-large" disabled>Disabled Large</button>
+                        <button class="btn-solid-delete btn-medium" disabled>Disabled Medium</button>
+                        <button class="btn-solid-delete btn-small" disabled>Disabled Small</button>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn-solid-delete btn-large loading" disabled>Loading Large</button>
+                        <button class="btn-solid-delete btn-medium loading" disabled>Loading Medium</button>
+                        <button class="btn-solid-delete btn-small loading" disabled>Loading Small</button>
+                    </div>
+                </div>
+                <div class="typo-info">
+                    <span class="typo-class">.btn-solid-delete</span> | 삭제 버튼 컴포넌트 (Large, Medium, Small 크기 지원)
+                </div>
+            </div>
+
+            <!-- Outline Primary Button -->
+            <div class="typo-item">
+                <div class="typo-preview">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                        <button class="btn-outline-primary btn-large">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            Large delete
+                        </button>
+                        <button class="btn-outline-primary btn-medium">
+                            <i class="svg" style="--src: url('/img/icon/star.svg');"></i>
+                            Medium delete
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                        <button class="btn-outline-primary btn-small">
+                            Small delete
+                            <i class="fa-solid fa-database"></i>
+                        </button>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                        <button class="btn-outline-primary btn-large" disabled>Disabled Large</button>
+                        <button class="btn-outline-primary btn-medium" disabled>Disabled Medium</button>
+                        <button class="btn-outline-primary btn-small" disabled>Disabled Small</button>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn-outline-primary btn-large loading" disabled>Loading Large</button>
+                        <button class="btn-outline-primary btn-medium loading" disabled>Loading Medium</button>
+                        <button class="btn-outline-primary btn-small loading" disabled>Loading Small</button>
+                    </div>
+                </div>
+                <div class="typo-info">
+                    <span class="typo-class">.btn-outline-primary</span> | 아웃라인 버튼 컴포넌트 (Large, Medium, Small 크기 지원)
+                </div>
+            </div>
+
+            <!-- Outline Secondary Button -->
+            <div class="typo-item">
+                <div class="typo-preview">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                        <button class="btn-outline-secondary btn-large">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            Large delete
+                        </button>
+                        <button class="btn-outline-secondary btn-medium">
+                            <i class="svg" style="--src: url('/img/icon/star.svg');"></i>
+                            Medium delete
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                        <button class="btn-outline-secondary btn-small">
+                            Small delete
+                            <i class="fa-solid fa-database"></i>
+                        </button>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                        <button class="btn-outline-secondary btn-large" disabled>Disabled Large</button>
+                        <button class="btn-outline-secondary btn-medium" disabled>Disabled Medium</button>
+                        <button class="btn-outline-secondary btn-small" disabled>Disabled Small</button>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn-outline-secondary btn-large loading" disabled>Loading Large</button>
+                        <button class="btn-outline-secondary btn-medium loading" disabled>Loading Medium</button>
+                        <button class="btn-outline-secondary btn-small loading" disabled>Loading Small</button>
+                    </div>
+                </div>
+                <div class="typo-info">
+                    <span class="typo-class">.btn-outline-secondary</span> | 아웃라인 버튼 컴포넌트 (Large, Medium, Small 크기 지원)
+                </div>
+            </div>
+
+            <!-- text primary Button -->
+            <div class="typo-item">
+                <div class="typo-preview">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                        <button class="btn-text-primary btn-large">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            Large delete
+                        </button>
+                        <button class="btn-text-primary btn-medium">
+                            <i class="svg" style="--src: url('/img/icon/star.svg');"></i>
+                            Medium delete
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                        <button class="btn-text-primary btn-small">
+                            Small delete
+                            <i class="fa-solid fa-database"></i>
+                        </button>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                        <button class="btn-text-primary btn-large" disabled>Disabled Large</button>
+                        <button class="btn-text-primary btn-medium" disabled>Disabled Medium</button>
+                        <button class="btn-text-primary btn-small" disabled>Disabled Small</button>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn-text-primary btn-large loading" disabled>Loading Large</button>
+                        <button class="btn-text-primary btn-medium loading" disabled>Loading Medium</button>
+                        <button class="btn-text-primary btn-small loading" disabled>Loading Small</button>
+                    </div>
+                </div>
+                <div class="typo-info">
+                    <span class="typo-class">.btn-text-primary</span> | 텍스트 버튼 컴포넌트 (Large, Medium, Small 크기 지원)
+                </div>
+            </div>
+
+            <!-- text secondary Button -->
+            <div class="typo-item">
+                <div class="typo-preview">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                        <button class="btn-text-secondary btn-large">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            Large delete
+                        </button>
+                        <button class="btn-text-secondary btn-medium">
+                            <i class="svg" style="--src: url('/img/icon/star.svg');"></i>
+                            Medium delete
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                        <button class="btn-text-secondary btn-small">
+                            Small delete
+                            <i class="fa-solid fa-database"></i>
+                        </button>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                        <button class="btn-text-secondary btn-large" disabled>Disabled Large</button>
+                        <button class="btn-text-secondary btn-medium" disabled>Disabled Medium</button>
+                        <button class="btn-text-secondary btn-small" disabled>Disabled Small</button>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn-text-secondary btn-large loading" disabled>Loading Large</button>
+                        <button class="btn-text-secondary btn-medium loading" disabled>Loading Medium</button>
+                        <button class="btn-text-secondary btn-small loading" disabled>Loading Small</button>
+                    </div>
+                </div>
+                <div class="typo-info">
+                    <span class="typo-class">.btn-text-secondary</span> | 텍스트 버튼 컴포넌트 (Large, Medium, Small 크기 지원)
+                </div>
+            </div>
+            
+            <!-- Button Width Variants -->
+            <div class="typo-item">
+                <div class="typo-preview">
+                    <div style="margin-bottom: 1rem;">
+                        <button class="btn-solid-primary btn-medium w-hug">Hug Content</button>
+                    </div>
+                    <div>
+                        <button class="btn-solid-primary btn-medium w-fill">Fill Width</button>
+                    </div>
+                </div>
+                <div class="typo-info">
+                    <span class="typo-class">.w-hug</span> | <span class="typo-class">.w-fill</span> | 버튼 너비 조절 클래스
+                </div>
+            </div>
+        </div>
+        
+        <!-- Input Components Section -->
+        <div class="typo-section">
+            <h2>Input Components</h2>
+            
+            <!-- Basic Input Types -->
+            <div class="typo-item">
+                <div class="typo-preview">
+                    <div class="input-examples">
+                        <input type="text" placeholder="input text">
+                        <input type="password" placeholder="input password" autocomplete="new-password">
+                        <input type="email" placeholder="input email" autocomplete="new-password">
+                        <input type="number" placeholder="input number">
+                    </div>
+                </div>
+                <div class="typo-info">
+                    <span class="typo-class">input[type="text|password|email|number"]</span> | 기본 입력 필드 컴포넌트
+                </div>
+            </div>
+            
+            <!-- Input with Icons -->
+            <div class="typo-item">
+                <div class="typo-preview">
+                    <div class="input-examples">
+                        <input type="text" class="left-icon" style="--left-icon-src: url('/img/icon/pen.svg');" placeholder="left icon">
+                        <input type="text" class="right-icon" style="--right-icon-src: url('/img/icon/check.svg');" placeholder="right icon">
+                        <input type="text" class="left-icon right-icon" style="--left-icon-src: url('/img/icon/pencil.svg'); --right-icon-src: url('/img/icon/tags.svg');" placeholder="both icons">
+                    </div>
+                </div>
+                <div class="typo-info">
+                    <span class="typo-class">.left-icon</span> | <span class="typo-class">.right-icon</span> | 아이콘이 있는 입력 필드
+                </div>
+            </div>
+            
+            <!-- Input States -->
+            <div class="typo-item">
+                <div class="typo-preview">
+                    <div class="input-examples">
+                        <input type="text" placeholder="normal state">
+                        <input type="text" placeholder="disabled state" disabled>
+                        <input type="text" placeholder="invalid state" class="invalid">
+                    </div>
+                </div>
+                <div class="typo-info">
+                    <span class="typo-class">:disabled</span> | <span class="typo-class">.invalid</span> | 입력 필드 상태 (비활성화, 유효하지 않음)
+                </div>
+            </div>
+            
+            <!-- Select and Textarea -->
+            <div class="typo-item">
+                <div class="typo-preview">
+                    <div class="input-examples">
+                        <select>
+                            <option value="" disabled selected hidden>선택해주세요</option>
+                            <option value="1">옵션 1</option>
+                            <option value="2">옵션 2</option>
+                            <option value="3">옵션 3</option>
+                        </select>
+                        <textarea placeholder="input textarea"></textarea>
+                    </div>
+                </div>
+                <div class="typo-info">
+                    <span class="typo-class">select</span> | <span class="typo-class">textarea</span> | 선택 박스와 텍스트 영역
+                </div>
+            </div>
+        </div>
+        
+        <!-- Neutral Colors -->
+        <div class="color-section">
+            <h2>Neutral Colors</h2>
+            <div class="color-grid">
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--neutral-0); color: var(--neutral-80);">neutral-0</div>
+                    <div class="color-info">
+                        <div class="color-name">Neutral 0</div>
+                        <div class="color-value">#FFFFFF</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--neutral-10); color: var(--neutral-80);">neutral-10</div>
+                    <div class="color-info">
+                        <div class="color-name">Neutral 50</div>
+                        <div class="color-value">#F7F7F7</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--neutral-20);">neutral-20</div>
+                    <div class="color-info">
+                        <div class="color-name">Neutral 20</div>
+                        <div class="color-value">#C6C6C6</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--neutral-30);">neutral-30</div>
+                    <div class="color-info">
+                        <div class="color-name">Neutral 30</div>
+                        <div class="color-value">#A6A6A6</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--neutral-40);">neutral-40</div>
+                    <div class="color-info">
+                        <div class="color-name">Neutral 40</div>
+                        <div class="color-value">#969696</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--neutral-50);">neutral-50</div>
+                    <div class="color-info">
+                        <div class="color-name">Neutral 50</div>
+                        <div class="color-value">#767676</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--neutral-60);">neutral-60</div>
+                    <div class="color-info">
+                        <div class="color-name">Neutral 60</div>
+                        <div class="color-value">#464646</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--neutral-70);">neutral-70</div>
+                    <div class="color-info">
+                        <div class="color-name">Neutral 70</div>
+                        <div class="color-value">#363636</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--neutral-80);">neutral-80</div>
+                    <div class="color-info">
+                        <div class="color-name">Neutral 80</div>
+                        <div class="color-value">#262626</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--neutral-90);">neutral-90</div>
+                    <div class="color-info">
+                        <div class="color-name">Neutral 90</div>
+                        <div class="color-value">#161616</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--neutral-100);">neutral-100</div>
+                    <div class="color-info">
+                        <div class="color-name">Neutral 100</div>
+                        <div class="color-value">#000000</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tint Colors -->
+        <div class="color-section">
+            <h2>Tint Colors</h2>
+            <div class="color-grid">
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--tint-0); color: var(--neutral-80);">tint-0</div>
+                    <div class="color-info">
+                        <div class="color-name">Tint 0</div>
+                        <div class="color-value">#FEE500</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--tint-10); color: var(--neutral-80);">tint-10</div>
+                    <div class="color-info">
+                        <div class="color-name">Tint 10</div>
+                        <div class="color-value">#FEE81A</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--tint-20); color: var(--neutral-80);">tint-20</div>
+                    <div class="color-info">
+                        <div class="color-name">Tint 20</div>
+                        <div class="color-value">#FEEA33</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--tint-30); color: var(--neutral-80);">tint-30</div>
+                    <div class="color-info">
+                        <div class="color-name">Tint 30</div>
+                        <div class="color-value">#FEED4C</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--tint-40); color: var(--neutral-80);">tint-40</div>
+                    <div class="color-info">
+                        <div class="color-name">Tint 40</div>
+                        <div class="color-value">#FEEF66</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--tint-50); color: var(--neutral-80);">tint-50</div>
+                    <div class="color-info">
+                        <div class="color-name">Tint 50</div>
+                        <div class="color-value">#FEF280</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--tint-60); color: var(--neutral-80);">tint-60</div>
+                    <div class="color-info">
+                        <div class="color-name">Tint 60</div>
+                        <div class="color-value">#FFF599</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--tint-70); color: var(--neutral-80);">tint-70</div>
+                    <div class="color-info">
+                        <div class="color-name">Tint 70</div>
+                        <div class="color-value">#FFF7B2</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--tint-80); color: var(--neutral-80);">tint-80</div>
+                    <div class="color-info">
+                        <div class="color-name">Tint 80</div>
+                        <div class="color-value">#FFFACC</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--tint-90); color: var(--neutral-80);">tint-90</div>
+                    <div class="color-info">
+                        <div class="color-name">Tint 90</div>
+                        <div class="color-value">#FFFCE6</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--tint-100); color: var(--neutral-80);">tint-100</div>
+                    <div class="color-info">
+                        <div class="color-name">Tint 100</div>
+                        <div class="color-value">#FFFFFF</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shade Colors -->
+        <div class="color-section">
+            <h2>Shade Colors</h2>
+            <div class="color-grid">
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--shade-0); color: var(--neutral-80);">shade-0</div>
+                    <div class="color-info">
+                        <div class="color-name">Shade 0</div>
+                        <div class="color-value">#FEE500</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--shade-10); color: white;">shade-10</div>
+                    <div class="color-info">
+                        <div class="color-name">Shade 10</div>
+                        <div class="color-value">#E5CE00</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--shade-20); color: white;">shade-20</div>
+                    <div class="color-info">
+                        <div class="color-name">Shade 20</div>
+                        <div class="color-value">#EBB700</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--shade-30); color: white;">shade-30</div>
+                    <div class="color-info">
+                        <div class="color-name">Shade 30</div>
+                        <div class="color-value">#B2A000</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--shade-40); color: white;">shade-40</div>
+                    <div class="color-info">
+                        <div class="color-name">Shade 40</div>
+                        <div class="color-value">#988900</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--shade-50); color: white;">shade-50</div>
+                    <div class="color-info">
+                        <div class="color-name">Shade 50</div>
+                        <div class="color-value">#7F7200</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--shade-60); color: white;">shade-60</div>
+                    <div class="color-info">
+                        <div class="color-name">Shade 60</div>
+                        <div class="color-value">#665E00</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--shade-70); color: white;">shade-70</div>
+                    <div class="color-info">
+                        <div class="color-name">Shade 70</div>
+                        <div class="color-value">#4C4500</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--shade-80); color: white;">shade-80</div>
+                    <div class="color-info">
+                        <div class="color-name">Shade 80</div>
+                        <div class="color-value">#332E00</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--shade-90); color: white;">shade-90</div>
+                    <div class="color-info">
+                        <div class="color-name">Shade 90</div>
+                        <div class="color-value">#191700</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--shade-100); color: white;">shade-100</div>
+                    <div class="color-info">
+                        <div class="color-name">Shade 100</div>
+                        <div class="color-value">#000000</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Background Colors -->
+        <div class="color-section">
+            <h2>Background Colors</h2>
+            <div class="color-grid">
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--bg-normal); color: var(--caption-heavy);">bg-normal</div>
+                    <div class="color-info">
+                        <div class="color-name">Background Normal</div>
+                        <div class="color-value">#FEFEFF</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--bg-system); color: var(--caption-heavy);">bg-system</div>
+                    <div class="color-info">
+                        <div class="color-name">Background System</div>
+                        <div class="color-value">#F4F5FD</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--bg-dimmed); color: var(--caption-heavy);">bg-dimmed</div>
+                    <div class="color-info">
+                        <div class="color-name">Background Dimmed</div>
+                        <div class="color-value">rgba(192, 192, 192, 0.6)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Primary Colors -->
+        <div class="color-section">
+            <h2>Primary Colors</h2>
+            <div class="color-grid">
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--primary-normal); color: var(--caption-heavy);">primary-normal</div>
+                    <div class="color-info">
+                        <div class="color-name">Primary Normal</div>
+                        <div class="color-value">#FEE500</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--primary-strong); color: var(--caption-heavy);">primary-strong</div>
+                    <div class="color-info">
+                        <div class="color-name">Primary Strong</div>
+                        <div class="color-value">#F4D000</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--primary-heavy); color: white;">primary-heavy</div>
+                    <div class="color-info">
+                        <div class="color-name">Primary Heavy</div>
+                        <div class="color-value">#E5B800</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Caption Colors -->
+        <div class="color-section">
+            <h2>Caption Colors</h2>
+            <div class="color-grid">
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--caption-heavy); color: white;">caption-heavy</div>
+                    <div class="color-info">
+                        <div class="color-name">Caption Heavy</div>
+                        <div class="color-value">#161616</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--caption-strong); color: white;">caption-strong</div>
+                    <div class="color-info">
+                        <div class="color-name">Caption Strong</div>
+                        <div class="color-value">#363636</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--caption-neutral); color: white;">caption-neutral</div>
+                    <div class="color-info">
+                        <div class="color-name">Caption Neutral</div>
+                        <div class="color-value">#565656</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--caption-alternative); color: white;">caption-alternative</div>
+                    <div class="color-info">
+                        <div class="color-name">Caption Alternative</div>
+                        <div class="color-value">#767676</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--caption-assistive); color: white;">caption-assistive</div>
+                    <div class="color-info">
+                        <div class="color-name">Caption Assistive</div>
+                        <div class="color-value">#969696</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--caption-disabled); color: white;">caption-disabled</div>
+                    <div class="color-info">
+                        <div class="color-name">Caption Disabled</div>
+                        <div class="color-value">#BDBDBD</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Line Colors -->
+        <div class="color-section">
+            <h2>Line Colors</h2>
+            <div class="color-grid">
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--line-disabled); color: var(--caption-heavy);">line-disabled</div>
+                    <div class="color-info">
+                        <div class="color-name">Line Disabled</div>
+                        <div class="color-value">#C0C0C0</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--line-alternative); color: var(--caption-heavy);">line-alternative</div>
+                    <div class="color-info">
+                        <div class="color-name">Line Alternative</div>
+                        <div class="color-value">#DADADA</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--line-neutral); color: var(--caption-heavy);">line-neutral</div>
+                    <div class="color-info">
+                        <div class="color-name">Line Neutral</div>
+                        <div class="color-value">#EBEBEB</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Colors -->
+        <div class="color-section">
+            <h2>Error Colors</h2>
+            <div class="color-grid">
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--error-fill); color: var(--caption-heavy);">error-fill</div>
+                    <div class="color-info">
+                        <div class="color-name">Error Fill</div>
+                        <div class="color-value">#FDEBEE</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--error-stroke); color: var(--caption-heavy);">error-stroke</div>
+                    <div class="color-info">
+                        <div class="color-name">Error Stroke</div>
+                        <div class="color-value">rgba(239, 71, 102, 0.6)</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--error-text); color: white;">error-text</div>
+                    <div class="color-info">
+                        <div class="color-name">Error Text</div>
+                        <div class="color-value">#FB4F4F</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- State Colors -->
+        <div class="color-section">
+            <h2>State Colors</h2>
+            <div class="color-grid">
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--state-success); color: white;">state-success</div>
+                    <div class="color-info">
+                        <div class="color-name">State Success</div>
+                        <div class="color-value">#59BD83</div>
+                    </div>
+                </div>
+                <div class="color-item">
+                    <div class="color-preview" style="background-color: var(--state-fail); color: white;">state-fail</div>
+                    <div class="color-info">
+                        <div class="color-name">State Fail</div>
+                        <div class="color-value">#BD5959</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Alert Examples -->
+        <div class="typo-section">
+            <h2>Alert Examples</h2>
+
+            <div class="typo-item">
+                <h3>다양한 Alert 메시지</h3>
+                <p>다양한 종류의 alert 메시지를 테스트해보세요.</p>
+                <button onclick="alert('성공! 작업이 완료되었습니다.', true)" class="btn-solid-primary btn-medium">
+                    성공 Alert
+                </button>
+                
+                <button onclick="alert('이것은 여러줄의 메시지를 포함한 Alert입니다.<br>이것은 두 번째 줄입니다.<br>이것은 세 번째 줄입니다.', true)" class="btn-solid-primary btn-medium">
+                    다중라인 메시지 Alert
+                </button>
+                
+                <button onclick="alert('오류! 서버에 연결할 수 없습니다.', false)" 
+                        class="btn-solid-delete btn-medium">
+                    오류 Alert
+                </button>
+            </div>
+        </div>
+
+        <!-- Modal Examples -->
+        <div class="typo-section">
+            <h2>Modal Examples</h2>
+
+            <div class="typo-item">
+                <button onclick="showModal()" class="btn-solid-primary btn-medium">
+                    모달 표시
+                </button>
+            </div>
+        </div>
+
+        <div id="modals">
+            <div id="testModal">
+                <div id="title">
+                    <div id="mainTitle">모달 타이틀</div>
+                    <div id="subtitle">모달 서브타이틀</div>
+                </div>
+                <div id="content">
+                    모달 컨텐츠<br>
+                    여러줄도 가능<br>
+                    <br>
+                    <img src="/img/logo.png" style="height: 2rem;"><br>
+                    이미지도 됨
+                </div>
+                <div id="action">
+                    <button class="btn-solid-primary btn-medium" onclick="hideModal()">확인</button>
+                    <button class="btn-outline-primary btn-medium" onclick="hideModal()">취소</button>
+                </div>
+            </div>
+        </div>
+            
+    </div>
+
+
+    <!-- default elements -->
+    <div id="alertArea"></div>
+    <div id="dimmedCover"></div>
+
+    <script src="/js/core.js"></script>
+
+
+    <script>
+        function showModal(){
+            dimmedCover.display();
+            document.querySelector('#modals > div#testModal').classList.add('display');
+        }
+
+        function hideModal(){
+            dimmedCover.hide();
+            document.querySelector('#modals > div#testModal').classList.remove('display');
+        }
+    </script>
+
+</body>
+</html>

@@ -1,101 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-*{
-    font-family: 'Roboto', sans-serif;
-}
-
-:root {
-	font-variant-ligatures: none;
-}
-
-
-/* 커스텀 스크롤바 */
-*::-webkit-scrollbar{
-	width: 7px;
-}
-*::-webkit-scrollbar-track{
-	background: none;
-}
-*::-webkit-scrollbar-thumb{
-	background: #555652;
-	border-radius: 4px;
-}
-
-
 .display{
     display: block !important;
 }
 
-
-/* 로딩 애니메이션 키프레임 */
-@keyframes loading{
-	0%{ opacity: 1; }
-	50%{ opacity: 0.2; }
-	100%{ opacity: 1; }
-}
-
-
-/* 체크박스를 토글 버튼으로 */
-.toggleSwitch[type="checkbox"] {
-	appearance: none;
-	position: relative;
-    cursor: pointer;
-	border: max(2px, 0.1em) solid gray;
-	border-radius: 1.25em;
-	height: 1.25em;
-    width: 2.25em;
-    display: inline-block;
-
-    opacity: 1;
-    margin-right: 0;
-    float: none;
-    z-index: auto;
-}
-  
-.toggleSwitch[type="checkbox"]::before {
-	content: "";
-	position: absolute;
-	left: 0;
-	width: 1em;
-	height: 1em;
-	border-radius: 50%;
-	transform: scale(0.8);
-	background-color: gray;
-	transition: left 250ms linear;
-}
-  
-.toggleSwitch[type="checkbox"]:checked {
-	background-color: rgb(185, 134, 247);
-	border-color: rgb(185, 134, 247);
-}
-  
-.toggleSwitch[type="checkbox"]:checked::before {
-	background-color: white;
-	left: 1em;
-}
-  
-.toggleSwitch[type="checkbox"]:disabled {
-	border-color: lightgray;
-	opacity: 0.7;
-	cursor: not-allowed;
-}
-  
-.toggleSwitch[type="checkbox"]:disabled:before {
-	background-color: lightgray;
-}
-  
-.toggleSwitch[type="checkbox"]:disabled + span {
-	opacity: 0.7;
-	cursor: not-allowed;
-}
-  
-.toggleSwitch[type="checkbox"]:focus-visible {
-	outline-offset: max(2px, 0.1em);
-	outline: max(2px, 0.1em) solid tomato;
-}
-  
-.toggleSwitch[type="checkbox"]:enabled:hover {
-	box-shadow: 0 0 0 max(2px, 0.1em) lightgray;
-}
 
 
 /* /// alert 관련 CSS /// */
@@ -176,7 +82,6 @@ main{
 
 
 input[type="text"],
-input[type="number"],
 input[type="password"],
 input[type="email"],
 input[type="tel"],
@@ -196,7 +101,6 @@ textarea {
 }
 
 input[type="text"]:invalid,
-input[type="number"]:invalid,
 input[type="password"]:invalid,
 input[type="email"]:invalid,
 input[type="tel"]:invalid,
@@ -206,7 +110,6 @@ textarea:invalid {
 }
 
 input[type="text"]:focus,
-input[type="number"]:focus,
 input[type="password"]:focus,
 input[type="email"]:focus,
 input[type="tel"]:focus,
@@ -239,7 +142,6 @@ select::-ms-expand {
 }
 
 input[type="text"],
-input[type="number"],
 input[type="password"],
 input[type="email"],
 select {

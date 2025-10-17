@@ -20,6 +20,37 @@
 }
 
 
+#header > #beta-icon{
+	display: inline-block;
+	background-color: #CC5a5a;
+	color: #FFFFFF;
+	font-size: 0.57rem;
+	padding: 0.15rem 0.37rem;
+	border-radius: 0.5rem;
+	position: relative;
+	top: -0.7rem;
+	font-style: italic;
+	user-select: none;
+	cursor: default;
+}
+
+
+#header > #createAccount{
+	padding: .2rem .7rem .3rem;
+    display: inline-block;
+    color: #805ad5;
+    font-weight: 700;
+    cursor: pointer;
+	float: right;
+	font-size: 0.77rem;
+	margin: 0.6rem 1rem 0 0;
+	display: none;
+}
+#header > #createAccount:hover{
+	color: #4d367f;
+	text-decoration: underline;
+}
+
 #header > #login{
 	padding: .2rem .7rem .3rem;
     display: inline-block;
@@ -60,6 +91,10 @@
 	object-fit: cover;
 	border: #333333 0.1rem solid;
 	display: none;
+	background: url('/img/userDefaultImg.png');
+	background-size: 2.7rem 2.7rem;
+	background-position: center center;
+	background-repeat: no-repeat;
 }
 #header > #profile:hover{
 	opacity: 1;
@@ -132,6 +167,10 @@
 
 	#header > #profile{
 		margin: 0.35rem 0.7rem 0 0;
+	}
+
+	#header > #createAccount{
+		margin: 0.6rem 0.1rem 0 0;
 	}
 
 	#header > #login{

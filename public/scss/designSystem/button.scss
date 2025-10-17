@@ -1,0 +1,283 @@
+@use "typo";
+@use "animation";
+
+/* button-default */
+@mixin button-default {
+    font-weight: bold;
+    text-align: center;
+    border-radius: 0.75rem;
+    padding: 0.9375rem 1.75rem;
+    margin: 0.25rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+@mixin button-default-fa-icon {
+    margin: 0 0.25rem;
+}
+
+@mixin button-default-svg-icon {
+    margin: 0 0.25rem;
+    width: 1.2em;
+    height: 1.2em;
+    background-color: currentColor;
+    mask-image: var(--src);
+    mask: var(--src) no-repeat center / contain;
+    -webkit-mask: var(--src) no-repeat center / contain;
+}
+
+
+/* button-solid-primary */
+.btn-solid-primary {
+    background-color: var(--primary-normal);
+    color: var(--neutral-100);
+    @include typo.body1-normal;
+    border: none;
+    @include button-default;
+}
+
+.btn-solid-primary:hover {
+    background-color: var(--primary-strong);
+}
+
+.btn-solid-primary:active {
+    background-color: var(--primary-strong);
+}
+
+.btn-solid-primary:disabled {
+    background-color: var(--tint-70);
+    color: var(--caption-disabled);
+    cursor: not-allowed;
+}
+
+.btn-solid-primary.loading::after {
+    @include animation.loading;
+}
+
+.btn-solid-primary > i {
+    @include button-default-fa-icon;
+}
+
+.btn-solid-primary > i.svg {
+    @include button-default-svg-icon;
+}
+
+
+/* button-solid-delete */
+.btn-solid-delete {
+    background-color: var(--error-fill);
+    color: var(--error-text);
+    @include typo.body2-normal;
+    border: 1px solid var(--error-stroke);
+    @include button-default;
+}
+
+.btn-solid-delete:hover {
+    background-color: var(--bg-normal);
+}
+
+.btn-solid-delete:active {
+    background-color: var(--bg-normal);
+}
+
+.btn-solid-delete:disabled {
+    opacity: 0.43;
+    background-color: var(--error-fill);
+    cursor: not-allowed;
+}
+
+.btn-solid-delete.loading::after {
+    @include animation.loading;
+}
+
+.btn-solid-delete > i {
+    @include button-default-fa-icon;
+}
+
+.btn-solid-delete > i.svg {
+    @include button-default-svg-icon;
+}
+
+
+/* button-outline-primary */
+.btn-outline-primary {
+    background-color: var(--neutral-100);
+    color: var(--primary-normal);
+    @include typo.body1-normal;
+    border: 1px solid var(--primary-normal);
+    @include button-default;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--tint-90);
+}
+
+.btn-outline-primary:active {
+    background-color: var(--tint-70);
+}
+
+.btn-outline-primary:disabled {
+    opacity: 0.43;
+    background-color: var(--neutral-100);
+    border-color: var(--line-disabled);
+    color: var(--caption-disabled);
+    cursor: not-allowed;
+}
+
+.btn-outline-primary.loading::after {
+    @include animation.loading;
+}
+
+.btn-outline-primary > i {
+    @include button-default-fa-icon;
+}
+
+.btn-outline-primary > i.svg {
+    @include button-default-svg-icon;
+}
+
+
+/* button-outline-secondary */
+.btn-outline-secondary {
+    background-color: var(--bg-normal);
+    color: var(--caption-heavy);
+    @include typo.body1-normal;
+    border: 1px solid var(--line-neutral);
+    @include button-default;
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--neutral-90);
+}
+
+.btn-outline-secondary:active {
+    background-color: var(--neutral-80);
+}
+
+.btn-outline-secondary:disabled {
+    opacity: 0.43;
+    background-color: var(--neutral-100);
+    border-color: var(--line-disabled);
+    color: var(--caption-disabled);
+    cursor: not-allowed;
+}
+
+.btn-outline-secondary.loading::after {
+    @include animation.loading;
+}
+
+.btn-outline-secondary > i {
+    @include button-default-fa-icon;
+}
+
+.btn-outline-secondary > i.svg {
+    @include button-default-svg-icon;
+}
+
+
+/* button-text-primary */
+.btn-text-primary {
+    background: none;
+    color: var(--primary-normal);
+    @include typo.body1-normal;
+    border: none;
+    @include button-default;
+}
+
+.btn-text-primary:hover {
+    background-color: var(--tint-90);
+}
+
+.btn-text-primary:active {
+    background-color: var(--tint-90);
+}
+
+.btn-text-primary:disabled {
+    background: none;
+    color: var(--caption-disabled);
+    cursor: not-allowed;
+}
+
+.btn-text-primary.loading::after {
+    @include animation.loading;
+}
+
+.btn-text-primary > i {
+    @include button-default-fa-icon;
+}
+
+.btn-text-primary > i.svg {
+    @include button-default-svg-icon;
+}
+
+
+/* button-text-secondary */
+.btn-text-secondary {
+    background: none;
+    color: var(--caption-neutral);
+    @include typo.body1-normal;
+    border: none;
+    @include button-default;
+    font-weight: normal;
+}
+
+.btn-text-secondary:hover {
+    background-color: var(--neutral-90);
+}
+
+.btn-text-secondary:active {
+    background-color: var(--neutral-80);
+}
+
+.btn-text-secondary:disabled {
+    background: none;
+    color: var(--caption-disabled);
+    cursor: not-allowed;
+}
+
+.btn-text-secondary.loading::after {
+    @include animation.loading;
+}
+
+.btn-text-secondary > i {
+    @include button-default-fa-icon;
+}
+
+.btn-text-secondary > i.svg {
+    @include button-default-svg-icon;
+}
+
+
+
+/* fixer */
+/* width-fixer */
+.w-hug {
+    display: inline-block;
+}
+
+.w-fill {
+    display: block;
+    width: 100%;
+}
+
+/* size-fixer */
+.btn-large {
+    @include typo.body1-normal;
+    border-radius: 0.75rem;
+    padding: 0.9375rem 1.75rem;
+}
+
+.btn-medium {
+    @include typo.body2-normal;
+    border-radius: 0.75rem;
+    padding: 0.75rem 1.375rem;
+}
+
+.btn-small {
+    @include typo.body2-normal;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.875rem;
+}

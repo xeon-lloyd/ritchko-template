@@ -1,0 +1,34 @@
+/* display toggle용 스타일 */
+.display{
+    display: block !important;
+}
+
+
+/* /// alert 관련 CSS /// */
+/* alert 전체 프레임 */
+#alertArea {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	z-index: 22;
+}
+
+#alertArea > div {
+	margin: 70px 10px -60px 10px;
+	padding: 5px 12px;
+	overflow: hidden;
+	text-align: center;
+	border-radius: 5px;
+	color: var(--neutral-100);
+	/*display: flex;*/
+	display: table;
+	align-items: center;
+	transition: 0.2s ease;
+	user-select: none;
+}
+#alertArea > div.success {
+	background: var(--state-success);
+}
+#alertArea > div.error {
+	background: var(--state-fail);
+}

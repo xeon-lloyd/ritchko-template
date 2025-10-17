@@ -1,0 +1,111 @@
+@use "typo";
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+input[type="search"],
+input[type="number"],
+select,
+textarea {
+    appearance: none;
+    background-color: var(--neutral-100);
+    border: var(--line-neutral) 2px solid;
+    border-radius: 0.75rem;
+    color: var(--caption-strong);
+    @include typo.body2-normal;
+    font-weight: normal;
+    display: block;
+    outline: 0;
+    padding: 0.75rem 1.25rem;
+    text-decoration: none;
+    box-sizing: border-box;
+
+    // right icon (default: 영역에 영향 없음. 기본적용)
+    background-image: var(--right-icon-src, none);
+    background-repeat: no-repeat;
+    background-position: calc(100% - 1.25rem) 0.75rem;
+    background-size: 1rem;
+
+    resize: none; //textarea
+    width: 300px; // default width
+}
+
+input[type="text"]:placeholder-shown,
+input[type="password"]:placeholder-shown,
+input[type="email"]:placeholder-shown,
+input[type="tel"]:placeholder-shown,
+input[type="url"]:placeholder-shown,
+input[type="search"]:placeholder-shown,
+input[type="number"]:placeholder-shown,
+textarea:placeholder-shown {
+    background-color: var(--neutral-100);
+    color: var(--caption-assistive);
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--primary-normal);
+}
+
+input[type="text"]:disabled,
+input[type="password"]:disabled,
+input[type="email"]:disabled,
+input[type="tel"]:disabled,
+input[type="url"]:disabled,
+input[type="search"]:disabled,
+input[type="number"]:disabled,
+select:disabled,
+textarea:disabled {
+    background-color: var(--neutral-90);
+    color: var(--caption-disabled);
+    cursor: not-allowed;
+}
+
+input[type="text"].invalid,
+input[type="password"].invalid,
+input[type="email"].invalid,
+input[type="tel"].invalid,
+input[type="url"].invalid,
+input[type="search"].invalid,
+input[type="number"].invalid,
+select.invalid,
+textarea.invalid {
+    border-color: var(--error-stroke);
+}
+
+/* icon */
+input[type="text"].left-icon,
+input[type="password"].left-icon,
+input[type="email"].left-icon,
+input[type="tel"].left-icon,
+input[type="url"].left-icon,
+input[type="search"].left-icon,
+input[type="number"].left-icon,
+select.left-icon,
+textarea.left-icon {
+    padding-left: 2.625rem;
+    background-repeat: no-repeat, no-repeat;
+    background-image: var(--left-icon-src, none), var(--right-icon-src, none);
+    background-position: 1.25rem 0.75rem, calc(100% - 1.25rem) 0.75rem;
+}
+
+input[type="text"].right-icon,
+input[type="password"].right-icon,
+input[type="email"].right-icon,
+input[type="tel"].right-icon,
+input[type="url"].right-icon,
+input[type="search"].right-icon,
+input[type="number"].right-icon,
+select.right-icon,
+textarea.right-icon {
+    padding-right: 2.625rem;
+}

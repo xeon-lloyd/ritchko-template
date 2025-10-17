@@ -1,0 +1,145 @@
+/* color */
+$neutral-0: #000000;
+$neutral-10: #161616;
+$neutral-20: #262626;
+$neutral-30: #363636;
+$neutral-40: #464646;
+$neutral-50: #767676;
+$neutral-60: #969696;
+$neutral-70: #A6A6A6;
+$neutral-80: #C6C6C6;
+$neutral-90: #F7F7F7;
+$neutral-100: #FFFFFF;
+
+/* tint */
+$tint-0: #6366F1;
+$tint-10: #818CF8;
+$tint-20: #A5B4FC;
+$tint-30: #C7D2FE;
+$tint-40: #DBEAFE;
+$tint-50: #E0E7FF;
+$tint-60: #EEF2FF;
+$tint-70: #F0F4FF;
+$tint-80: #F8FAFC;
+$tint-90: #FCFCFD;
+$tint-100: #FFFFFF;
+
+/* shades */
+$shade-0: #6366F1;
+$shade-10: #4F46E5;
+$shade-20: #4338CA;
+$shade-30: #3730A3;
+$shade-40: #312E81;
+$shade-50: #1E1B4B;
+$shade-60: #1E1B4B;
+$shade-70: #312E81;
+$shade-80: #3730A3;
+$shade-90: #4338CA;
+$shade-100: #000000;
+
+/* background */
+$bg-normal: #FEFEFF;
+$bg-system: #F4F5FD;
+$bg-dimmed: #C0C0C099;
+
+/* primary */
+$primary-normal: #6366F1;
+$primary-strong: #4F46E5;
+$primary-heavy: #4338CA;
+
+/* caption */
+$caption-heavy: #161616;
+$caption-strong: #363636;
+$caption-neutral: #565656;
+$caption-alternative: #767676;
+$caption-assistive: #969696;
+$caption-disabled: #BDBDBD;
+
+/* line */
+$line-disabled: #C0C0C0;
+$line-alternative: #DADADA;
+$line-neutral: #EBEBEB;
+
+/* error */
+$error-fill: #FDEBEE;
+$error-stroke: #EF476699;
+$error-text: #FB4F4F;
+
+/* state */
+$state-fail: #BD5959;
+$state-success: #59BD83;
+
+
+/* color(css-variable) */
+:root {
+    /* neutral */
+    --neutral-0: #{$neutral-0};
+    --neutral-10: #{$neutral-10};
+    --neutral-20: #{$neutral-20};
+    --neutral-30: #{$neutral-30};
+    --neutral-40: #{$neutral-40};
+    --neutral-50: #{$neutral-50};
+    --neutral-60: #{$neutral-60};
+    --neutral-70: #{$neutral-70};
+    --neutral-80: #{$neutral-80};
+    --neutral-90: #{$neutral-90};
+    --neutral-100: #{$neutral-100};
+
+    /* tint */
+    --tint-0: #{$tint-0};
+    --tint-10: #{$tint-10};
+    --tint-20: #{$tint-20};
+    --tint-30: #{$tint-30};
+    --tint-40: #{$tint-40};
+    --tint-50: #{$tint-50};
+    --tint-60: #{$tint-60};
+    --tint-70: #{$tint-70};
+    --tint-80: #{$tint-80};
+    --tint-90: #{$tint-90};
+    --tint-100: #{$tint-100};
+
+    /* shades */
+    --shade-0: #{$shade-0};
+    --shade-10: #{$shade-10};
+    --shade-20: #{$shade-20};
+    --shade-30: #{$shade-30};
+    --shade-40: #{$shade-40};
+    --shade-50: #{$shade-50};
+    --shade-60: #{$shade-60};
+    --shade-70: #{$shade-70};
+    --shade-80: #{$shade-80};
+    --shade-90: #{$shade-90};
+    --shade-100: #{$shade-100};
+
+    /* background */
+    --bg-normal: #{$bg-normal};
+    --bg-system: #{$bg-system};
+    --bg-dimmed: #{$bg-dimmed};
+
+    /* primary */
+    --primary-normal: #{$primary-normal};
+    --primary-strong: #{$primary-strong};
+    --primary-heavy: #{$primary-heavy};
+
+    /* caption */
+    --caption-heavy: #{$caption-heavy};
+    --caption-strong: #{$caption-strong};
+    --caption-neutral: #{$caption-neutral};
+    --caption-alternative: #{$caption-alternative};
+    --caption-assistive: #{$caption-assistive};
+    --caption-disabled: #{$caption-disabled};
+
+    /* line */
+    --line-disabled: #{$line-disabled};
+    --line-alternative: #{$line-alternative};
+    --line-neutral: #{$line-neutral};
+
+    /* error */
+    --error-fill: #{$error-fill};
+    --error-stroke: #{$error-stroke};
+    --error-text: #{$error-text};
+
+    /* state */
+    --state-fail: #{$state-fail};
+    --state-success: #{$state-success};
+}

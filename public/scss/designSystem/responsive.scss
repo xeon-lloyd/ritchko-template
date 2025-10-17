@@ -1,0 +1,68 @@
+@use "sass:map";
+
+/* Responsive Design System */
+
+/* Breakpoints */
+$breakpoints: (
+  mobile: 320px,
+  mobile-large: 480px,
+  tablet: 768px,
+  tablet-large: 1024px,
+  desktop: 1200px,
+  desktop-large: 1440px,
+  desktop-xl: 1920px
+);
+
+/* Root Font Sizes for each breakpoint */
+$root-font-sizes: (
+  mobile: 14px,        // 0.875rem (14/16)
+  mobile-large: 15px,   // 0.9375rem (15/16)
+  tablet: 16px,         // 1rem (16/16) - 기본값
+  tablet-large: 16px,  // 1rem (16/16)
+  desktop: 16px,        // 1rem (16/16)
+  desktop-large: 18px,  // 1.125rem (18/16)
+  desktop-xl: 18px      // 1.125rem (18/16)
+);
+
+/* Mixin for responsive root font size */
+@mixin responsive-root-font-size {  
+  // Desktop
+  @media screen and (max-width: map.get($breakpoints, desktop-xl)) {
+    font-size: map.get($root-font-sizes, desktop-xl);
+  }
+
+  // Desktop Large (1440px+)
+  @media screen and (max-width: map.get($breakpoints, desktop-large)) {
+    font-size: map.get($root-font-sizes, desktop-large);
+  }
+
+  // Desktop (1200px+)
+  @media screen and (max-width: map.get($breakpoints, desktop)) {
+    font-size: map.get($root-font-sizes, desktop);
+  }
+
+  // Tablet Large (1024px+)
+  @media screen and (max-width: map.get($breakpoints, tablet-large)) {
+    font-size: map.get($root-font-sizes, tablet-large);
+  }
+
+  // Tablet (768px+)
+  @media screen and (max-width: map.get($breakpoints, tablet)) {
+    font-size: map.get($root-font-sizes, tablet);
+  }
+
+  // Mobile Large (480px+)
+  @media screen and (max-width: map.get($breakpoints, mobile-large)) {
+    font-size: map.get($root-font-sizes, mobile-large);
+  }
+
+  // Mobile (320px+)
+  @media screen and (max-width: map.get($breakpoints, mobile)) {
+    font-size: map.get($root-font-sizes, mobile);
+  }
+}
+
+/* Apply responsive root font size to html element */
+:root {
+  @include responsive-root-font-size;
+}

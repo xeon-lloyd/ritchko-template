@@ -1,0 +1,57 @@
+@use "typo";
+
+#dimmedCover {
+	width: 100vw;
+	height: 100vh;
+	background-color: var(--bg-dimmed);
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 20;
+	display: none;
+}
+
+
+/* modal 관련 */
+#modals > div{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 15rem;
+    max-width: calc(100vw - 3.5rem);
+    max-height: calc(96vh - 3.5rem);
+    transform: translate(-50%, -50%);
+    border-radius: 2rem;
+    background-color: #FFFFFF;
+    z-index: 21;
+    padding: 2em 1.5rem;
+    overflow-y: auto;
+    cursor: default;
+    display: none;
+}
+
+#modals > div > #title{
+    margin-bottom: 1rem;
+}
+
+#modals > div > #title > #mainTitle{
+    @include typo.body1-normal;
+    font-weight: bold;
+}
+
+#modals > div > #title > #subtitle{
+    @include typo.label1;
+    color: var(--caption-assistive);
+}
+
+#modals > div > #content{
+    @include typo.body2-normal;
+    font-weight: normal;
+    color: var(--caption-neutral);
+}
+
+#modals > div > #action{
+    display: flex;
+    margin-top: 1rem;
+    justify-content: center;
+}

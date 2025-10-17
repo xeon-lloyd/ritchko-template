@@ -1,0 +1,18 @@
+@use "typo";
+
+main {
+	min-height: 80vh;
+	@include typo.body1-normal;
+}
+
+.container {
+	padding: 1.75rem;
+}
+.container.center {
+    max-width: 1460px;
+    margin: 0 auto;
+}
+
+.container > #title {
+	@include typo.title3;
+}

@@ -1,0 +1,124 @@
+main > #signUp{
+    max-width: min(22rem, calc(100% - 2.2rem));
+    margin: 20vh auto;
+    overflow: hidden;
+    cursor: default;
+}
+
+main > #signUp > #title{
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 0.17rem;
+}
+
+main > #signUp > #inputArea{
+    overflow: hidden;
+}
+
+main > #signUp > #inputArea > input{
+    margin-top: 0.88rem;
+}
+main > #signUp > #inputArea > input#re-pw{
+    margin-top: 0.3rem;
+}
+main > #signUp > #inputArea > input.error{
+    border: 2px solid #F36157;
+    box-sizing: border-box;
+}
+
+main > #signUp > #inputArea > #description{
+    font-size: 0.67rem;
+    margin-left: 0.15rem;
+    margin-top: 0.15rem;
+    color: #5f5f7f;
+}
+main > #signUp > #inputArea > #description.type{
+    font-size: 0.9rem;
+    margin-top: 1.5rem;
+    color: #585858;
+}
+
+main > #signUp > #inputArea > #type{
+    display: flex;
+    justify-content: space-around;
+}
+main > #signUp > #inputArea > #type.error{
+    border: 2px solid #F36157;
+    box-sizing: border-box;
+}
+
+main > #signUp > #inputArea > #type > div{
+    margin-top: 0.5rem;
+}
+
+main > #signUp > #inputArea > #type > div > input{
+    cursor: pointer;
+}
+
+main > #signUp > #inputArea > #type > div > label{
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+main > #signUp > #inputArea > #type > div > #description{
+    font-size: 0.77rem;
+    padding-left: 0.5rem;
+}
+
+main > #signUp > #inputArea > #type > div > #description > span{
+    font-weight: bold;
+    color: #3355ff;
+}
+
+main > #signUp > #inputArea > #agree{
+    margin-top: 2rem;
+    cursor: pointer;
+}
+
+main > #signUp > #inputArea > #agreeDescription{
+    font-size: 0.9rem;
+}
+
+main > #signUp > #inputArea > #agreeDescription > a{
+    color: #7799ff;
+}
+main > #signUp > #inputArea > #agreeDescription > a:hover{
+    color: #3355ff;
+    text-decoration: underline;
+}
+
+
+main > #signUp > #signUpButton{
+    float: right;
+    padding: .2rem .7rem .35rem;
+    display: inline-block;
+    background-color: #fff;
+    color: #5f5f5f;
+    border-radius: .4rem;
+    border: 2px solid;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-top: 1.7rem;
+}
+main > #signUp > #signUpButton:hover{
+    color: #fff;
+    background-color: #5f5f5f;
+}
+
+
+main > #signUp > #actions{
+    clear: both;
+    margin-top: 3rem;
+}
+
+main > #signUp > #actions > #signUp{
+    font-size: 0.8rem;
+}
+main > #signUp > #actions > #signUp > a{
+    margin-left: 0.55rem;
+    color: #5599ff;
+}
+main > #signUp > #actions > #signUp > a:hover{
+    color: #3355ff;
+}

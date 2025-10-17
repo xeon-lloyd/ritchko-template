@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+*{
+    font-family: 'Roboto', sans-serif;
+}
+
+:root {
+    font-size: 18px;// 16px;
+}
+
+@mixin display1 {
+    font-size: 3rem;
+    line-height: 3.5rem;
+    letter-spacing: -0.02em;
+}
+.font-display1 {
+    @include display1;
+}
+
+@mixin display2 {
+    font-size: 2.5rem;
+    line-height: 3rem;
+    letter-spacing: -0.02em;
+}
+.font-display2 {
+    @include display2;
+}
+
+@mixin title1 {
+    font-size: 2.25rem;
+    line-height: 2.75rem;
+    letter-spacing: -0.02em;
+}
+.font-title1 {
+    @include title1;
+}
+
+@mixin title2 {
+    font-size: 1.75rem;
+    line-height: 2.25rem;
+    letter-spacing: -0.02em;
+}
+.font-title2 {
+    @include title2;
+}
+
+@mixin title3 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    letter-spacing: -0.02em;
+}
+.font-title3 {
+    @include title3;
+}
+
+@mixin heading1 {
+    font-size: 1.375rem;
+    line-height: 1.875rem;
+    letter-spacing: -0.02em;
+}
+.font-heading1 {
+    @include heading1;
+}
+
+@mixin heading2 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    letter-spacing: -0.02em;
+}
+.font-heading2 {
+    @include heading2;
+}
+
+@mixin gnb {
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+    letter-spacing: -0.02em;
+}
+.font-gnb {
+    @include gnb;
+}
+
+@mixin body1-normal {
+    font-size: 1rem;
+    line-height: 1.375rem;
+    letter-spacing: -0.02em;
+}
+.font-body1-normal {
+    @include body1-normal;
+}
+
+@mixin body1-reading {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    letter-spacing: -0.02em;
+}
+.font-body1-reading {
+    @include body1-reading;
+}
+
+@mixin body2-normal {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    letter-spacing: -0.02em;
+}
+.font-body2-normal {
+    @include body2-normal;
+}
+
+@mixin body2-reading {
+    font-size: 0.875rem;
+    line-height: 1.375rem;
+    letter-spacing: -0.02em;
+}
+.font-body2-reading {
+    @include body2-reading;
+}
+
+@mixin label1 {
+    font-size: 0.75rem;
+    line-height: 1.125rem;
+    letter-spacing: -0.02em;
+}
+.font-label1 {
+    @include label1;
+}

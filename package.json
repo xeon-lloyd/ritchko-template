@@ -4,8 +4,10 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start:dev": "concurrently \"npm:watch:css\" \"nodemon server.js\"",
+    "build": "npm run build:css",
+    "build:css": "sass public/scss:public/css --style=compressed",
+    "watch:css": "sass --watch public/scss:public/css"
   },
   "author": "",
   "license": "ISC",
@@ -17,9 +19,12 @@
     "ejs": "^3.1.9",
     "express": "^4.18.3",
     "mysql2": "^3.9.2",
-    "node-cron": "^4.2.1",
+    "node-cron": "^3.0.3",
     "nodemailer": "^6.9.11",
-    "redis": "^4.7.0",
-    "socket.io": "^4.7.5"
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "sass": "^1.93.2"
   }
 }

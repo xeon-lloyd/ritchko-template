@@ -116,19 +116,16 @@ function alert(content, success){
 }
 
 
-/* cover 관련 */
-const cover = {
+/* dimmedCover 관련 */
+const dimmedCover = {
 	display: function(){
-		document.querySelector('#cover').classList.add('display');
+		document.querySelector('#dimmedCover').classList.add('display');
 	},
-	
+
 	hide: function(){
-		document.querySelector('#cover').classList.remove('display');
+		document.querySelector('#dimmedCover').classList.remove('display');
 	}
 }
-
-
-
 
 
 /* 숫자 타입에서 쓸 수 있도록 format() 함수 추가 */
