@@ -5,20 +5,24 @@ const upBarLogin = {
 
 		if(userInfo.response==200){
 			document.querySelector('#menu #nickname').innerHTML = userInfo.data.name;
-			document.querySelector('#header #profile').src = userInfo.data.profileImage
 			document.querySelector('#header #login').classList.remove('display');
-			document.querySelector('#header #profile').classList.add('display');
+			document.querySelector('#header #createAccount').classList.remove('display');
+			document.querySelector('#header #menu-toggle').classList.add('display');
 		}else{
 			document.querySelector('#header #login').classList.add('display');
-			document.querySelector('#header #profile').classList.remove('display');
+			document.querySelector('#header #createAccount').classList.add('display');
+			document.querySelector('#header #menu-toggle').classList.remove('display');
 		}
 
-		document.querySelector('#header #profile').addEventListener('click', ()=>{
+		document.querySelector('#header #menu-toggle').addEventListener('click', ()=>{
 			document.querySelector('#menu').classList.add('display');
 		})
 
 		window.addEventListener('click', (e)=>{
-			if(e.target.id=="profile") return;
+			if(
+				e.target.id=="menu-toggle" ||
+				e.target.parentNode.id=="menu-toggle"
+			) return;
 
 			document.querySelector('#menu').classList.remove('display');
 		})

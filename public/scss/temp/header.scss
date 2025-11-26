@@ -1,3 +1,5 @@
+@use "../designSystem/typo";
+
 /* Header */
 #header{
 	position: fixed;
@@ -13,61 +15,25 @@
 
 #header > .logo{
 	display: inline-block;
-	margin: 0.5rem 0 0 1.2rem;
+	margin: 0.7rem 0 0 0.7rem;
 }
 #header > .logo > img{
-	height: 1.9rem;
-}
-
-
-#header > #beta-icon{
-	display: inline-block;
-	background-color: #CC5a5a;
-	color: #FFFFFF;
-	font-size: 0.57rem;
-	padding: 0.15rem 0.37rem;
-	border-radius: 0.5rem;
-	position: relative;
-	top: -0.7rem;
-	font-style: italic;
-	user-select: none;
-	cursor: default;
+	height: 1.5rem;
 }
 
 
 #header > #createAccount{
-	padding: .2rem .7rem .3rem;
-    display: inline-block;
-    color: #805ad5;
-    font-weight: 700;
-    cursor: pointer;
-	float: right;
-	font-size: 0.77rem;
-	margin: 0.6rem 1rem 0 0;
+	@include typo.label1;
+    float: right;
+	margin: 0.4rem 0.3rem 0 0;
 	display: none;
-}
-#header > #createAccount:hover{
-	color: #4d367f;
-	text-decoration: underline;
 }
 
 #header > #login{
-	padding: .2rem .7rem .3rem;
-    display: inline-block;
-    background-color: #fff;
-    color: #805ad5;
-    border-radius: .3rem;
-    border: 1px solid;
-    font-weight: 700;
-    cursor: pointer;
-	float: right;
-	font-size: 0.77rem;
-	margin: 0.6rem 1.6rem 0 0;
-	display: none;
-}
-#header > #login:hover{
-	background-color: #805ad5;
-    color: #fff !important;
+	@include typo.label1;
+    float: right;
+    margin: 0.4rem 1.6rem 0 0;
+    display: none;
 }
 
 #header > #login > i{
@@ -78,26 +44,12 @@
 }
 
 
-#header > #profile{
-	display: inline-block;
-	width: 2.3rem;
-	height: 2.3rem;
-	border-radius: 100%;
-	margin: 0.2rem 1.5rem 0 0;
-	cursor: pointer;
-	float: right;
-	background-color: #c9c9c9;
-	opacity: 0.8;
-	object-fit: cover;
-	border: #333333 0.1rem solid;
+#header > #menu-toggle{
 	display: none;
-	background: url('/img/userDefaultImg.png');
-	background-size: 2.7rem 2.7rem;
-	background-position: center center;
-	background-repeat: no-repeat;
-}
-#header > #profile:hover{
-	opacity: 1;
+	float: right;
+	font-size: 1.2rem;
+	margin: 0.3rem 1.5rem 0 0;
+	padding: 0.5rem;
 }
 
 
@@ -110,7 +62,7 @@
 #menu{
 	position: fixed;
 	right: 1.1rem;
-	top: 2.7rem;
+	top: 2.5rem;
 	background-color: #FFF;
 	border-radius: 0.5rem;
 	border: 1px solid #333333;
@@ -160,25 +112,26 @@
 }
 
 
+
 @media screen and (max-width: 736px) {
 	#header > .logo{
-		margin: 0.5rem 0 0 0.77rem;
-	}
-
-	#header > #profile{
-		margin: 0.35rem 0.7rem 0 0;
+		margin: 0.7rem 0 0 0.77rem;
 	}
 
 	#header > #createAccount{
-		margin: 0.6rem 0.1rem 0 0;
+		margin: 0.35rem 0.1rem 0 0;
 	}
 
 	#header > #login{
-		margin: 0.5rem 0.5rem 0 0;
+		margin: 0.35rem 0.5rem 0 0;
+	}
+
+	#header > #menu-toggle{
+		margin: 0.35rem 0.5rem 0 0;
 	}
 
 	#menu{
-		top: 2.75rem;
-		right: 0.75rem;
+		top: 2.5rem;
+		right: 0.6rem;
 	}
 }
