@@ -65,7 +65,17 @@ module.exports = async function(req, res, next){
 
     let result = await Promise.allSettled(tasks);
     result.forEach((r) => r.reason?console.error(r.reason):'')
-    result = result.map((r) => r.value?r.value:new response.InternalServerError());
+    result = result.map((r) => {
+        // 에러 발생하면 500 에러 응답 및 알림
+        if(r.status=='rejected'){
+            r.value = new response.InternalServerError()
+            // util.slack.sendErrorReport(r.reason.stack) // 비동기 실행
+        }
+        
+        r.value.label = r.value.constructor.name
+
+        return r.value
+    });
 
     res.send(result)
 }
