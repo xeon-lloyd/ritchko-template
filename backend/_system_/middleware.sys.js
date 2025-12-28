@@ -11,81 +11,66 @@ module.exports = async function(req, res, next){
         return;
     }
 
-    const tasks = [];
+    let result = null
+    const body = req.body;
 
-    for(let i=0; i<req.body.length; i++){
-        const body = req.body[i];
-
-        if(body.operation == undefined){
-            tasks.push(new response.BadRequest(undefined, `'operation' 속성 누락`));
-            continue;
-        }
-
-        if(operationSetting[body.operation] == undefined){
-            tasks.push(new response.NotFound(undefined, `'${body.operation}' 식별자를 찾을 수 없음`));
-            continue;
-        }
-
-        if(body.param==undefined) body.param = {};
-
-        const operation = operationSetting[body.operation];
-
-        //로그인 필수인데 로그인 안했으면
-        if(operation.authRequire){
-            if(req.header('auth')==undefined){
-                tasks.push(new response.Unauthorized());
-                continue;
-            }
-
-            try{
-                let [ userData, hash ] = req.header('auth').split('.')
-
-                //유저 정보 무결성 체크
-                const expectedHash = util.encrypt.oneWayLite(userData)
-                if(hash.length !== expectedHash.length){
-                    throw "user data modified"
-                }
-
-                const isHashEqual = crypto.timingSafeEqual(
-                    Buffer.from(hash),
-                    Buffer.from(expectedHash)
-                )
-                if(!isHashEqual){
-                    throw "user data modified"
-                }
-
-                userData = JSON.parse(Buffer.from(userData, 'base64url').toString('utf8'))
-                //토큰 유효시간 체크
-                if(setting.token.enableTimeExpire && (new Date() - new Date(userData._tokenCreateAt) > setting.token.accessTokenExpire*1000)){
-                    throw "expired token"
-                }
-
-                delete userData._tokenCreateAt;
-
-                body.param.loginUser = userData;
-            }catch(e){
-                tasks.push(new response.Unauthorized(null, "잘못된 토큰입니다"));
-                continue;
-            }
-        }
-
-        tasks.push(require(__dirname + '/..' + operation.logic)(body.param, req, res, next))
+    if(body.operation == undefined){
+        return res.send(new response.BadRequest(undefined, `'operation' 속성 누락`))
     }
 
+    if(operationSetting[body.operation] == undefined){
+        return res.send(new response.NotFound(undefined, `'${body.operation}' 식별자를 찾을 수 없음`))
+    }
 
-    let result = await Promise.allSettled(tasks);
-    result.forEach((r) => r.reason?console.error(r.reason):'')
-    result = result.map((r) => {
-        // 에러 발생하면 500 에러 응답 및 알림
-        if(r.status=='rejected'){
-            r.value = new response.InternalServerError()
-            // util.slack.sendErrorReport(r.reason.stack) // 비동기 실행
+    if(body.param==undefined) body.param = {};
+
+    const operation = operationSetting[body.operation];
+
+    //로그인 필수인데 로그인 안했으면
+    if(operation.authRequire){
+        if(req.header('auth')==undefined){
+            return res.send(new response.Unauthorized())
         }
-        
-        r.value.label = r.value.constructor.name
 
-        return r.value
-    });
+        try{
+            let [ userData, hash ] = req.header('auth').split('.')
+
+            //유저 정보 무결성 체크
+            const expectedHash = util.encrypt.oneWayLite(userData)
+            if(hash.length !== expectedHash.length){
+                throw "user data modified"
+            }
+
+            const isHashEqual = crypto.timingSafeEqual(
+                Buffer.from(hash),
+                Buffer.from(expectedHash)
+            )
+            if(!isHashEqual){
+                throw "user data modified"
+            }
+
+            userData = JSON.parse(Buffer.from(userData, 'base64url').toString('utf8'))
+            //토큰 유효시간 체크
+            if(setting.token.enableTimeExpire && (new Date() - new Date(userData._tokenCreateAt) > setting.token.accessTokenExpire*1000)){
+                throw "expired token"
+            }
+
+            delete userData._tokenCreateAt;
+
+            body.param.loginUser = userData;
+        }catch(e){
+            return res.send(new response.Unauthorized(null, "잘못된 토큰입니다"))
+        }
+    }
+
+    try{
+        result = await require(__dirname + '/..' + operation.logic)(body.param, req, res, next)
+    }catch(e){
+        result = new response.InternalServerError()
+        console.error(e)
+        // util.slack.sendErrorReport(e.stack) // 비동기 실행
+    }
+    result.label = result.constructor.name
 
     res.send(result)
 }

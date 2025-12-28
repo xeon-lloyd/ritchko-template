@@ -50,30 +50,18 @@ module.exports = function(req, res, next){
 
                 <div class="body">
                     <div class="label">Body</div>
-                    <pre>[
-    {
-        "operation": "OperationOne",
-        "param": {
-            "id": "123",
-            "pw": "test"
-        }        
-    },
-    {
-        "operation": "OperationTwo",
-        "param": {
-            "commentPK": 13
-        }        
-    },
-    {
-        "operation": "OtherOperation",
-        "param": {}        
-    }
-]</pre>
+                    <pre>{
+    "operation": "OperationOne",
+    "param": {
+        "id": "123",
+        "pw": "test"
+    }        
+}</pre>
                     <div class="description">
                         <ul>
                             <li>API 요청 Path는 /API로 고정</li>
-                            <li>요청 정보는 Body에 배열로 담기며 한 번의 요청으로 여러개의 작업을 시행할 수 있음</li>
-                            <li>각각의 요청 정보는 "Operation"과 "param"으로 이루어져 있음</li>
+                            <li>요청 정보는 "operation"과 "param"으로 이루어져 있음</li>
+                            <li>param은 nullable</li>
                         </ul>
                     </div>
                 </div>                
