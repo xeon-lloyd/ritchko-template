@@ -101,10 +101,10 @@ function API_Request(operation, param, from){
     const method = "POST";
     const url = "/API";
 
-    const data = [{
+    const data = {
         operation,
         param
-    }];
+    };
 
     xhr.open(method, url);
 
@@ -123,7 +123,7 @@ function API_Request(operation, param, from){
 
             if (status === 0 || (status >= 200 && status < 400)) {
                 // 요청이 정상적으로 처리 된 경우
-                let result = JSON.parse(target.response)[0]
+                let result = JSON.parse(target.response)
                 from.querySelector('.param > .requestAt').innerHTML = new Date();
                 from.querySelector('.param > .API_Response').innerHTML = JSON.stringify(result, null, 4);
             } else {

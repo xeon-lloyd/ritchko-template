@@ -1,22 +1,5 @@
 const API = {
-    OperationComposer: class OperationComposer{
-        operations = [];
-
-        add = function(operationName, param){
-            this.operations.push({
-                operation: operationName,
-                param
-            })
-        }
-
-        request = ()=>{ return API.request(this.operations) }
-    },
-
-    request: async function(operations){
-        if(operations==undefined || operations.constructor.name!='Array'){
-            throw "operations muse be array"
-        }
-
+    request: async function(operation, param){
         return new Promise(function(resolve, reject){
 			const xhr = new XMLHttpRequest();
 			xhr.open('POST', `/API`);
@@ -41,17 +24,8 @@ const API = {
 				}
 			}
 
-            xhr.send(JSON.stringify(operations));
+            xhr.send(JSON.stringify({ operation, param }));
 		});
-    },
-
-    requestSingle: async function(operationName, param){
-        const res = await API.request([{
-            operation: operationName,
-            param
-        }])
-
-        return res[0]
     },
 
     setAuthKey: function(key, expires){ //expires day
