@@ -1,3 +1,5 @@
+const crypto = require('crypto');
+
 const operationSetting = require('../_operations.sys.js');
 const response = require('../_response.sys.js');
 const setting = require('../core/setting.js');
@@ -38,17 +40,25 @@ module.exports = async function(req, res, next){
             try{
                 let [ userData, hash ] = req.header('auth').split('.')
 
-                //토큰 유효시간 체크
-                if(setting.token.enableTimeExpire && (new Date() - new Date(userData._tokenCreateAt) > setting.token.expire*1000)){
-                    throw "expired token"
-                }
-
                 //유저 정보 무결성 체크
-                if(hash!=util.encrypt.oneWayLite(userData)){
+                const expectedHash = util.encrypt.oneWayLite(userData)
+                if(hash.length !== expectedHash.length){
                     throw "user data modified"
                 }
 
-                userData = JSON.parse(Buffer.from(userData, 'base64').toString('utf8'))
+                const isHashEqual = crypto.timingSafeEqual(
+                    Buffer.from(hash),
+                    Buffer.from(expectedHash)
+                )
+                if(!isHashEqual){
+                    throw "user data modified"
+                }
+
+                userData = JSON.parse(Buffer.from(userData, 'base64url').toString('utf8'))
+                //토큰 유효시간 체크
+                if(setting.token.enableTimeExpire && (new Date() - new Date(userData._tokenCreateAt) > setting.token.accessTokenExpire*1000)){
+                    throw "expired token"
+                }
 
                 delete userData._tokenCreateAt;
 

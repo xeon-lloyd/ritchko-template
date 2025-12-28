@@ -266,13 +266,49 @@ module.exports = {
 
 	/* 사용자 토큰 */
 	token: {
-		generateToken: function(userData){
+		generateAccessToken: function(userData){
 			userData._tokenCreateAt = new Date().getTime()
 			
-			let payload = Buffer.from(JSON.stringify(userData)).toString('base64')
+			let payload = Buffer.from(JSON.stringify(userData)).toString('base64url')
 			let hash = module.exports.encrypt.oneWayLite(payload)
 			return `${payload}.${hash}`;
-		}
+		},
+
+		generateRefreshToken: async function(userData){
+			let key = ''
+			let token = ''
+			let isKeyExist = false
+			do{
+				token = crypto.randomBytes(32).toString('hex')
+				key = `sys:RT:${token}`
+				isKeyExist = ((await module.exports.redis.get(key)) != null)
+			}while(isKeyExist)
+
+			userData = JSON.stringify(userData)
+			await module.exports.redis.set(key, userData, setting.token.refreshTokenExpire)
+
+			return token
+		},
+
+		rotateTokenByRefreshToken: async function(refreshToken){
+			const userDataString = await module.exports.redis.get(`sys:RT:${refreshToken}`);
+			if(!userDataString) return null
+
+			const userData = JSON.parse(userDataString);
+
+			const accessToken = module.exports.token.generateAccessToken(userData);
+			const newRefreshToken = await module.exports.token.generateRefreshToken(userData);
+			await module.exports.token.revokeRefreshToken(refreshToken);
+
+			return {
+				accessToken,
+				refreshToken: newRefreshToken
+			};
+		},
+
+		revokeRefreshToken: async function(refreshToken){
+			await module.exports.redis.del(`sys:RT:${refreshToken}`)
+		},
 	},
 
 	/* 메일 전송 관련 */

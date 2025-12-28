@@ -48,15 +48,16 @@ const setting = {
 		key: 'encryptkeyString',
 	},
 
-	token: {
-		enableTimeExpire: false,
-		expire: 3 * 24 * 60 * 60 //s
-	},
-
 	redis: {
 		host: 'localhost',
 		port: 6379,
 		password: 'redisPassword',
+	},
+
+	token: {
+		enableTimeExpire: false, // false for local mode
+		accessTokenExpire: 15 * 60, //s (15 minutes)
+		refreshTokenExpire: 14 * 24 * 60 * 60, //s (14 days)
 	},
 
 	socket: {
