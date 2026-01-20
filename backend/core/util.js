@@ -290,6 +290,16 @@ module.exports = {
 			return token
 		},
 
+		createInitialToken: async function(userData){
+			let accessToken = module.exports.token.generateAccessToken(userData);
+			let refreshToken = await module.exports.token.generateRefreshToken(userData);
+
+			return {
+				accessToken,
+				refreshToken
+			};
+		},
+
 		rotateTokenByRefreshToken: async function(refreshToken){
 			const userDataString = await module.exports.redis.get(`sys:RT:${refreshToken}`);
 			if(!userDataString) return null
