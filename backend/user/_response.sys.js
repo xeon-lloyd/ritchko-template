@@ -17,12 +17,13 @@ module.exports = {
     'SignInOK': class SignInOK extends rootResponse.OK {
         constructor(token){
             super()
-            if(token) this.data = { token }
+            if(token) this.data = token
         }
 
         message = "로그인 성공"
         data = {
-            token: '로그인 토큰(string)'
+            accessToken: '로그인 토큰(string)',
+            refreshToken: '리프레시 토큰(string)'
         }
     },
 

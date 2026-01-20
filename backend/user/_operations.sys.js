@@ -2,7 +2,7 @@ const paramSchema = require('./_param.sys.js');
 const responseSchema = require('./_response.sys.js');
 
 module.exports = {
-    'SignIn': {
+    SignIn: {
         logic: '/user/signIn.js',
         authRequire: false,
 
@@ -17,7 +17,7 @@ module.exports = {
         ]
     },
 
-    'GetUserInfo': {
+    GetUserInfo: {
         logic: '/user/getUserInfo.js',
         authRequire: true,
 

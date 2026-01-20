@@ -17,7 +17,9 @@ module.exports = async function(param, req, res){
 
     if(user==undefined) return new response.UserNotFound();
 
-    let token = util.token.generateToken(user.uid)
+    let token = util.token.createInitialToken({
+        uid: user.uid
+    })
 
     return new response.SignInOK(token)
 }
