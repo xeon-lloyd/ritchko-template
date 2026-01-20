@@ -1,7 +1,7 @@
 /* 메뉴바에 로그인 버튼 관련 */
 const upBarLogin = {
     init: async function(){
-        const userInfo = await API.requestSingle('GetUserInfo');
+        const userInfo = await API.request('GetUserInfo');
 
 		if(userInfo.response==200){
 			document.querySelector('#menu #nickname').innerHTML = userInfo.data.name;
