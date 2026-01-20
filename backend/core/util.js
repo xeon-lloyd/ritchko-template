@@ -243,7 +243,8 @@ module.exports = {
 		/* 양방향 암호화 */
 		encode: function(plainText){
 			let iv = crypto.randomBytes(16);
-			let cipher = crypto.createCipheriv('aes-128-cbc', setting.encrypt.key, iv);
+			let key = crypto.createHash('sha256').update(setting.encrypt.key).digest().slice(0, 16);
+			let cipher = crypto.createCipheriv('aes-128-cbc', key, iv);
 			let encrypted = cipher.update(plainText);
 			let finalBuffer = Buffer.concat([encrypted, cipher.final()]);
 			let encoded = iv.toString('hex') + ':' + finalBuffer.toString('hex');
@@ -256,7 +257,8 @@ module.exports = {
 			let encryptedArray = encoded.split(':');
 			let iv = new Buffer.from(encryptedArray[0], 'hex');
 			let encrypted = new Buffer.from(encryptedArray[1], 'hex');
-			let decipher = crypto.createDecipheriv('aes-128-cbc', setting.encrypt.key, iv);
+			let key = crypto.createHash('sha256').update(setting.encrypt.key).digest().slice(0, 16);
+			let decipher = crypto.createDecipheriv('aes-128-cbc', key, iv);
 			let decrypted = decipher.update(encrypted);
 			let plainText = Buffer.concat([decrypted, decipher.final()]).toString();
 
