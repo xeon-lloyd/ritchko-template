@@ -1,16 +1,20 @@
 const API = {
-    request: async function(operation, param){
+	_rotateTokenPromise: null,
+	
+    request: async function(operation, param, _401Retry=true){
         return new Promise(function(resolve, reject){
 			const xhr = new XMLHttpRequest();
 			xhr.open('POST', `/API`);
 			xhr.setRequestHeader('Content-Type', 'application/json');
 
-            const authKey = cookie.get('authKey');
-            if(authKey){
-                xhr.setRequestHeader('auth', authKey);
+            const accessToken = cookie.get('accessToken');
+            if(accessToken){
+                xhr.setRequestHeader('auth', accessToken);
             }
 
 			xhr.onreadystatechange = async function(){
+				if(xhr.readyState != 4) return;
+
 				if(xhr.status == 400){
 					resolve(JSON.parse(xhr.responseText));
 				}
@@ -19,8 +23,15 @@ const API = {
 					resolve(null);
 				}
 
-				if(xhr.readyState == 4 && xhr.status == 200){
-					resolve(JSON.parse(xhr.responseText));
+				if(xhr.status == 200){
+					let result = JSON.parse(xhr.responseText);
+
+					if(_401Retry && result.response == 401){
+						await API.rotateToken();
+						result = await API.request(operation, param, false);
+					}
+
+					resolve(result);
 				}
 			}
 
@@ -28,17 +39,41 @@ const API = {
 		});
     },
 
-    setAuthKey: function(key, expires){ //expires day
-        cookie.set('authKey', key, expires)
+    setToken: function(accessToken, refreshToken){
+        cookie.set('accessToken', accessToken, env.token.accessTokenExpire)
+		cookie.set('refreshToken', refreshToken, env.token.refreshTokenExpire)
     },
 
-    removeAuthKey: function(){
-        cookie.set('authKey', null, -1)
+	rotateToken: async function(){
+		if(API._rotateTokenPromise != null) return API._rotateTokenPromise;
+
+		API._rotateTokenPromise = new Promise(async (resolve, reject)=>{
+			let result = await API.request(env.token.rotateTokenOperation, {
+				refreshToken: cookie.get('refreshToken')
+			}, false);
+			
+			if(result.response == 200){
+				API.setToken(result.data.accessToken, result.data.refreshToken);
+				API._rotateTokenPromise = null;
+				resolve();
+			}else{
+				API.removeToken();
+				API._rotateTokenPromise = null;
+				resolve();
+			}
+		});
+
+		return API._rotateTokenPromise;
+	},
+
+    removeToken: async function(){
+        await API.request(env.token.signOutOperation, {
+			refreshToken: cookie.get('refreshToken')
+		});
+        
+        cookie.set('accessToken', null, -1)
+		cookie.set('refreshToken', null, -1)
     },
-
-    formToOperation: function(formName){
-
-    }
 }
 
 
