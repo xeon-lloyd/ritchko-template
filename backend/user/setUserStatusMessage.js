@@ -1,6 +1,8 @@
 const response = require('./_response.sys.js');
 const setting = require('../core/setting.js');
 const util = require('../core/util.js');
+const valider = require('../core/valider.js');
+const enums = require('./enums.js');
 
 module.exports = async function(socket, data){
     // socket 객체에 로그인한 유저(auth header) 정보 접근
