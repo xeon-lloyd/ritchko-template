@@ -69,7 +69,7 @@ const API = {
     removeToken: async function(){
         await API.request(env.token.signOutOperation, {
 			refreshToken: cookie.get('refreshToken')
-		});
+		}, false);
         
         cookie.set('accessToken', null, -1)
 		cookie.set('refreshToken', null, -1)
