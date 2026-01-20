@@ -29,4 +29,18 @@ module.exports = {
             responseSchema.GetUserOK,
         ]
     },
+
+    SignOut: {
+        logic: '/user/signOut.js',
+        authRequire: false,
+
+        //documentation
+        description: '로그아웃(RT 토큰 만료처리)',
+        group: 'user',
+        paramSchema: paramSchema.SignOut,
+        responseSchema: [
+            responseSchema.InputValueNotValid,
+            responseSchema.SignOutOK,
+        ]
+    }
 }
