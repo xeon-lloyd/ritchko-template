@@ -1,5 +1,7 @@
 #sidebar{
 	width: 13rem;
+    box-sizing: border-box;
+    left: 0;
 
 	background: #ffffff;
 	height: calc(100vh - 2.8rem);
@@ -14,6 +16,8 @@
     cursor: default;
     overflow-y: scroll;
     overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    clip-path: inset(0);
 }
 .foldedSidebar #sidebar{
 	width: 2.7rem;
@@ -43,13 +47,18 @@
 
 #sidebar .linkBox{
     cursor: pointer;
-    width: 13rem;
+    width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 0.9rem;
 }
 #sidebar .linkBox:hover{
     background: #00000007;
+}
+
+.foldedSidebar #sidebar .linkBox,
+.foldedSidebar #sidebar .title{
+    font-size: 0;
 }
 
 #sidebar > div > .title{
@@ -89,14 +98,14 @@ main{
 
 .foldedSidebar #footer,
 .foldedSidebar main{
-    width: calc(100% - 2.8rem);
-    margin-left: 2.8rem;
+    width: calc(100% - 2.7rem);
+    margin-left: 2.7rem;
 }
 
 @media screen and (max-width: 650px) {
 	#footer,
     main{
-        width: calc(100% - 2.8rem);
-        margin-left: 2.8rem;
+        width: calc(100% - 2.7rem);
+        margin-left: 2.7rem;
     }
 }
