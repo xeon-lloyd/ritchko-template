@@ -8,7 +8,8 @@
     "build": "npm run build:css",
     "build:css": "sass public/scss:public/css --style=compressed",
     "watch:css": "sass --watch public/scss:public/css",
-    "create:backend-domain": "node scripts/create-backend-domain.js"
+    "create:backend-domain": "node scripts/create-backend-domain.js",
+    "create:backend-operation": "node scripts/create-backend-operation.js"
   },
   "author": "",
   "license": "ISC",

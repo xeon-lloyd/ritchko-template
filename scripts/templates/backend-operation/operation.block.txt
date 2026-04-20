@@ -1,0 +1,12 @@
+    {{operationName}}: {
+        logic: '/{{domainName}}/{{logicFileName}}.js',
+        authRequire: {{authRequire}},
+
+        //documentation
+        description: '{{description}}',
+        group: '{{domainName}}',
+        paramSchema: {{paramSchema}},
+        responseSchema: [
+            
+        ]
+    },
