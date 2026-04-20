@@ -2,7 +2,7 @@
 
 ## 목적
 - 이 문서는 `backend/` 영역의 네이밍과 주석 컨벤션을 정리한다.
-- 기준은 템플릿의 `/API` operation 구조와 `../_streamtial/streamtial`의 일반 backend 패턴이다.
+- 기준은 템플릿의 `/API` operation 구조와 이 템플릿에서 유지할 일반 backend 패턴이다.
 - `openApi/` 계열은 별도 기능과 별도 규칙이므로 이 문서의 공통 backend 컨벤션 기준에서 제외한다.
 
 ## 1. 파일/식별자 네이밍
@@ -45,6 +45,12 @@
 
 ## 5. 함수/모듈 네이밍
 - 로직 파일의 기본 export는 익명 함수여도 되지만, `module/`이나 `worker/`처럼 재사용 의미가 큰 파일은 기명 함수 export를 우선한다.
+- operation 로직 파일은 사람이 처음 읽을 때 전체 처리 흐름이 한 파일에서 보여야 하므로, 검증/조회/가공/응답 흐름을 과도하게 `module/`로 분산하지 않는다.
+- `module/`은 1파일 1export 메서드를 기본으로 한다.
+- `module/` 파일명과 export 함수명은 동일한 lowerCamelCase로 맞춘다. 예: `updateAccessFlag.js` -> `module.exports = async function updateAccessFlag(...)`
+- 여러 재사용 메서드가 필요하면 한 파일에 객체로 묶지 말고 파일을 분리하고, 기본적으로 상위 operation 로직 파일이 이를 조합한다.
+- `module -> module` 직접 호출은 예외로 두고, 가능하면 operation에서 순서를 제어한다.
+- `module/`은 보통 저장소 접근, 외부 서비스 호출, 여러 operation에서 공통으로 쓰는 단일 처리에 한정한다.
 - 재사용 module 이름은 `동사 + 대상` 구조를 기본으로 한다. 예: `updateAccessFlag`, `executePayment`, `sendPaymentSuccessEmail`
 - worker 이름도 실제 작업 단위를 드러내는 `동사 + 대상` 구조를 사용한다. 예: `createMonthlyInvoice`, `updateCurrency`, `leaveAccountConfirm`
 - boolean 의미를 담는 변수는 가능하면 `is`, `has`, `can`, `should` 접두를 사용한다. 예: `isLive`, `isSlotOccupied`, `isSameHashCardExist`
