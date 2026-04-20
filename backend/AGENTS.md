@@ -55,6 +55,14 @@
 
 ## 구현 규칙
 - 기본 export 형태는 `module.exports = async function(param, req, res){ ... }`를 따른다.
+- operation 로직 파일과 backend `module/` 파일은 스캐폴드의 기본 import 줄을 기본값으로 유지한다.
+- 기본 import 대상은 `response`, `setting`, `util`, `valider`, `enums`이며, 현재 파일에서 쓰지 않더라도 임의로 제거하지 않는다.
+- 추가 import가 필요하면 기본 import 블록 아래를 한 줄 비운 뒤 추가하며, 배치 예시는 `backend/CONVENTION.md`를 따른다.
+- operation 로직 파일에는 흐름이 보이도록 최소 단계 주석을 유지한다.
+- 특히 입력값 검증, 대상 존재 여부 확인, 권한 확인, 핵심 비즈니스 처리, 응답 반환 직전 단계에는 `// 입력값 검증`, `// 존재 여부 확인`처럼 짧은 한국어 주석을 우선 붙인다.
+- `module/` 파일도 계산 단계나 데이터 가공 단계가 두 묶음 이상이면 각 처리 블록 앞에 짧은 단계 주석을 붙인다.
+- operation 로직 파일의 `param`은 구조분해하지 않고 `param.xxx` 형태로 직접 사용한다.
+- 입력값이 어느 객체에서 왔는지 코드 전반에서 바로 보이도록 `const { sprintId } = param` 같은 패턴은 지양한다.
 - 입력값 검증을 먼저 수행한다.
 - 실패 시 가능한 한 빠르게 response 객체를 반환한다.
 - DB 변경 전에는 대상 존재 여부와 권한 여부를 먼저 확인한다.

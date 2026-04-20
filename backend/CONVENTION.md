@@ -63,7 +63,22 @@
 - 주석 하나는 보통 바로 아래 2~10줄 정도의 처리 묶음을 설명하도록 유지한다.
 - TODO는 실제 후속 작업이 있을 때만 남긴다. 즉시 행동 계획이 없는 TODO 남발은 피한다.
 
-## 7. 권장 예시
+## 7. Import 배치
+- operation 로직 파일과 `module/` 파일은 스캐폴드의 기본 import 블록을 유지한다.
+- 기본 import 대상은 `response`, `setting`, `util`, `valider`, `enums` 순서를 기준으로 둔다.
+- 추가 import가 필요하면 기본 import 블록 아래를 한 줄 비운 뒤 작성한다.
+- 예시:
+```js
+const response = require('./_response.sys.js');
+const setting = require('../core/setting.js');
+const util = require('../core/util.js');
+const valider = require('../core/valider.js');
+const enums = require('./enums.js');
+
+const other = require('other');
+```
+
+## 8. 권장 예시
 - operation: `CreateApiKey`, `GetStreamDetailInfo`, `VerifyPasswordResetToken`, `ResetStreamKey`
 - response: `CreateApiKeyOK`, `ApiKeyNotFound`, `VerifyEmailByTokenExpired`, `UserStatusUpdateEvent`
 - module: `updateAccessFlag`, `executePayment`, `emitForceEndStreamEvent`
