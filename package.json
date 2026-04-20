@@ -7,7 +7,8 @@
     "start:dev": "concurrently \"npm:watch:css\" \"nodemon server.js\"",
     "build": "npm run build:css",
     "build:css": "sass public/scss:public/css --style=compressed",
-    "watch:css": "sass --watch public/scss:public/css"
+    "watch:css": "sass --watch public/scss:public/css",
+    "create:backend-domain": "node scripts/create-backend-domain.js"
   },
   "author": "",
   "license": "ISC",
