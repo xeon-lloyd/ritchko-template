@@ -49,6 +49,7 @@
 - `module/`은 1파일 1export 메서드를 기본으로 한다.
 - `module/` 파일명과 export 함수명은 동일한 lowerCamelCase로 맞춘다. 예: `updateAccessFlag.js` -> `module.exports = async function updateAccessFlag(...)`
 - 여러 재사용 메서드가 필요하면 한 파일에 객체로 묶지 말고 파일을 분리하고, 기본적으로 상위 operation 로직 파일이 이를 조합한다.
+- `module.exports = { readA, writeB }` 같은 객체 export는 `module/`에서 금지한다. 이런 경우 `readA.js`, `writeB.js`로 나눈다.
 - `module -> module` 직접 호출은 예외로 두고, 가능하면 operation에서 순서를 제어한다.
 - `module/`은 보통 저장소 접근, 외부 서비스 호출, 여러 operation에서 공통으로 쓰는 단일 처리에 한정한다.
 - 재사용 module 이름은 `동사 + 대상` 구조를 기본으로 한다. 예: `updateAccessFlag`, `executePayment`, `sendPaymentSuccessEmail`
@@ -68,6 +69,21 @@
 - 주석이 없으면 흐름 파악이 어려운 지점에만 쓴다. 단순 대입, 단순 return, obvious한 if문마다 주석을 달지 않는다.
 - 주석 하나는 보통 바로 아래 2~10줄 정도의 처리 묶음을 설명하도록 유지한다.
 - TODO는 실제 후속 작업이 있을 때만 남긴다. 즉시 행동 계획이 없는 TODO 남발은 피한다.
+
+## 6-1. 가드 절 스타일
+- 한 줄 반환으로 끝나는 가드 절은 예외 없이 인라인으로 작성한다.
+- backend 코드에서 `if (...) { return ... }` 형태의 블록 가드는 금지한다.
+- 특히 입력값 검증, 존재 여부 확인, 권한 확인, 상태 검증에서 자주 깨지므로 먼저 확인한다.
+- 금지:
+```js
+if(!valider.isValidString(param.blueprintId)){
+    return new response.FormInputRequired();
+}
+```
+- 권장:
+```js
+if(!valider.isValidString(param.blueprintId)) return new response.FormInputRequired();
+```
 
 ## 7. Import 배치
 - operation 로직 파일과 `module/` 파일은 스캐폴드의 기본 import 블록을 유지한다.
@@ -89,3 +105,28 @@ const other = require('other');
 - response: `CreateApiKeyOK`, `ApiKeyNotFound`, `VerifyEmailByTokenExpired`, `UserStatusUpdateEvent`
 - module: `updateAccessFlag`, `executePayment`, `emitForceEndStreamEvent`
 - worker: `createMonthlyInvoice`, `updateCurrency`, `leaveAccountConfirm`
+
+## 9. module 분리 예시
+- 금지:
+```js
+module.exports = {
+    ensureStoreReady,
+    readBlueprintList,
+    writeBlueprintList,
+}
+```
+
+- 권장:
+```js
+// readBlueprintList.js
+module.exports = async function readBlueprintList(){
+    ...
+}
+```
+
+```js
+// writeBlueprintList.js
+module.exports = async function writeBlueprintList(list){
+    ...
+}
+```

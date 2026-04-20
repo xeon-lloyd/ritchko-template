@@ -19,6 +19,7 @@
 
 ## 영역별 작업 가이드
 - 백엔드 작업 전: `backend/AGENTS.md`
+- 백엔드 구현 직전 체크: `backend/CHECKLIST.md`
 - 뷰 템플릿 작업 전: `views/AGENTS.md`
 - 프론트 스크립트 작업 전: `public/js/AGENTS.md`
 - 스타일 작업 전: `public/scss/AGENTS.md`
@@ -57,6 +58,7 @@
 - 템플릿에 없는 외부 프레임워크 기준으로 구조를 재편하지 않는다.
 - 실제 비밀번호, API 키, 토큰, DB 접속 정보는 커밋하지 않는다.
 - 템플릿의 `backend/core/setting.js`, `public/js/env.js`는 placeholder 성격을 유지한다.
+- 구현 전에 작업 대상 영역의 `AGENTS.md`와 체크리스트 파일에서 금지 규칙을 먼저 다시 확인한다.
 
 ## 검증 규칙
 - `npm run build`
