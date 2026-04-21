@@ -60,6 +60,10 @@
 - operation 로직 파일과 backend `module/` 파일은 스캐폴드의 기본 import 줄을 기본값으로 유지한다.
 - 기본 import 대상은 `response`, `setting`, `util`, `valider`, `enums`이며, 현재 파일에서 쓰지 않더라도 임의로 제거하지 않는다.
 - 추가 import가 필요하면 기본 import 블록 아래를 한 줄 비운 뒤 추가하며, 배치 예시는 `backend/CONVENTION.md`를 따른다.
+- 도메인 `enums.js`는 enum마다 개별 `const` 배열을 선언하고, export는 `module.exports = { ...require('../enums.js'), EnumName }` 형태를 유지한다.
+- `enums.js` 안에 enum이 아닌 설정 객체, 메타 맵, 계산용 옵션 객체를 넣지 않는다. 그런 값은 로직 파일이나 별도 module로 분리한다.
+- enum 입력값 검증은 `if(!enums.Horizon.includes(param.horizon)) return ...`처럼 해당 배열에 직접 `includes()`를 호출하는 방식만 사용한다.
+- `if(!Object.values(enums.Horizon).includes(param.horizon))`처럼 객체형 enum 습관을 끌고 오는 검증 방식은 금지한다.
 - operation 로직 파일에는 흐름이 보이도록 최소 단계 주석을 유지한다.
 - 특히 입력값 검증, 대상 존재 여부 확인, 권한 확인, 핵심 비즈니스 처리, 응답 반환 직전 단계에는 `// 입력값 검증`, `// 존재 여부 확인`처럼 짧은 한국어 주석을 우선 붙인다.
 - 사람이 처음 읽을 때 전체 처리 흐름이 operation 로직 파일 한 곳에서 바로 보여야 하며, 검증/조회/가공/응답의 큰 흐름을 `module/` 뒤로 과하게 숨기지 않는다.
@@ -79,6 +83,8 @@
 - DB 변경 전에는 대상 존재 여부와 권한 여부를 먼저 확인한다.
 - 성공/실패 응답은 `*_response.sys.js`에 정의된 응답 클래스를 사용한다.
 - operation 추가 후 `description`, `group`, `paramSchema`, `responseSchema`를 빠뜨리지 않는다.
+- `paramSchema` 설명 문자열에서 optional 파라미터는 `보드 작성자 별칭(string?)`처럼 타입 뒤에 `?`를 붙여 표기한다.
+- `보드 작성자 별칭(string, optional)`처럼 영어 `optional` 문구를 덧붙이는 표기는 금지한다.
 - 인증이 필요한 operation은 `authRequire: true`를 사용하며, 이 경우 `param.loginUser` 사용 가능 여부를 함께 확인한다.
 - 네이밍과 주석 세부 규칙은 `backend/CONVENTION.md`를 따른다.
 

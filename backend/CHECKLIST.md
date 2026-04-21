@@ -15,6 +15,9 @@
 - `module/` 파일명과 export 함수명은 동일한 `lowerCamelCase`로 맞춘다.
 - 여러 재사용 동작이 필요하면 한 파일에 묶지 말고 파일을 분리한 뒤 operation에서 조합한다.
 - operation 로직 파일은 큰 흐름이 한 파일에서 보이게 유지하고, `module/` 뒤로 과하게 숨기지 않는다.
+- 도메인 `enums.js`는 배열 enum 선언 + `...require('../enums.js')` export 형식을 유지한다.
+- enum 검증은 `if(!enums.CardType.includes(param.cardType)) return ...`처럼 배열에 직접 `includes()`를 호출한다.
+- `_param.sys.js`의 optional 표기는 `string?`, `number?`, `boolean?`처럼 타입 뒤 `?`로 적고 `optional` 문구는 쓰지 않는다.
 - 한 줄 가드 절은 예외 없이 인라인으로 작성한다.
 - `if (...) { return ... }` 형태의 블록 가드는 금지한다.
 
@@ -37,6 +40,29 @@ module.exports = async function readBlueprintList(){
 
 - 금지:
 ```js
+module.exports = {
+    CardType: {
+        Main: 'main',
+        Backup: 'backup',
+    },
+}
+```
+
+- 허용:
+```js
+const CardType = [
+    'main',
+    'backup',
+]
+
+module.exports = {
+    ...require('../enums.js'),
+    CardType,
+}
+```
+
+- 금지:
+```js
 if(!valider.isValidString(param.blueprintId)){
     return new response.FormInputRequired();
 }
@@ -47,8 +73,29 @@ if(!valider.isValidString(param.blueprintId)){
 if(!valider.isValidString(param.blueprintId)) return new response.FormInputRequired();
 ```
 
+- 금지:
+```js
+if(!Object.values(enums.CardType).includes(param.cardType)) return new response.InputValueNotValid('cardType');
+```
+
+- 허용:
+```js
+if(!enums.CardType.includes(param.cardType)) return new response.InputValueNotValid('cardType');
+```
+
+- 금지:
+```js
+nickname: '닉네임(string, optional)'
+```
+
+- 허용:
+```js
+nickname: '닉네임(string?)'
+```
+
 ## 수정 직후 체크
 - 입력값 검증이 먼저 오는지 확인한다.
 - 성공/실패 응답이 `*_response.sys.js` 클래스를 쓰는지 확인한다.
 - `description`, `group`, `paramSchema`, `responseSchema` 누락이 없는지 확인한다.
+- `enums.js`, enum 검증 코드, `paramSchema` 표기가 최신 규칙과 맞는지 한 번 더 확인한다.
 - 필요 시 `/API-doc`와 `npm run build`로 반영 여부를 본다.

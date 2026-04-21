@@ -13,6 +13,16 @@
 - enum/export 상수명은 신규 작성 시 `PascalCase`를 우선한다. 예: `ImageMimeType`, `ApiKeyExpiryOption`, `VultrRegionCode`
 - 과거 코드에 `cardType` 같은 예외가 있어도 신규 추가는 `PascalCase` 쪽으로 맞춘다.
 
+## 1-1. Enum 파일 규칙
+- 도메인 `enums.js`는 `../_streamtial/streamtial` 코드베이스의 패턴처럼 enum마다 개별 배열 상수를 선언한 뒤 export 한다.
+- enum 값은 무조건 배열 형식으로 선언한다. 예: `const CardType = ['main', 'backup']`
+- 도메인 `enums.js`의 export는 무조건 root enum을 먼저 포함한 객체 형식을 사용한다. 예: `module.exports = { ...require('../enums.js'), CardType }`
+- 도메인 enum 파일에서 `module.exports = { Horizon: {...} }` 같은 객체형 enum 선언은 금지한다.
+- enum이 아닌 메타 정보, 가중치 맵, 설명 객체, 계산 옵션은 `enums.js`에 두지 않는다.
+- 별도 enum이 없는 도메인이라도 필요 시 `module.exports = { ...require('../enums.js') }` 형태를 유지한다.
+- enum 입력값 검증은 `if(!enums.CardType.includes(param.cardType)) return ...`처럼 enum 배열에 직접 `includes()`를 호출한다.
+- `Object.values(enums.CardType).includes(...)` 같은 객체형 enum 전제 코드는 금지한다.
+
 ## 2. Operation 이름 규칙
 - 내부 `/API` operation key는 `PascalCase`를 기본으로 한다. 예: `SignIn`, `GetUserInfo`, `CheckStreamKeyValid`
 - operation key와 `paramSchema` 키는 같은 이름을 사용한다.
@@ -99,6 +109,12 @@ const enums = require('./enums.js');
 
 const other = require('other');
 ```
+
+## 7-1. Param Schema 표기
+- `_param.sys.js`의 설명 문자열은 기본적으로 `설명(type)` 형식을 사용한다.
+- optional 파라미터는 `설명(string?)`, `설명(number?)`, `설명(boolean?)`처럼 타입명 뒤에 `?`를 붙여 표기한다.
+- enum은 `설명(enum:a|b|c)` 형식을 유지하고, optional enum이면 `설명(enum:a|b|c?)`처럼 타입 블록 내부 마지막에 `?`를 붙인다.
+- `설명(string, optional)`처럼 영어 `optional` 문구를 추가하는 표기는 금지한다.
 
 ## 8. 권장 예시
 - operation: `CreateApiKey`, `GetStreamDetailInfo`, `VerifyPasswordResetToken`, `ResetStreamKey`
