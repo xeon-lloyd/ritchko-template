@@ -11,13 +11,17 @@ const setting = {
 		    host: 'db1.server.host',
 		    user: 'dbUser1',
 		    password: 'dbPass1',
-			database: 'DBName'
+			database: 'DBName',
+			connectionLimit: 10,
+			timezone: 'Z'
 	    },
         'database2': { //alias
 		    host: 'db2.server.host',
 		    user: 'dbUser2',
 		    password: 'dbPass2',
-			database: 'DBName'
+			database: 'DBName',
+			connectionLimit: 10,
+			timezone: 'Z'
 	    }
 	},
 	sqlCamelToSnakeMapping: false,

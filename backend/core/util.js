@@ -30,10 +30,18 @@ module.exports = {
 		/* DB 연결 */
 		connection: {},
 		connect: async function(db){
+			if(!setting.mysql[db]) throw new Error(`mysql alias not found: ${db}`);
+			if(this.connection[db]) return this.connection[db];
+
 			setting.mysql[db].enableKeepAlive = true;
+			if(setting.mysql[db].waitForConnections == undefined) setting.mysql[db].waitForConnections = true;
+			if(setting.mysql[db].queueLimit == undefined) setting.mysql[db].queueLimit = 0;
+			setting.mysql[db].connectionLimit = setting.mysql[db].connectionLimit || 10;
+			setting.mysql[db].timezone = setting.mysql[db].timezone || 'Z';
 
 			const mysql = require('mysql2/promise');
 			this.connection[db] = mysql.createPool(setting.mysql[db]);;
+			return this.connection[db];
 		},
 
 		camelToSnake: str => {
