@@ -8,9 +8,10 @@
 2. `backend/_param.sys.js`
 3. `backend/_response.sys.js`
 4. `backend/CHECKLIST.md`
-5. 작업 대상 도메인의 `*_operations.sys.js`, `*_param.sys.js`, `*_response.sys.js`
-6. 새 도메인 생성 시 `npm run create:backend-domain -- <name>`
-7. 새 operation 생성 시 `npm run create:backend-operation -- <domain> <OperationName>`
+5. DB 작업이면 `backend/DB.md`, `backend/DB-CHECKLIST.md`
+6. 작업 대상 도메인의 `*_operations.sys.js`, `*_param.sys.js`, `*_response.sys.js`
+7. 새 도메인 생성 시 `npm run create:backend-domain -- <name>`
+8. 새 operation 생성 시 `npm run create:backend-operation -- <domain> <OperationName>`
 
 ## 핵심 구조
 - `/API`는 `backend/_system_/middleware.sys.js`를 통해 동작한다.
@@ -56,6 +57,7 @@
 
 ## 구현 규칙
 - 파일을 만들거나 수정하기 직전에 `backend/CHECKLIST.md`의 금지 규칙을 다시 확인한다.
+- DB 조회/갱신을 건드리면 `backend/DB.md`, `backend/DB-CHECKLIST.md`를 같이 확인한다.
 - 기본 export 형태는 `module.exports = async function(param, req, res){ ... }`를 따른다.
 - operation 로직 파일과 backend `module/` 파일은 스캐폴드의 기본 import 줄을 기본값으로 유지한다.
 - 기본 import 대상은 `response`, `setting`, `util`, `valider`, `enums`이며, 현재 파일에서 쓰지 않더라도 임의로 제거하지 않는다.
@@ -81,6 +83,9 @@
 - `module/`에서 다른 `module/`을 직접 호출하는 구조는 가급적 피하고, 정말 불가피한 경우가 아니면 helper나 내부 지역 함수 수준에서만 정리한다.
 - `module/`은 보통 저장소 접근, 외부 연동, 명확한 단일 재사용 처리에 한정하고, operation 한 번에서만 쓰는 가공 로직은 우선 operation 내부에 둔다.
 - DB 변경 전에는 대상 존재 여부와 권한 여부를 먼저 확인한다.
+- 테이블에 `isDeleted`, `deletedAt`가 있으면 hard delete보다 soft delete를 우선 검토한다.
+- raw SQL이 정말 필요하지 않으면 `util.mysql.select/count/sum/insert/update/delete`를 먼저 사용한다.
+- 문자열 컬럼 저장 시 길이가 명확하면 `substring()` 등으로 길이를 맞춘다.
 - 성공/실패 응답은 `*_response.sys.js`에 정의된 응답 클래스를 사용한다.
 - operation 추가 후 `description`, `group`, `paramSchema`, `responseSchema`를 빠뜨리지 않는다.
 - `paramSchema` 설명 문자열에서 optional 파라미터는 `보드 작성자 별칭(string?)`처럼 타입 뒤에 `?`를 붙여 표기한다.

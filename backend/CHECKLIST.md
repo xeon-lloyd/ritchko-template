@@ -7,6 +7,7 @@
 ## 작업 직전 체크
 - 이번 수정이 `/API` operation 구조를 따르는지 확인한다.
 - 수정 대상 도메인의 `_operations.sys.js`, `_param.sys.js`, `_response.sys.js`까지 같이 볼지 먼저 판단한다.
+- DB 작업이면 `backend/DB.md`, `backend/DB-CHECKLIST.md`를 다시 본다.
 - 새 operation/도메인은 가능하면 생성 스크립트로 만들고 수동 생성은 예외로 둔다.
 
 ## 가장 자주 깨지는 규칙
@@ -15,6 +16,9 @@
 - `module/` 파일명과 export 함수명은 동일한 `lowerCamelCase`로 맞춘다.
 - 여러 재사용 동작이 필요하면 한 파일에 묶지 말고 파일을 분리한 뒤 operation에서 조합한다.
 - operation 로직 파일은 큰 흐름이 한 파일에서 보이게 유지하고, `module/` 뒤로 과하게 숨기지 않는다.
+- update/delete 전에는 존재 여부와 권한 여부를 먼저 확인한다.
+- raw SQL에서는 사용자 입력을 문자열 결합으로 직접 넣지 않고 placeholder를 유지한다.
+- 테이블에 soft delete 컬럼이 있으면 hard delete를 기본값처럼 쓰지 않는다.
 - 도메인 `enums.js`는 배열 enum 선언 + `...require('../enums.js')` export 형식을 유지한다.
 - enum 검증은 `if(!enums.CardType.includes(param.cardType)) return ...`처럼 배열에 직접 `includes()`를 호출한다.
 - `_param.sys.js`의 optional 표기는 `string?`, `number?`, `boolean?`처럼 타입 뒤 `?`로 적고 `optional` 문구는 쓰지 않는다.

@@ -20,6 +20,7 @@
 ## 영역별 작업 가이드
 - 백엔드 작업 전: `backend/AGENTS.md`
 - 백엔드 구현 직전 체크: `backend/CHECKLIST.md`
+- DB 작업 전: `backend/DB.md`, `backend/DB-CHECKLIST.md`
 - 뷰 템플릿 작업 전: `views/AGENTS.md`
 - 프론트 스크립트 작업 전: `public/js/AGENTS.md`
 - 스타일 작업 전: `public/scss/AGENTS.md`

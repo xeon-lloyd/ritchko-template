@@ -116,6 +116,14 @@ const other = require('other');
 - enum은 `설명(enum:a|b|c)` 형식을 유지하고, optional enum이면 `설명(enum:a|b|c?)`처럼 타입 블록 내부 마지막에 `?`를 붙인다.
 - `설명(string, optional)`처럼 영어 `optional` 문구를 추가하는 표기는 금지한다.
 
+## 7-2. DB 접근 네이밍
+- DB 접근 상세 규칙은 `backend/DB.md`를 따른다.
+- 단건 조회 module 이름은 `get + 대상 + 기준` 구조를 우선한다. 예: `getAccountByUid`, `getDogByRegisterNum`
+- 목록 조회 module 이름은 `list + 대상 + 조건` 또는 `get + 대상 + List`를 사용한다. 예: `listStreamByOwner`, `getApiKeyList`
+- 갱신 module 이름은 `update + 대상`, soft delete는 `softDelete + 대상`처럼 동작을 드러낸다.
+- 존재 여부 확인용 boolean/count helper를 만들면 `count + 대상`, `is + 대상 + Exist`보다 실제 반환값과 맞는 이름을 쓴다.
+- operation 파일 안의 지역 변수는 `user`, `stream`, `dogList`, `totalCount`, `insertRes`처럼 쿼리 결과 형태가 드러나게 짓는다.
+
 ## 8. 권장 예시
 - operation: `CreateApiKey`, `GetStreamDetailInfo`, `VerifyPasswordResetToken`, `ResetStreamKey`
 - response: `CreateApiKeyOK`, `ApiKeyNotFound`, `VerifyEmailByTokenExpired`, `UserStatusUpdateEvent`
