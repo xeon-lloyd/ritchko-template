@@ -18,6 +18,8 @@
 - operation 파일이 전체 흐름을 잡고, 재사용 가치가 있는 DB 조회/갱신만 도메인 `module/`로 분리한다.
 - 일반적인 ORM 스타일 entity/repository/service 3단 분리는 이 템플릿 기본 구조가 아니다.
 - operation 하나에서만 쓰는 단순 조회/검증은 operation 파일 안에 그대로 두는 편이 낫다.
+- 핵심 서비스 데이터 저장소는 DB를 기본값으로 본다. 로컬 JSON 파일, txt 파일, 인메모리 전역 객체를 새로운 영속 저장소처럼 도입하는 것은 이 템플릿의 기본 구현 방식이 아니다.
+- `backend/core/setting.js`가 placeholder라 실제 접속이 아직 안 되더라도, 저장 구조는 DB 기준으로 설계한다. 실행 검증이 막히면 필요한 테이블 스키마와 설정 전제를 정리하고 멈추는 편이 맞다.
 
 ## util.mysql 사용 기준
 - `select(db, select, table, where='', params=[], orderBy='', limit='')`
@@ -154,6 +156,8 @@ let list = await util.mysql.exec(
 - 무조건 공통 `db.js`, `repository.js`, `model.js`를 만들기보다 현재 도메인 구조를 유지한다.
 - 단순 CRUD라도 response class와 API 문서 반영을 생략하지 않는다.
 - 인증 사용자 기준 데이터면 `param.loginUser.uid` 조건을 명시적으로 사용한다.
+- DB 설정이 비어 있다는 이유로 `backend/<domain>/data/*.json` 파일을 만들어 서비스 데이터를 읽고 쓰는 방식으로 우회하지 않는다.
+- 파일 저장은 캐시, 로그, 업로드 임시 보관, export 결과물처럼 파일이 본질적으로 맞는 경우에 한정한다.
 
 ## 작업 전/후 확인
 - 작업 직전에는 `backend/DB-CHECKLIST.md`를 함께 본다.

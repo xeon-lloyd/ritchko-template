@@ -85,6 +85,8 @@
 - DB 변경 전에는 대상 존재 여부와 권한 여부를 먼저 확인한다.
 - 테이블에 `isDeleted`, `deletedAt`가 있으면 hard delete보다 soft delete를 우선 검토한다.
 - raw SQL이 정말 필요하지 않으면 `util.mysql.select/count/sum/insert/update/delete`를 먼저 사용한다.
+- 서비스의 핵심 도메인 데이터는 기본적으로 DB에 저장한다. `backend/core/setting.js`가 placeholder여도 JSON 파일, txt 파일, 메모리 객체를 영속 저장소처럼 새로 도입해 대체하지 않는다.
+- DB 연결 정보나 테이블 정의가 비어 있어 즉시 구현이 막히면 파일 저장으로 우회하지 말고, 필요한 스키마나 전제를 먼저 정리하거나 사용자에게 확인한다.
 - 문자열 컬럼 저장 시 길이가 명확하면 `substring()` 등으로 길이를 맞춘다.
 - 성공/실패 응답은 `*_response.sys.js`에 정의된 응답 클래스를 사용한다.
 - operation 추가 후 `description`, `group`, `paramSchema`, `responseSchema`를 빠뜨리지 않는다.
@@ -99,6 +101,7 @@
 - 공통 패턴이 이미 있으면 `scripts/templates/backend-domain/`, `scripts/templates/backend-operation/`, 기존 도메인 구현을 우선 따른다.
 - 일반적인 Node.js 유틸 습관으로 `module/` 파일에 여러 함수를 객체로 묶지 않는다.
 - 일반적인 JS 습관대로 한 줄 가드를 블록 `if`로 쓰지 않는다.
+- DB 기반 템플릿이라는 전제를 무시하고, 서비스 본 데이터를 `backend/<domain>/data/*.json` 같은 파일에 저장하는 구조를 새로 만들지 않는다.
 
 ## 검증
 - operation 추가/수정 후 `/API-doc` 문서 반영 여부 확인
