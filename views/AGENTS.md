@@ -9,6 +9,7 @@
 - 공통 조각은 `views/temp/`를 먼저 확인한다.
 
 ## 작업 규칙
+- 공통 네이밍, 주석, 함수 설계, 포매팅은 `convention/README.md`와 관련 `convention/*.md`를 기본값으로 따른다.
 - 기존 HTML 구조와 네이밍을 최대한 유지한다.
 - 공통 레이아웃 조각이 이미 있으면 `views/temp/`를 우선 재사용한다.
 - 페이지별 UI 변경 시 관련 `public/js/`, `public/scss/` 파일이 함께 필요한지 확인한다.

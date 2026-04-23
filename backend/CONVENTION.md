@@ -4,6 +4,8 @@
 - 이 문서는 `backend/` 영역의 네이밍과 주석 컨벤션을 정리한다.
 - 기준은 템플릿의 `/API` operation 구조와 이 템플릿에서 유지할 일반 backend 패턴이다.
 - `openApi/` 계열은 별도 기능과 별도 규칙이므로 이 문서의 공통 backend 컨벤션 기준에서 제외한다.
+- 공통 네이밍, 주석, 함수 설계, 포매팅 기본값은 `convention/README.md`와 관련 `convention/*.md`를 따른다.
+- 이 문서는 그 공통 규칙 위에 backend에서 반드시 추가로 지켜야 할 구체 규칙을 덧붙인다.
 
 ## 1. 파일/식별자 네이밍
 - 도메인 폴더명은 `lowerCamelCase`를 기본으로 한다. 예: `user`, `streamSystem`
@@ -70,7 +72,8 @@
 - 식별자 변수는 대상명 + `Id`를 사용한다. 예: `streamId`, `cardId`, `paymentId`
 
 ## 6. 주석 스타일
-- 주석의 기본 목적은 코드 번역이 아니라 처리 단계 구분이다.
+- 기본 원칙은 `convention/comment.md`를 따른다.
+- backend에서 주석의 기본 목적은 코드 번역이 아니라 처리 단계 구분이다.
 - 함수 내부 단계 주석은 `//` 한 줄 주석을 사용한다.
 - 함수/파일 단위 섹션 주석은 `/* ... */`를 사용한다.
 - 주석은 가능한 한국어를 기본으로 하고, 팀 내에서 이미 굳은 영어 용어는 그대로 둔다. 예: `API key`, `token`, `stream`
@@ -78,6 +81,7 @@
 - 코드 한 줄을 그대로 풀어쓴 번역형 주석은 쓰지 않는다.
 - 주석이 없으면 흐름 파악이 어려운 지점에만 쓴다. 단순 대입, 단순 return, obvious한 if문마다 주석을 달지 않는다.
 - 주석 하나는 보통 바로 아래 2~10줄 정도의 처리 묶음을 설명하도록 유지한다.
+- `module/` 파일도 계산 단계나 데이터 가공 단계가 두 묶음 이상이면 각 처리 블록 앞에 짧은 단계 주석을 붙인다.
 - TODO는 실제 후속 작업이 있을 때만 남긴다. 즉시 행동 계획이 없는 TODO 남발은 피한다.
 
 ## 6-1. 가드 절 스타일
@@ -96,6 +100,7 @@ if(!valider.isValidString(param.blueprintId)) return new response.FormInputRequi
 ```
 
 ## 7. Import 배치
+- 기본 포매팅 원칙은 `convention/formatting.md`를 따른다.
 - operation 로직 파일과 `module/` 파일은 스캐폴드의 기본 import 블록을 유지한다.
 - 기본 import 대상은 `response`, `setting`, `util`, `valider`, `enums` 순서를 기준으로 둔다.
 - 추가 import가 필요하면 기본 import 블록 아래를 한 줄 비운 뒤 작성한다.

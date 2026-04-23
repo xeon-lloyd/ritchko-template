@@ -16,6 +16,8 @@
 3. `backend/_system_/middleware.sys.js`
 4. `backend/_operations.sys.js`
 5. 작업 대상 영역의 `AGENTS.md`
+6. `convention/README.md`
+7. 작업과 직접 관련된 `convention/*.md`
 
 ## 영역별 작업 가이드
 - 백엔드 작업 전: `backend/AGENTS.md`
@@ -24,6 +26,11 @@
 - 뷰 템플릿 작업 전: `views/AGENTS.md`
 - 프론트 스크립트 작업 전: `public/js/AGENTS.md`
 - 스타일 작업 전: `public/scss/AGENTS.md`
+
+## 공통 컨벤션
+- 공통 네이밍, 주석, 함수 설계, 포매팅은 기본적으로 `convention/README.md`와 관련 `convention/*.md`를 따른다.
+- 특정 영역의 `AGENTS.md`, 체크리스트, 영역 전용 컨벤션 문서에 더 구체적이거나 더 엄격한 규칙이 있으면 그 문서를 우선한다.
+- 공통 컨벤션 문서는 일반론 참고용이 아니라 이 레포에서 기본값으로 따를 규칙이다. 별도 지시가 없으면 임의의 일반 프레임워크 습관보다 `convention/` 문서를 우선한다.
 
 ## 프로젝트 구조
 - `server.js`: 서버 부팅, 정적 파일 설정, 뷰 렌더링, 시스템 초기화
@@ -60,6 +67,7 @@
 - 실제 비밀번호, API 키, 토큰, DB 접속 정보는 커밋하지 않는다.
 - 템플릿의 `backend/core/setting.js`, `public/js/env.js`는 placeholder 성격을 유지한다.
 - 구현 전에 작업 대상 영역의 `AGENTS.md`와 체크리스트 파일에서 금지 규칙을 먼저 다시 확인한다.
+- 새 코드의 네이밍, 주석, 함수 설계, 포매팅은 별도 예외가 없으면 `convention/` 문서 기준으로 맞춘다.
 - 이 템플릿에서 서비스의 주 저장소는 기본적으로 DB다. 설정값이 placeholder이거나 로컬에서 즉시 실행이 어렵더라도, 임의의 JSON 파일, txt 파일, 로컬 캐시 파일을 서비스 본 저장소처럼 설계해 우회하지 않는다.
 - 파일 저장은 업로드 임시파일, 로그, 캐시, export 산출물처럼 기존 구조상 파일이 맞는 경우에만 사용한다. 서비스 핵심 도메인 데이터 저장은 `backend/DB.md` 기준으로 DB에 맞춰 구현한다.
 

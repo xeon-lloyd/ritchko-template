@@ -9,6 +9,7 @@
 - 공통 API helper와 유틸은 `public/js/core.js`를 먼저 확인한다.
 
 ## 작업 규칙
+- 공통 네이밍, 주석, 함수 설계, 포매팅은 `convention/README.md`와 관련 `convention/*.md`를 기본값으로 따른다.
 - DOM 참조는 한 곳에 모아두고, 이벤트 바인딩과 렌더링 책임을 분리한다.
 - 공통 유틸은 `public/js/core.js`를 우선 재사용한다.
 - 숫자/날짜 포맷, 쿠키, alert, API 호출 로직을 중복 구현하지 않는다.

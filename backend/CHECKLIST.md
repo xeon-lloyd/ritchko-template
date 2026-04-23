@@ -9,6 +9,7 @@
 - 수정 대상 도메인의 `_operations.sys.js`, `_param.sys.js`, `_response.sys.js`까지 같이 볼지 먼저 판단한다.
 - DB 작업이면 `backend/DB.md`, `backend/DB-CHECKLIST.md`를 다시 본다.
 - 새 operation/도메인은 가능하면 생성 스크립트로 만들고 수동 생성은 예외로 둔다.
+- 공통 네이밍, 주석, 함수 설계, 포매팅은 `convention/README.md`와 관련 문서를 다시 확인한다.
 
 ## 가장 자주 깨지는 규칙
 - `module/`은 `1파일 1export 함수`만 허용한다.
