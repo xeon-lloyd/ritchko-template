@@ -69,6 +69,8 @@
 - operation 로직 파일의 `param`은 구조분해하지 않고 `param.xxx` 형태로 직접 사용한다.
 - 입력값이 어느 객체에서 왔는지 코드 전반에서 바로 보이도록 `const { sprintId } = param` 같은 패턴은 지양한다.
 - 입력값 검증을 먼저 수행한다.
+- 입력값 검증 실패 응답은 필수 입력 누락 여부와 관계없이 무조건 `new response.InputValueNotValid('{param}')` 형태로 통일한다.
+- 신규 구현에서 `FormInputRequired`를 만들거나 사용하지 않는다.
 - 실패 시 가능한 한 빠르게 response 객체를 반환한다.
 - DB 변경 전에는 대상 존재 여부와 권한 여부를 먼저 확인한다.
 - 테이블에 `isDeleted`, `deletedAt`가 있으면 hard delete보다 soft delete를 우선 검토한다.

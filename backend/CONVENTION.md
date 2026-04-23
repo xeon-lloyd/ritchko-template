@@ -41,6 +41,8 @@
 - response class는 `PascalCase`를 사용한다.
 - 성공 응답은 기본적으로 `...OK` suffix를 사용한다. 예: `SignInOK`, `GetStreamListOK`, `DeleteApiKeyOK`
 - 실패 응답은 에러 상태를 바로 드러내는 명사/형용사구를 사용한다. 예: `AccountNotFound`, `EmailAlreadyInUse`, `CurrentPasswordIsIncorrect`
+- 입력값 검증 실패는 필수 입력 누락과 형식 오류를 따로 나누지 않고 `InputValueNotValid` 하나로 통일한다.
+- 신규 backend 구현에서 `FormInputRequired` 응답 클래스는 만들지 않는다.
 - 특정 operation에 종속된 실패 응답이면 필요 시 operation의 핵심 명사를 포함한다. 예: `VerifyPasswordResetTokenExpired`, `ResetPasswordByTokenInvalid`
 - response 블록 주석은 operation 단위로 `/* OperationName */` 형태를 사용한다.
 - webhook 응답은 이름에 `Process`를 포함해 일반 operation 응답과 구분한다. 예: `SocialLoginProcessOK`
@@ -96,7 +98,7 @@ if(!valider.isValidString(param.blueprintId)){
 ```
 - 권장:
 ```js
-if(!valider.isValidString(param.blueprintId)) return new response.FormInputRequired();
+if(!valider.isValidString(param.blueprintId)) return new response.InputValueNotValid('blueprintId');
 ```
 
 ## 7. Import 배치

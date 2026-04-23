@@ -26,6 +26,7 @@
 - `_param.sys.js`의 optional 표기는 `string?`, `number?`, `boolean?`처럼 타입 뒤 `?`로 적고 `optional` 문구는 쓰지 않는다.
 - 한 줄 가드 절은 예외 없이 인라인으로 작성한다.
 - `if (...) { return ... }` 형태의 블록 가드는 금지한다.
+- 입력값 검증 실패 응답은 무조건 `InputValueNotValid`를 쓴다. `FormInputRequired`는 새 코드에서 금지한다.
 
 ## 빠른 금지 예시
 - 금지:
@@ -76,7 +77,7 @@ if(!valider.isValidString(param.blueprintId)){
 
 - 허용:
 ```js
-if(!valider.isValidString(param.blueprintId)) return new response.FormInputRequired();
+if(!valider.isValidString(param.blueprintId)) return new response.InputValueNotValid('blueprintId');
 ```
 
 - 금지:
