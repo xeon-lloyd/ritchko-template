@@ -80,7 +80,7 @@
 ```js
 module.exports = async function(param, req, res){
     // 입력값 검증
-    if(!param.signalId) return new response.FormInputRequired('signalId');
+    if(!param.signalId) return new response.InputValueNotValid('signalId');
 
     // 대상 존재 여부 확인
     const signal = await getSignalById(param.signalId);

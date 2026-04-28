@@ -32,7 +32,7 @@
 
 ```js
 module.exports = async function(param, req, res){
-    if(!param.userId) return new response.FormInputRequired('userId');
+    if(!param.userId) return new response.InputValueNotValid('userId');
 
     const user = await getUserById(param.userId);
     if(!user) return new response.UserNotFound();
