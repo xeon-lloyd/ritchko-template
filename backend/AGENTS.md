@@ -8,8 +8,8 @@
 2. `backend/_param.sys.js`
 3. `backend/_response.sys.js`
 4. `backend/CHECKLIST.md`
-5. DB 작업이면 `backend/DB.md`, `backend/DB-CHECKLIST.md`
-6. 파일 업로드 작업이면 `backend/FILE.md`, `backend/FILE-CHECKLIST.md`
+5. DB 작업이면 `backend/docs/DB.md`, `backend/docs/DB-CHECKLIST.md`
+6. 파일 업로드 작업이면 `backend/docs/FILE.md`, `backend/docs/FILE-CHECKLIST.md`
 7. 작업 대상 도메인의 `*_operations.sys.js`, `*_param.sys.js`, `*_response.sys.js`
 8. 새 도메인 생성 시 `npm run create:backend-domain -- <name>`
 9. 새 operation 생성 시 `npm run create:backend-operation -- <domain> <OperationName>`
@@ -61,8 +61,8 @@
 
 ## 구현 규칙
 - 파일을 만들거나 수정하기 직전에 `backend/CHECKLIST.md`의 금지 규칙을 다시 확인한다.
-- DB 조회/갱신을 건드리면 `backend/DB.md`, `backend/DB-CHECKLIST.md`를 같이 확인한다.
-- 파일 업로드, fileToken, S3 object 이동/삭제를 건드리면 `backend/FILE.md`, `backend/FILE-CHECKLIST.md`를 같이 확인한다.
+- DB 조회/갱신을 건드리면 `backend/docs/DB.md`, `backend/docs/DB-CHECKLIST.md`를 같이 확인한다.
+- 파일 업로드, fileToken, S3 object 이동/삭제를 건드리면 `backend/docs/FILE.md`, `backend/docs/FILE-CHECKLIST.md`를 같이 확인한다.
 - 공통 네이밍, 주석, 함수 설계, 포매팅은 `convention/README.md`와 관련 `convention/*.md`를 기본값으로 삼고, backend 전용 예외와 추가 강제사항은 `backend/CONVENTION.md`를 따른다.
 - 기본 export 형태는 `module.exports = async function(param, req, res){ ... }`를 따른다.
 - operation 로직 파일과 backend `module/` 파일은 스캐폴드의 기본 import 줄을 기본값으로 유지한다.

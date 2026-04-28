@@ -124,7 +124,7 @@ const other = require('other');
 - `설명(string, optional)`처럼 영어 `optional` 문구를 추가하는 표기는 금지한다.
 
 ## 7-2. DB 접근 네이밍
-- DB 접근 상세 규칙은 `backend/DB.md`를 따른다.
+- DB 접근 상세 규칙은 `backend/docs/DB.md`를 따른다.
 - 단건 조회 module 이름은 `get + 대상 + 기준` 구조를 우선한다. 예: `getAccountByUid`, `getDogByRegisterNum`
 - 목록 조회 module 이름은 `list + 대상 + 조건` 또는 `get + 대상 + List`를 사용한다. 예: `listStreamByOwner`, `getApiKeyList`
 - 갱신 module 이름은 `update + 대상`, soft delete는 `softDelete + 대상`처럼 동작을 드러낸다.

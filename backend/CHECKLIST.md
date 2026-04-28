@@ -7,8 +7,8 @@
 ## 작업 직전 체크
 - 이번 수정이 `/API` operation 구조를 따르는지 확인한다.
 - 수정 대상 도메인의 `_operations.sys.js`, `_param.sys.js`, `_response.sys.js`까지 같이 볼지 먼저 판단한다.
-- DB 작업이면 `backend/DB.md`, `backend/DB-CHECKLIST.md`를 다시 본다.
-- 파일 업로드 작업이면 `backend/FILE.md`, `backend/FILE-CHECKLIST.md`를 다시 본다.
+- DB 작업이면 `backend/docs/DB.md`, `backend/docs/DB-CHECKLIST.md`를 다시 본다.
+- 파일 업로드 작업이면 `backend/docs/FILE.md`, `backend/docs/FILE-CHECKLIST.md`를 다시 본다.
 - 새 operation/도메인은 가능하면 생성 스크립트로 만들고 수동 생성은 예외로 둔다.
 - 공통 네이밍, 주석, 함수 설계, 포매팅은 `convention/README.md`와 관련 문서를 다시 확인한다.
 

@@ -22,8 +22,8 @@
 ## 영역별 작업 가이드
 - 백엔드 작업 전: `backend/AGENTS.md`
 - 백엔드 구현 직전 체크: `backend/CHECKLIST.md`
-- DB 작업 전: `backend/DB.md`, `backend/DB-CHECKLIST.md`
-- 파일 업로드 작업 전: `backend/FILE.md`, `backend/FILE-CHECKLIST.md`
+- DB 작업 전: `backend/docs/DB.md`, `backend/docs/DB-CHECKLIST.md`
+- 파일 업로드 작업 전: `backend/docs/FILE.md`, `backend/docs/FILE-CHECKLIST.md`
 - 뷰 템플릿 작업 전: `views/AGENTS.md`
 - 프론트 스크립트 작업 전: `public/js/AGENTS.md`
 - 스타일 작업 전: `public/scss/AGENTS.md`
@@ -39,7 +39,7 @@
 - `backend/_operations.sys.js`: 전체 operation 진입점
 - `backend/_param.sys.js`: 전체 param schema 진입점
 - `backend/_response.sys.js`: 전체 response schema 진입점
-- `backend/FILE.md`: 파일 업로드와 fileToken 처리 기준
+- `backend/docs/`: DB, 파일 업로드 같은 backend 주제별 세부 가이드
 - `scripts/create-backend-domain.js`: 새 백엔드 도메인 생성 스크립트
 - `scripts/create-backend-operation.js`: 도메인 내부 operation 생성 스크립트
 - `scripts/templates/backend-domain/`: 새 백엔드 도메인 스캐폴드 원본
@@ -71,7 +71,7 @@
 - 구현 전에 작업 대상 영역의 `AGENTS.md`와 체크리스트 파일에서 금지 규칙을 먼저 다시 확인한다.
 - 새 코드의 네이밍, 주석, 함수 설계, 포매팅은 별도 예외가 없으면 `convention/` 문서 기준으로 맞춘다.
 - 이 템플릿에서 서비스의 주 저장소는 기본적으로 DB다. 설정값이 placeholder이거나 로컬에서 즉시 실행이 어렵더라도, 임의의 JSON 파일, txt 파일, 로컬 캐시 파일을 서비스 본 저장소처럼 설계해 우회하지 않는다.
-- 파일 저장은 업로드 임시파일, 로그, 캐시, export 산출물처럼 기존 구조상 파일이 맞는 경우에만 사용한다. 서비스 핵심 도메인 데이터 저장은 `backend/DB.md` 기준으로 DB에 맞춰 구현한다.
+- 파일 저장은 업로드 임시파일, 로그, 캐시, export 산출물처럼 기존 구조상 파일이 맞는 경우에만 사용한다. 서비스 핵심 도메인 데이터 저장은 `backend/docs/DB.md` 기준으로 DB에 맞춰 구현한다.
 
 ## 검증 규칙
 - `npm run build`

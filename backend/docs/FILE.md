@@ -11,7 +11,7 @@
 3. `backend/core/util.js`의 `s3`, `fileUpload`
 4. `backend/_system_/document/fileUpload.sys.js`
 5. 작업 대상 도메인의 `_param.sys.js`, `_response.sys.js`, `enums.js`
-6. DB에 파일 경로나 상태를 저장하면 `backend/DB.md`, `backend/DB-CHECKLIST.md`
+6. DB에 파일 경로나 상태를 저장하면 `backend/docs/DB.md`, `backend/docs/DB-CHECKLIST.md`
 
 ## 현재 템플릿의 업로드 흐름
 1. 클라이언트가 `POST /API/fileUpload`로 `multipart/form-data` 파일 1개를 전송한다.
@@ -111,6 +111,6 @@ uploadedFile: "업로드 파일 토큰(fileToken?)"
 - 기존 파일 교체 시 새 파일 처리와 기존 파일 삭제 순서를 신중히 정한다. 새 파일 처리가 실패했는데 기존 파일을 먼저 지우면 복구가 어렵다.
 
 ## 작업 전/후 확인
-- 작업 직전에는 `backend/FILE-CHECKLIST.md`를 함께 본다.
-- 파일 경로나 상태를 DB에 저장하면 `backend/DB-CHECKLIST.md`도 함께 본다.
+- 작업 직전에는 `backend/docs/FILE-CHECKLIST.md`를 함께 본다.
+- 파일 경로나 상태를 DB에 저장하면 `backend/docs/DB-CHECKLIST.md`도 함께 본다.
 - operation이 바뀌면 `/API-doc` 반영 여부를 확인한다.

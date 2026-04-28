@@ -160,5 +160,5 @@ let list = await util.mysql.exec(
 - 파일 저장은 캐시, 로그, 업로드 임시 보관, export 결과물처럼 파일이 본질적으로 맞는 경우에 한정한다.
 
 ## 작업 전/후 확인
-- 작업 직전에는 `backend/DB-CHECKLIST.md`를 함께 본다.
+- 작업 직전에는 `backend/docs/DB-CHECKLIST.md`를 함께 본다.
 - operation이 바뀌면 `/API-doc` 반영 여부를 확인한다.
