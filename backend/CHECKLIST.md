@@ -8,6 +8,7 @@
 - 이번 수정이 `/API` operation 구조를 따르는지 확인한다.
 - 수정 대상 도메인의 `_operations.sys.js`, `_param.sys.js`, `_response.sys.js`까지 같이 볼지 먼저 판단한다.
 - DB 작업이면 `backend/DB.md`, `backend/DB-CHECKLIST.md`를 다시 본다.
+- 파일 업로드 작업이면 `backend/FILE.md`, `backend/FILE-CHECKLIST.md`를 다시 본다.
 - 새 operation/도메인은 가능하면 생성 스크립트로 만들고 수동 생성은 예외로 둔다.
 - 공통 네이밍, 주석, 함수 설계, 포매팅은 `convention/README.md`와 관련 문서를 다시 확인한다.
 
@@ -21,6 +22,8 @@
 - raw SQL에서는 사용자 입력을 문자열 결합으로 직접 넣지 않고 placeholder를 유지한다.
 - 테이블에 soft delete 컬럼이 있으면 hard delete를 기본값처럼 쓰지 않는다.
 - DB 기반 작업을 파일 저장으로 우회하지 않는다. 서비스 본 데이터를 JSON 파일이나 txt 파일에 영속 저장하는 구조를 새로 만들지 않는다.
+- fileToken을 최종 서비스 데이터처럼 DB에 저장하지 않는다.
+- tempBucket 파일을 영구 파일처럼 사용하지 않는다.
 - 도메인 `enums.js`는 배열 enum 선언 + `...require('../enums.js')` export 형식을 유지한다.
 - enum 검증은 `if(!enums.CardType.includes(param.cardType)) return ...`처럼 배열에 직접 `includes()`를 호출한다.
 - `_param.sys.js`의 optional 표기는 `string?`, `number?`, `boolean?`처럼 타입 뒤 `?`로 적고 `optional` 문구는 쓰지 않는다.

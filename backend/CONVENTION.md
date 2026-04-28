@@ -16,7 +16,7 @@
 - 과거 코드에 `cardType` 같은 예외가 있어도 신규 추가는 `PascalCase` 쪽으로 맞춘다.
 
 ## 1-1. Enum 파일 규칙
-- 도메인 `enums.js`는 `../_streamtial/streamtial` 코드베이스의 패턴처럼 enum마다 개별 배열 상수를 선언한 뒤 export 한다.
+- 도메인 `enums.js`는 enum마다 개별 배열 상수를 선언한 뒤 export 한다.
 - enum 값은 무조건 배열 형식으로 선언한다. 예: `const CardType = ['main', 'backup']`
 - 도메인 `enums.js`의 export는 무조건 root enum을 먼저 포함한 객체 형식을 사용한다. 예: `module.exports = { ...require('../enums.js'), CardType }`
 - 도메인 enum 파일에서 `module.exports = { Horizon: {...} }` 같은 객체형 enum 선언은 금지한다.

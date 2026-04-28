@@ -23,6 +23,7 @@
 - 백엔드 작업 전: `backend/AGENTS.md`
 - 백엔드 구현 직전 체크: `backend/CHECKLIST.md`
 - DB 작업 전: `backend/DB.md`, `backend/DB-CHECKLIST.md`
+- 파일 업로드 작업 전: `backend/FILE.md`, `backend/FILE-CHECKLIST.md`
 - 뷰 템플릿 작업 전: `views/AGENTS.md`
 - 프론트 스크립트 작업 전: `public/js/AGENTS.md`
 - 스타일 작업 전: `public/scss/AGENTS.md`
@@ -38,6 +39,7 @@
 - `backend/_operations.sys.js`: 전체 operation 진입점
 - `backend/_param.sys.js`: 전체 param schema 진입점
 - `backend/_response.sys.js`: 전체 response schema 진입점
+- `backend/FILE.md`: 파일 업로드와 fileToken 처리 기준
 - `scripts/create-backend-domain.js`: 새 백엔드 도메인 생성 스크립트
 - `scripts/create-backend-operation.js`: 도메인 내부 operation 생성 스크립트
 - `scripts/templates/backend-domain/`: 새 백엔드 도메인 스캐폴드 원본

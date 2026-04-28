@@ -2,7 +2,7 @@
 
 ## 목적
 - 이 문서는 이 템플릿에서 DB 관련 backend 코드를 작성할 때 따를 기준을 정리한다.
-- 기준은 현재 템플릿 구조와 `../_streamtial/streamtial`, `../petpath-api-renewal-v1`에서 반복된 패턴이다.
+- 기준은 현재 템플릿 구조와 이 레포의 `operation + domain module + util.mysql` 패턴이다.
 - 이 템플릿은 ORM이나 repository 레이어보다 `operation + domain module + util.mysql` 조합을 기본으로 한다.
 
 ## 먼저 볼 것
