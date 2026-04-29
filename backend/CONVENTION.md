@@ -24,6 +24,19 @@
 - operation 추가 시 로직 파일만 만들지 말고 `_operations.sys.js`, `_param.sys.js`, `_response.sys.js`를 함께 맞춘다.
 - operation 설명, group, paramSchema, responseSchema를 빠뜨리지 않는다.
 
+## Socket
+- socket key와 `paramSchema` key는 같은 이름을 쓴다.
+- client > server 요청은 `Message`, server > client 이벤트는 `Event` suffix를 우선한다.
+- message 로직 파일은 `lowerCamelCase`로 작성한다.
+- message 로직 기본 export는 `module.exports = async function(socket, data){ ... }` 형태다.
+- message 로직에서 `data`는 구조분해하지 않고 `data.xxx`로 사용한다.
+- message 추가 시 로직 파일만 만들지 말고 `_sockets.sys.js`, `_param.sys.js`, `_response.sys.js`를 함께 맞춘다.
+- event는 직접 emit하는 계약이므로 `_sockets.sys.js`에 `type: 'event'`로 문서화한다.
+- 예상 가능한 실패는 `socket.emit('_error', new response.X())` 후 return한다.
+- room 이름은 `<domain>:<id>` 형태를 우선한다.
+- room join 전에는 대상 존재 여부와 권한 여부를 먼저 확인한다.
+- 소켓 세부 규칙은 `backend/docs/SOCKET.md`를 따른다.
+
 ## Response
 - 성공 응답은 `...OK` suffix를 쓴다.
 - 실패 응답은 상태를 바로 드러내는 이름을 쓴다. 예: `UserNotFound`, `EmailAlreadyInUse`

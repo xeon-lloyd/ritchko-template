@@ -21,6 +21,7 @@
 - 백엔드: `backend/AGENTS.md`, `backend/CHECKLIST.md`, `backend/CONVENTION.md`
 - DB: `backend/docs/DB.md`, `backend/docs/DB-CHECKLIST.md`
 - 파일 업로드: `backend/docs/FILE.md`, `backend/docs/FILE-CHECKLIST.md`
+- 소켓: `backend/docs/SOCKET.md`, `backend/docs/SOCKET-CHECKLIST.md`
 - 뷰 템플릿: `views/AGENTS.md`
 - 프론트 스크립트: `public/js/AGENTS.md`
 - 스타일: `public/scss/AGENTS.md`
@@ -44,3 +45,4 @@
 - 기본 검증: `npm run build`
 - 필요한 경우: `npm run start:dev`
 - operation 추가/수정 시 `/API-doc` 반영 여부를 확인한다.
+- socket 추가/수정 시 `/API-doc/sockets` 반영 여부를 확인한다.
