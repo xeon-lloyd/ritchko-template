@@ -37,6 +37,17 @@
 - room join 전에는 대상 존재 여부와 권한 여부를 먼저 확인한다.
 - 소켓 세부 규칙은 `backend/docs/SOCKET.md`를 따른다.
 
+## Webhook
+- webhook registry key와 `paramSchema` key는 같은 이름을 쓴다.
+- webhook registry key는 `/domain/action` 형태를 우선한다. 예: `/user/socialLoginProcess`, `/payment/paymentEventProcess`
+- webhook 로직 파일은 `lowerCamelCase`로 작성한다.
+- 외부 redirect 또는 event 처리 로직 파일은 `Process` 의미가 드러나는 이름을 우선한다.
+- webhook 로직 기본 export는 `module.exports = async function(req, res){ ... }` 형태다.
+- webhook 로직은 `/API` operation middleware를 거치지 않으므로 `req.query`, `req.body`, `req.headers`를 직접 사용한다.
+- webhook 추가 시 로직 파일만 만들지 말고 `_webhooks.sys.js`, `_param.sys.js`, `_response.sys.js`를 함께 맞춘다.
+- 현재 기본 `webhookInit.sys.js`는 registry의 `authRequire`를 처리하지 않는다.
+- 웹훅 세부 규칙은 `backend/docs/WEBHOOK.md`를 따른다.
+
 ## Response
 - 성공 응답은 `...OK` suffix를 쓴다.
 - 실패 응답은 상태를 바로 드러내는 이름을 쓴다. 예: `UserNotFound`, `EmailAlreadyInUse`

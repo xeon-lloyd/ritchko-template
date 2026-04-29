@@ -11,8 +11,9 @@
 5. `backend/CONVENTION.md`
 6. DB 작업이면 `backend/docs/DB.md`, `backend/docs/DB-CHECKLIST.md`
 7. 파일 업로드 작업이면 `backend/docs/FILE.md`, `backend/docs/FILE-CHECKLIST.md`
-8. 소켓 작업이면 `backend/docs/SOCKET.md`, `backend/docs/SOCKET-CHECKLIST.md`
-9. 작업 대상 도메인의 `_operations.sys.js`, `_param.sys.js`, `_response.sys.js`, `_sockets.sys.js`
+8. 웹훅 작업이면 `backend/docs/WEBHOOK.md`, `backend/docs/WEBHOOK-CHECKLIST.md`
+9. 소켓 작업이면 `backend/docs/SOCKET.md`, `backend/docs/SOCKET-CHECKLIST.md`
+10. 작업 대상 도메인의 `_operations.sys.js`, `_param.sys.js`, `_response.sys.js`, `_webhooks.sys.js`, `_sockets.sys.js`
 
 ## 구조
 - `/API`는 `backend/_system_/middleware.sys.js`가 처리한다.
@@ -20,6 +21,8 @@
 - operation 정의는 실제 로직 파일, 인증 여부, 문서용 schema를 가리킨다.
 - 응답은 `*_response.sys.js`의 response class를 반환한다.
 - 새 도메인/operation은 가능하면 스캐폴드 스크립트로 생성한다.
+- 웹훅은 `backend/_system_/webhookInit.sys.js`가 `/webhook{registryKey}`로 초기화하고, `backend/_webhooks.sys.js`가 도메인별 `_webhooks.sys.js`를 모은다.
+- 웹훅 로직은 `/API` operation middleware를 거치지 않고 `module.exports = async function(req, res){ ... }` 형태로 Express `req`, `res`를 직접 다룬다.
 - 소켓은 `backend/_system_/socketInit.sys.js`가 `/socket`으로 초기화하고, `backend/_sockets.sys.js`가 도메인별 `_sockets.sys.js`를 모은다.
 - 소켓 message 로직은 `module.exports = async function(socket, data){ ... }` 형태다.
 
@@ -45,11 +48,12 @@
 - 신규 코드에서 `FormInputRequired`를 만들거나 사용하지 않는다.
 - update/delete 전에는 대상 존재 여부와 권한 여부를 먼저 확인한다.
 - 서비스 핵심 데이터는 DB에 저장한다. 파일 저장소로 우회하지 않는다.
-- DB 세부 규칙은 `backend/docs/DB.md`, 파일 업로드 세부 규칙은 `backend/docs/FILE.md`, 네이밍/응답/enum/가드 절은 `backend/CONVENTION.md`를 따른다.
+- DB 세부 규칙은 `backend/docs/DB.md`, 파일 업로드 세부 규칙은 `backend/docs/FILE.md`, 웹훅 세부 규칙은 `backend/docs/WEBHOOK.md`, 네이밍/응답/enum/가드 절은 `backend/CONVENTION.md`를 따른다.
 - 소켓 세부 규칙은 `backend/docs/SOCKET.md`를 따른다.
 
 ## 검증
 - operation 추가/수정 후 `/API-doc` 반영 여부 확인
+- webhook 추가/수정 후 `/API-doc/webhooks` 반영 여부 확인
 - socket 추가/수정 후 `/API-doc/sockets` 반영 여부 확인
 - 루트 집계 파일 갱신 여부 확인
 - 기본 검증은 `npm run build`

@@ -21,6 +21,7 @@
 - 백엔드: `backend/AGENTS.md`, `backend/CHECKLIST.md`, `backend/CONVENTION.md`
 - DB: `backend/docs/DB.md`, `backend/docs/DB-CHECKLIST.md`
 - 파일 업로드: `backend/docs/FILE.md`, `backend/docs/FILE-CHECKLIST.md`
+- 웹훅: `backend/docs/WEBHOOK.md`, `backend/docs/WEBHOOK-CHECKLIST.md`
 - 소켓: `backend/docs/SOCKET.md`, `backend/docs/SOCKET-CHECKLIST.md`
 - 뷰 템플릿: `views/AGENTS.md`
 - 프론트 스크립트: `public/js/AGENTS.md`
