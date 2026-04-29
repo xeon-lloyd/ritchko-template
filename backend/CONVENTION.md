@@ -48,6 +48,19 @@
 - 현재 기본 `webhookInit.sys.js`는 registry의 `authRequire`를 처리하지 않는다.
 - 웹훅 세부 규칙은 `backend/docs/WEBHOOK.md`를 따른다.
 
+## Worker
+- root cron registry는 `backend/worker/registCron.js`를 사용한다.
+- 도메인 cron registry는 `backend/<domain>/worker/registCron.js`를 사용한다.
+- `registCron.js` 파일명은 기존 템플릿 이름을 유지한다.
+- worker 로직 파일은 `lowerCamelCase`로 작성한다.
+- worker 로직 기본 export는 `module.exports = async function workerName(){ ... }` 형태를 우선한다.
+- cron 등록 파일에는 schedule 등록과 에러 처리만 두고 긴 비즈니스 로직은 별도 worker 파일 또는 `module/` 함수로 분리한다.
+- cron expression은 실행 주기를 설명하는 주석과 함께 둔다.
+- 단일 실행이 필요한 worker는 프로세스 가드, 분산 lock, DB unique key 등으로 중복 실행을 방지한다.
+- worker는 `/API` operation middleware를 거치지 않고 `/API-doc` 문서화 대상도 아니다.
+- queue worker는 producer와 consumer를 분리하고 payload에는 필요한 최소 식별자만 담는다.
+- worker 세부 규칙은 `backend/docs/WORKER.md`를 따른다.
+
 ## Response
 - 성공 응답은 `...OK` suffix를 쓴다.
 - 실패 응답은 상태를 바로 드러내는 이름을 쓴다. 예: `UserNotFound`, `EmailAlreadyInUse`

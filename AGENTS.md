@@ -23,6 +23,7 @@
 - 파일 업로드: `backend/docs/FILE.md`, `backend/docs/FILE-CHECKLIST.md`
 - 웹훅: `backend/docs/WEBHOOK.md`, `backend/docs/WEBHOOK-CHECKLIST.md`
 - 소켓: `backend/docs/SOCKET.md`, `backend/docs/SOCKET-CHECKLIST.md`
+- cron/worker: `backend/docs/WORKER.md`, `backend/docs/WORKER-CHECKLIST.md`
 - 뷰 템플릿: `views/AGENTS.md`
 - 프론트 스크립트: `public/js/AGENTS.md`
 - 스타일: `public/scss/AGENTS.md`
@@ -36,6 +37,7 @@
 - 서비스 핵심 도메인 데이터는 DB에 저장한다. JSON, txt, 로컬 캐시 파일을 본 저장소처럼 새로 도입하지 않는다.
 - 파일 저장은 업로드 임시파일, 로그, 캐시, export 산출물처럼 파일이 본질인 경우에만 사용한다.
 - DB 날짜 저장 규칙은 `backend/docs/DB.md`를 따른다.
+- cron/worker 작성 규칙은 `backend/docs/WORKER.md`를 따른다.
 
 ## 생성 명령
 - 백엔드 도메인: `npm run create:backend-domain -- <name>`
@@ -47,3 +49,4 @@
 - 필요한 경우: `npm run start:dev`
 - operation 추가/수정 시 `/API-doc` 반영 여부를 확인한다.
 - socket 추가/수정 시 `/API-doc/sockets` 반영 여부를 확인한다.
+- cron/worker 추가/수정 시 root/도메인 `registCron.js` 집계를 확인한다.
