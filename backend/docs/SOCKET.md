@@ -6,7 +6,7 @@
 ## 기본 구조
 - 소켓은 `server.js`의 HTTP server를 `backend/_system_/initialize.sys.js`가 `backend/_system_/socketInit.sys.js`로 넘겨 초기화한다.
 - socket.io path는 `/socket`이고 transport는 `websocket`만 사용한다.
-- 초기화된 socket.io instance는 `util.socket.io`에 저장된다.
+- 초기화된 socket.io instance는 `util.socket`에 저장된다.
 - 소켓 registry는 `backend/_sockets.sys.js`가 도메인별 `backend/<domain>/_sockets.sys.js`를 모아 만든다.
 - `type: 'message'`는 client에서 server로 보내는 요청이다.
 - `type: 'event'`는 server에서 client로 보내는 이벤트 문서화 항목이다.
@@ -129,7 +129,7 @@ module.exports = async function(socket, data){
 event는 자동 listener가 아니다. 필요한 operation, worker, socket message 로직에서 직접 emit한다.
 
 ```js
-util.socket.io.to(`chat:${roomId}`).emit(
+util.socket.to(`chat:${roomId}`).emit(
     'RoomUpdatedEvent',
     new response.RoomUpdatedEvent(roomInfo)
 )
@@ -143,8 +143,8 @@ socket.emit(
 작성 규칙:
 - event payload는 `_response.sys.js`의 `...Event` class로 만든다.
 - 특정 socket 한 명에게 보낼 때는 `socket.emit(...)`을 사용한다.
-- room 또는 전체 socket instance를 대상으로 보낼 때는 `util.socket.io.to(room).emit(...)`을 사용한다.
-- operation 로직에서 socket event를 보내야 할 때도 `util.socket.io`를 사용한다.
+- room 또는 전체 socket instance를 대상으로 보낼 때는 `util.socket.to(room).emit(...)`을 사용한다.
+- operation 로직에서 socket event를 보내야 할 때도 `util.socket`를 사용한다.
 - emit하는 event는 도메인 `_sockets.sys.js`에 `type: 'event'`로 문서화한다.
 
 ## Room과 Socket 상태

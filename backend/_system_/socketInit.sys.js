@@ -5,7 +5,7 @@ const setting = require('../core/setting.js');
 const util = require("../core/util.js");
 
 module.exports = async function(server){
-    util.socket.io = require('socket.io')(server, {
+    util.socket = require('socket.io')(server, {
         path: '/socket',
         transports: ['websocket'],
     });
@@ -26,12 +26,18 @@ module.exports = async function(server){
 
         const subClient = pubClient.duplicate();
 
-        util.socket.io.adapter(createAdapter(pubClient, subClient));
+        util.socket.adapter(createAdapter(pubClient, subClient));
     }
 
 
-    util.socket.io.on('connection', function(socket) {
-        /* auth에 토크이 있다면 loginUser로 decode */
+    /* type이 message(client > server)인 socketOperation 목록 — 서버 기동 시 한 번만 로드 */
+    const socketOperations = require('../_sockets.sys.js')
+    const messageOperations = Object.keys(socketOperations)
+        .filter(key => socketOperations[key].type === 'message')
+        .map(key => ({ name: key, operation: socketOperations[key] }))
+
+    util.socket.on('connection', function(socket) {
+        /* auth에 토큰이 있다면 loginUser로 decode */
         if(socket.handshake.headers.auth){
             try{
                 let [ userData, hash ] = socket.handshake.headers.auth.split('.')
@@ -49,43 +55,38 @@ module.exports = async function(server){
                 if(!isHashEqual){
                     throw "user data modified"
                 }
-    
+
                 userData = JSON.parse(Buffer.from(userData, 'base64url').toString('utf8'))
                 //토큰 유효시간 체크
                 if(setting.token.enableTimeExpire && (new Date() - new Date(userData._tokenCreateAt) > setting.token.accessTokenExpire*1000)){
                     throw "expired token"
                 }
-    
+
                 delete userData._tokenCreateAt;
-    
+
                 socket.loginUser = userData
             }catch(e){
                 socket.emit("_error", new response.Unauthorized(null, "잘못된 토큰입니다"));
+                socket.disconnect(true);
+                return;
             }
         }
-        
 
-        /* type이 message(client > server)인 socketOpertaion 설정 */
-        let socketOperations = require('../_sockets.sys.js')
-        let list = Object.keys(socketOperations)
-        for(let i=0; i<list.length; i++){
-            let operation = socketOperations[list[i]]
+        /* 소켓 리스너 설정 */
+        for(let i=0; i<messageOperations.length; i++){
+            const { name, operation } = messageOperations[i]
 
-            /* message type의 operation이 아니라면 건너뛰기 */
-            if(operation.type!='message') continue;
-
-            /* 소켓 리스너 설정 */
-            socket.on(list[i], async function(data) {
+            socket.on(name, async function(data) {
                 /* 로그인 필수 체크 */
                 if(operation.authRequire && socket.loginUser==undefined) return socket.emit("_error", new response.Unauthorized())
-                
+
                 /* 소켓 로직 실행 */
                 let result = await require(__dirname + '/..' + operation.logic)(socket, data)
-                
+
                 /* 결과 응답 */
-                socket.emit(list[i], result)
+                socket.emit(name, result)
             });
         }
-        
+
     });
 }

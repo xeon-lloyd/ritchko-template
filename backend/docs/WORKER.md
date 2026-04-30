@@ -82,7 +82,7 @@ module.exports = async function leaveAccountConfirm(){
 - update/delete 전에는 대상 존재 여부와 권한 또는 범위 조건을 확인한다.
 - DB 접근 규칙은 `backend/docs/DB.md`를 따른다.
 - 파일 처리 규칙은 `backend/docs/FILE.md`를 따른다.
-- socket event를 보내야 하면 `util.socket.io`를 사용하고 `backend/docs/SOCKET.md`의 event 문서화 규칙을 따른다.
+- socket event를 보내야 하면 `util.socket`를 사용하고 `backend/docs/SOCKET.md`의 event 문서화 규칙을 따른다.
 - 서비스 핵심 데이터는 DB에 저장한다. JSON, txt, 로컬 캐시 파일을 본 저장소로 만들지 않는다.
 - 작업 결과를 사용자에게 바로 반환해야 하면 worker가 아니라 operation으로 만든다.
 
