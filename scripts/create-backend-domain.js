@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 function printUsage() {
-    console.log('사용법: npm run create:backend-domain -- <DomainName>');
+    console.log('사용법: npm run create:backend-domain -- <domainName>');
 }
 
 function parseArgs(argv) {
@@ -14,8 +14,8 @@ function parseArgs(argv) {
         throw new Error('도메인 이름이 필요합니다.');
     }
 
-    if (!/^[A-Za-z][A-Za-z0-9]*$/.test(domainName)) {
-        throw new Error('도메인 이름은 영문자로 시작하고 영문자 또는 숫자만 포함할 수 있습니다.');
+    if (!/^[a-z][A-Za-z0-9]*$/.test(domainName)) {
+        throw new Error('도메인 이름은 lowerCamelCase 형식이어야 합니다.');
     }
 
     if (argv.length > 1) {

@@ -61,8 +61,8 @@ function parseArgs(argv) {
         throw new Error('도메인 이름과 Operation 이름이 필요합니다.');
     }
 
-    if (!/^[A-Za-z][A-Za-z0-9]*$/.test(domainName)) {
-        throw new Error('도메인 이름은 영문자로 시작하고 영문자 또는 숫자만 포함할 수 있습니다.');
+    if (!/^[a-z][A-Za-z0-9]*$/.test(domainName)) {
+        throw new Error('도메인 이름은 lowerCamelCase 형식이어야 합니다.');
     }
 
     if (!/^[A-Z][A-Za-z0-9]*$/.test(operationName)) {
