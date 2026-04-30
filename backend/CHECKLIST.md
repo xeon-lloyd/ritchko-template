@@ -28,7 +28,8 @@
 - 소켓 message의 예상 가능한 실패는 `_error` 이벤트로 response class를 emit한다.
 - 소켓 room join 전에는 대상 존재 여부와 권한을 확인한다.
 - cron 등록은 root `backend/worker/registCron.js`와 도메인 `worker/registCron.js` 집계를 함께 확인한다.
-- 단일 실행 worker는 `tryWorkerProcessLock()`과 멱등성 장치를 둔다.
+- 중복 실행되면 안 되는 worker producer는 `tryWorkerProcessLock()`과 멱등성 장치를 둔다.
+- worker 파일은 `queueName = 'WP:<workerName>'`, `// producer`, `// consumer` 또는 `// consumer 없음` 구조를 확인한다.
 - queue worker는 Redis 연결 순서와 consumer 등록 위치를 확인한다.
 
 ## 구현 후
@@ -39,5 +40,5 @@
 - `/API-doc` 반영 여부를 확인한다.
 - 웹훅 작업이면 `/API-doc/webhooks` 반영 여부를 확인한다.
 - 소켓 작업이면 `/API-doc/sockets` 반영 여부를 확인한다.
-- cron/worker 작업이면 `/API-doc` 대상이 아니므로 cron 집계, 실행 주기, 중복 실행 방지를 확인한다.
+- cron/worker 작업이면 `/API-doc` 대상이 아니므로 cron 집계, 실행 주기, producer/consumer 구조, 중복 실행 방지를 확인한다.
 - `npm run build`를 실행한다.

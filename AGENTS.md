@@ -39,6 +39,7 @@
 - 파일 저장은 업로드 임시파일, 로그, 캐시, export 산출물처럼 파일이 본질인 경우에만 사용한다.
 - DB 날짜 저장 규칙은 `backend/docs/DB.md`를 따른다.
 - cron/worker 작성 규칙은 `backend/docs/WORKER.md`를 따른다.
+- worker 파일은 `queueName = 'WP:<workerName>'`, `// producer`, `// consumer` 구조를 따른다.
 
 ## 생성 명령
 - 백엔드 도메인: `npm run create:backend-domain -- <name>`

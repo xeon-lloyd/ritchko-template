@@ -59,9 +59,12 @@
 - `registCron.js` 파일명은 기존 템플릿 이름을 유지한다.
 - worker 로직 파일은 `lowerCamelCase`로 작성한다.
 - worker 로직 기본 export는 `module.exports = async function workerName(){ ... }` 형태를 우선한다.
+- worker 파일은 항상 `// producer`, `// consumer` 영역을 구분한다.
+- `queueName`은 export 함수보다 위에 선언하고, 값은 `WP:<workerName>` 형식을 사용한다.
+- consumer가 필요 없으면 `// consumer` 아래에 `// consumer 없음`을 남긴다.
 - cron 등록 파일에는 schedule 등록과 에러 처리만 두고 긴 비즈니스 로직은 별도 worker 파일 또는 `module/` 함수로 분리한다.
 - cron expression은 실행 주기를 설명하는 주석과 함께 둔다.
-- 단일 실행이 필요한 worker는 `util.worker.tryWorkerProcessLock(workerName, ttlSeconds)`와 DB unique key 등으로 중복 실행을 방지한다.
+- 중복 실행되면 안 되는 producer는 `util.worker.tryWorkerProcessLock(workerName, ttlSeconds)`와 DB unique key 등으로 중복 실행을 방지한다.
 - `ttlSeconds`는 예상 작업 소요시간보다 여유 있게 설정한다.
 - worker는 `/API` operation middleware를 거치지 않고 `/API-doc` 문서화 대상도 아니다.
 - queue worker는 producer와 consumer를 분리하고 payload에는 필요한 최소 식별자만 담는다.

@@ -37,8 +37,8 @@
 - 설명 지정: `--description "설명"`
 - webhook: `npm run create:backend-webhook -- <domain> <webhookNameWithoutProcess> [--method post|get|put|patch|delete] [--redirect]`
 - socket: `npm run create:backend-socket -- <domain> <SocketNameMessage|SocketNameEvent> [--auth]`
-- worker: `npm run create:backend-worker -- <domain> <workerName> [--cron "0 * * * *"] [--comment "1시간마다 실행"]`
-- worker lock 해제: `--no-lock`, lock TTL 지정: `--ttl 600`
+- worker: `npm run create:backend-worker -- <domain> <workerName> [--cron "0 * * * *"] [--comment "1시간마다 실행"] [--consumer]`
+- worker producer guard 해제: `--no-lock`, guard TTL 지정: `--ttl 600`
 - Windows PowerShell 실행 정책 문제가 있으면 `npm.cmd run ...`을 사용한다.
 
 ## 구현 흐름
@@ -55,6 +55,7 @@
 - 신규 코드에서 `FormInputRequired`를 만들거나 사용하지 않는다.
 - update/delete 전에는 대상 존재 여부와 권한 여부를 먼저 확인한다.
 - 서비스 핵심 데이터는 DB에 저장한다. 파일 저장소로 우회하지 않는다.
+- worker는 `queueName = 'WP:<workerName>'`, `// producer`, `// consumer` 구조를 유지하고 consumer가 없으면 `// consumer 없음`을 남긴다.
 - DB 세부 규칙은 `backend/docs/DB.md`, 파일 업로드 세부 규칙은 `backend/docs/FILE.md`, 웹훅 세부 규칙은 `backend/docs/WEBHOOK.md`, cron/worker 세부 규칙은 `backend/docs/WORKER.md`, 네이밍/응답/enum/가드 절은 `backend/CONVENTION.md`를 따른다.
 - 소켓 세부 규칙은 `backend/docs/SOCKET.md`를 따른다.
 
