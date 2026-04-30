@@ -86,9 +86,13 @@ module.exports = async function(server){
                 try{
                     result = await require(__dirname + '/..' + operation.logic)(socket, data)
                 }catch(e){
-                    result = new response.InternalServerError()
                     console.error(e)
+                    return socket.emit("_error", new response.InternalServerError())
                 }
+
+                /* result가 response 인스턴스가 아니면 로직이 직접 처리(_error emit 등)한 것 */
+                if(result == null || typeof result !== 'object') return
+
                 result.label = result.constructor.name
 
                 /* 결과 응답 */
