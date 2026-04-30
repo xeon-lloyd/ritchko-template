@@ -255,18 +255,6 @@ module.exports = {
 
 	/* 사용자 토큰 */
 	token: {
-		redisSessionStorage: null,
-
-		init: async function(){
-			const config = {
-				host: setting.token.redisSessionStorage.host,
-				port: setting.token.redisSessionStorage.port,
-				password: setting.token.redisSessionStorage.password
-			}
-
-			this.redisSessionStorage = await module.exports.redis.createConnection(config, 'tokenSessionStorage');
-		},
-
 		generateAccessToken: function(userData){
 			userData._tokenCreateAt = new Date().getTime()
 			
@@ -282,11 +270,11 @@ module.exports = {
 			do{
 				token = crypto.randomBytes(32).toString('hex')
 				key = `sys:RT:${token}`
-				isKeyExist = ((await this.redisSessionStorage.get(key)) != null)
+				isKeyExist = ((await module.exports.redis.get(key)) != null)
 			}while(isKeyExist)
 
 			userData = JSON.stringify(userData)
-			await this.redisSessionStorage.set(key, userData, { EX: setting.token.refreshTokenExpire })
+			await module.exports.redis.set(key, userData, setting.token.refreshTokenExpire)
 
 			return token
 		},
@@ -302,7 +290,7 @@ module.exports = {
 		},
 
 		rotateTokenByRefreshToken: async function(refreshToken){
-			const userDataString = await this.redisSessionStorage.get(`sys:RT:${refreshToken}`);
+			const userDataString = await module.exports.redis.get(`sys:RT:${refreshToken}`);
 			if(!userDataString) return null
 
 			const userData = JSON.parse(userDataString);
@@ -318,7 +306,7 @@ module.exports = {
 		},
 
 		revokeRefreshToken: async function(refreshToken){
-			await this.redisSessionStorage.del(`sys:RT:${refreshToken}`);
+			await module.exports.redis.del(`sys:RT:${refreshToken}`);
 		},
 	},
 
@@ -649,20 +637,8 @@ module.exports = {
 	},
 
 	worker: {
-		lockKeyClient: null,
-
-		init: async function(){
-			const options = {
-				host: setting.worker.redisLockStorage.host,
-				port: setting.worker.redisLockStorage.port,
-				password: setting.worker.redisLockStorage.password
-			}
-
-			this.lockKeyClient = await module.exports.redis.createConnection(options, 'workerLockKeyClient');
-		},
-
 		tryWorkerProcessLock: async function(workerName, ttlSeconds){
-			const result = await this.lockKeyClient.set(`sys:WPL:${workerName}`, 'LOCK', { EX: ttlSeconds, NX: true })
+			const result = await module.exports.redis.setWithLock(`sys:WPL:${workerName}`, 'LOCK', ttlSeconds)
 			if(result){
 				console.log(`[WORKER] ${workerName} 잠금 획득 성공, 실행 허용`);
 				return true;

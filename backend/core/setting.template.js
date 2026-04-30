@@ -55,31 +55,17 @@ const setting = {
 		key: 'encryptkeyString',
 	},
 
+	// 필수 설정 (token, worker dependency)
 	redis: {
 		host: 'localhost',
 		port: 6379,
 		password: 'redisPassword',
 	},
 
-	// 필수 설정 (로그인 토큰 시스템)
 	token: {
 		enableTimeExpire: false, // false for local mode
 		accessTokenExpire: 15 * 60, //s (15 minutes)
 		refreshTokenExpire: 14 * 24 * 60 * 60, //s (14 days)
-		redisSessionStorage: {
-			host: 'localhost',
-			port: 6379,
-			password: 'redisPassword',
-		},
-	},
-
-	// 필수 설정 (worker cron 시스템)
-	worker: {
-		redisLockStorage: {
-			host: 'localhost',
-			port: 6379,
-			password: 'redisPassword',
-		}
 	},
 
 	socket: {

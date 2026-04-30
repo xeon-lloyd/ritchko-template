@@ -125,7 +125,7 @@ if(!await util.worker.tryWorkerProcessLock('createMonthlyInvoice', ttlSeconds)) 
 - consumer worker 파일은 도메인 `worker/registCron.js` 또는 서버 부팅 흐름에서 반드시 한 번 import되게 연결한다.
 - consumer handler 내부에서 예상 가능한 실패를 잡고 기록한다.
 - 실패 재시도, 중복 처리, poison message 정책이 필요한 작업은 먼저 DB 상태값 또는 재시도 카운터 설계를 정한다.
-- `util.redis.queue/consume`을 쓰는 작업은 `server.js`에서 `util.redis.connect()`가 worker 실행 전에 완료되는지 확인한다.
+- `util.redis.queue/consume`을 쓰는 작업은 `server.js`에서 `util.redis.init()`가 worker 실행 전에 완료되는지 확인한다.
 - `redis` 설정과 dependency는 placeholder 상태로 두되, 실제 서비스에서 사용할 값은 환경별 설정으로 관리한다.
 
 ## 부팅 시 1회 실행 작업
