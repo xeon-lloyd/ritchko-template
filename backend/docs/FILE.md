@@ -64,7 +64,7 @@ module.exports = async function(param, req, res){
 ## 저장 위치
 - 임시 업로드 파일은 `setting.fileUpload.tempBucket`에 둔다.
 - 최종 파일은 `setting.s3.buckets.<domainPurpose>`에 둔다.
-- 목적 bucket 설정이 없으면 `setting.js`와 `setting.template.js`를 함께 갱신한다.
+- 목적 bucket 설정이 없으면 `setting.js`에 bucket 항목을 추가한다.
 - 파일 경로/상태 저장 시에도 `createdAt`, `updatedAt`은 DB 기본값을 사용한다.
 
 ## 실패 처리

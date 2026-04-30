@@ -129,9 +129,9 @@ module.exports = async function(socket, data){
 - 처리 순서는 입력값 검증, 대상 존재 여부 확인, 권한 확인, 핵심 처리, 응답 또는 이벤트 전송을 기본으로 한다.
 - `data`는 구조분해하지 않고 `data.xxx`로 사용한다.
 - 예상 가능한 실패는 throw하지 말고 `socket.emit('_error', new response.X())` 후 return한다.
-- 현재 socket listener는 message 로직 내부 예외를 response class로 변환하지 않으므로, 실패 가능성이 있는 외부 처리에는 필요한 만큼 try/catch를 둔다.
+- 예상치 못한 예외는 listener가 `_error` InternalServerError로 처리한다. 실패 종류를 명시적으로 구분해야 하면 로직 안에 try/catch를 둔다.
 - `authRequire: true`인 message에서도 데이터 소유권과 room 입장 권한은 로직에서 별도로 확인한다.
-- message 로직의 반환값은 시스템이 같은 message 이름으로 다시 emit한다. 즉시 ack가 필요한 경우에만 `...MessageOK` 같은 response를 반환하고 문서화한다.
+- message 로직에서 response 인스턴스를 반환하면 시스템이 같은 message 이름으로 ack를 emit한다. `_error`를 emit한 뒤 반환(`return socket.emit('_error', ...)` 또는 emit 후 return)하면 ack 없이 처리가 끝난다. 즉시 ack가 필요한 경우에만 `...MessageOK` 같은 response를 반환하고 문서화한다.
 - ack 없이 server event만 보내는 message라도 `_error`와 event contract는 `_sockets.sys.js`에 문서화한다.
 
 ## Event 전송
@@ -168,7 +168,7 @@ socket.emit(
 ## Redis Adapter
 - `setting.socket.redisAdapter.enable`이 true면 `@socket.io/redis-adapter`를 사용한다.
 - 여러 Node process 또는 여러 서버 instance에서 room broadcast가 필요할 때만 켠다.
-- Redis host, port, password는 `backend/core/setting.js`와 `setting.template.js`의 placeholder 구조를 유지한다.
+- Redis host, port, password는 `backend/core/setting.js`의 placeholder 구조를 유지한다.
 - Redis adapter를 켜도 socket instance의 메모리 상태는 영구 저장소가 아니다.
 
 ## 파일과 DB 처리
@@ -189,4 +189,4 @@ socket.emit(
 - 도메인 `_sockets.sys.js`와 root `backend/_sockets.sys.js` 집계가 맞는지 확인한다.
 - `_param.sys.js`, `_response.sys.js`, `/API-doc/sockets`가 최신 로직과 맞는지 확인한다.
 - 클라이언트가 `_error`, message ack, event를 각각 올바른 이름으로 listen하는지 확인한다.
-- 기본 검증은 `npm run build`로 수행한다.
+- 수정한 파일은 `node --check <파일>`로 구문을 확인한다.

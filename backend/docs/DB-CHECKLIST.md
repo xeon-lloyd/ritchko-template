@@ -20,4 +20,4 @@
 - operation 설명, param schema, response schema가 최신 로직과 맞는지 확인한다.
 - 컬럼명 매핑 방식(`setting.sqlCamelToSnakeMapping`)과 select alias가 충돌하지 않는지 확인한다.
 - raw SQL을 썼다면 placeholder와 alias를 다시 확인한다.
-- 필요 시 `/API-doc`와 `npm run build`를 확인한다.
+- 필요 시 `/API-doc`를 확인한다.

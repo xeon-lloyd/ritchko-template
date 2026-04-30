@@ -75,7 +75,6 @@ module.exports = {
 - 도메인 `_webhooks.sys.js`를 추가하거나 수정하면 root `backend/_webhooks.sys.js` 집계도 확인한다.
 - webhook param은 도메인 `_param.sys.js`에 registry key와 같은 key로 추가한다.
 - webhook 응답 문서용 response는 도메인 `_response.sys.js`에 class로 추가한다.
-- 현재 기본 `webhookInit.sys.js`는 registry의 `authRequire`를 처리하지 않는다.
 
 ## Handler 로직
 webhook 로직 파일의 기본 export는 `module.exports = async function(req, res){ ... }` 형태다.
@@ -149,4 +148,4 @@ AppleSocialLoginProcessOK: class AppleSocialLoginProcessOK extends rootResponse.
 - `_param.sys.js`, `_response.sys.js`, `/API-doc/webhooks`가 최신 로직과 맞는지 확인한다.
 - 실제 요청의 method, content-type, payload key가 문서와 맞는지 확인한다.
 - GET webhook은 `req.query`, POST webhook은 `req.body`로 테스트한다.
-- 기본 검증은 `npm run build`로 수행한다.
+- 수정한 파일은 `node --check <파일>`로 구문을 확인한다.

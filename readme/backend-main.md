@@ -34,7 +34,7 @@ Windows PowerShell 실행 정책 문제가 있으면 `npm.cmd run ...`을 사용
 - worker/cron: `backend/docs/WORKER.md`
 
 ## 검증
-- 기본 검증은 `npm run build`다.
+- 수정한 파일은 `node --check <파일>`로 구문을 확인한다.
 - operation 추가/수정 후 `/API-doc` 반영 여부를 확인한다.
 - webhook 추가/수정 후 `/API-doc/webhooks` 반영 여부를 확인한다.
 - socket 추가/수정 후 `/API-doc/sockets` 반영 여부를 확인한다.

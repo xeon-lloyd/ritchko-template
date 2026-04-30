@@ -35,4 +35,4 @@
 - 클라이언트가 `_error`를 listen하는지 확인한다.
 - 클라이언트가 message ack와 event를 서로 다른 이름으로 listen하는지 확인한다.
 - `/API-doc/sockets` 반영 여부를 확인한다.
-- 필요 시 `npm run build`를 실행한다.
+- 수정한 파일은 `node --check <파일>`로 구문을 확인한다.

@@ -1,5 +1,7 @@
 # Backend Checklist
 
+규칙의 근거는 `backend/AGENTS.md`와 `backend/CONVENTION.md`에 있다. 이 파일은 작업 흐름 확인용 요약이다.
+
 ## 작업 전
 - `/API` operation 구조를 따르는 작업인지 확인한다.
 - 대상 도메인의 `_operations.sys.js`, `_param.sys.js`, `_response.sys.js`, 소켓이면 `_sockets.sys.js`를 함께 볼지 판단한다.
@@ -41,4 +43,4 @@
 - 웹훅 작업이면 `/API-doc/webhooks` 반영 여부를 확인한다.
 - 소켓 작업이면 `/API-doc/sockets` 반영 여부를 확인한다.
 - cron/worker 작업이면 `/API-doc` 대상이 아니므로 cron 집계, 실행 주기, producer/consumer 구조, 중복 실행 방지를 확인한다.
-- `npm run build`를 실행한다.
+- 수정한 파일은 `node --check <파일>`로 구문을 확인한다.

@@ -39,9 +39,9 @@
 ## 구현 후
 - root worker registry와 도메인 worker registry가 모두 갱신됐는지 확인한다.
 - cron expression과 한국어 주석의 실행 주기가 일치하는지 확인한다.
-- worker가 `/API-doc` 대상이 아니라는 점을 전제로 별도 문서나 운영 메모가 필요한지 확인한다.
+- worker는 `/API-doc` 문서화 대상이 아니다. 실행 주기·중복 방지 정책·실패 알림 경로 등 운영에 필요한 정보를 코드 주석이나 별도 메모로 남겼는지 확인한다.
 - DB update/delete 범위가 과도하지 않은지 확인한다.
 - worker 파일의 `queueName`, producer/consumer 주석, consumer 없음 표기가 컨벤션과 일치하는지 확인한다.
 - queue consumer가 있으면 `util.redis.init()`가 worker import 전에 완료되는지 확인한다.
 - 중복 실행 시에도 결과가 깨지지 않는지 확인한다.
-- 필요 시 `npm run build`를 실행한다.
+- 수정한 파일은 `node --check <파일>`로 구문을 확인한다.

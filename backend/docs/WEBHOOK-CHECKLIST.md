@@ -19,7 +19,6 @@
 - handler 기본 export를 `module.exports = async function(req, res){ ... }`로 작성한다.
 - `/API` operation의 `param` 형식을 만들지 않고 `req.query`, `req.body`, `req.headers`를 직접 사용한다.
 - 입력값 검증을 가장 먼저 둔다.
-- 현재 기본 `webhookInit.sys.js`는 `authRequire`를 처리하지 않는다는 점을 전제로 작성한다.
 - 예상 가능한 실패는 적절한 status와 response class로 반환한다.
 - redirect 응답은 `res.redirect(...)`로 처리한다.
 - async 외부 API, DB, 파일 처리에는 필요한 범위의 `try/catch`를 둔다.
@@ -32,4 +31,4 @@
 - GET webhook은 `req.query`, POST webhook은 `req.body`로 테스트한다.
 - root `backend/_webhooks.sys.js` 집계가 갱신됐는지 확인한다.
 - `_param.sys.js`와 `_response.sys.js`가 registry와 같은 key/name을 쓰는지 확인한다.
-- 필요 시 `npm run build`를 실행한다.
+- 수정한 파일은 `node --check <파일>`로 구문을 확인한다.

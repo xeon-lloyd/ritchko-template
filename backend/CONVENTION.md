@@ -50,7 +50,6 @@
 - webhook 로직 기본 export는 `module.exports = async function(req, res){ ... }` 형태다.
 - webhook 로직은 `/API` operation middleware를 거치지 않으므로 `req.query`, `req.body`, `req.headers`를 직접 사용한다.
 - webhook 추가 시 로직 파일만 만들지 말고 `_webhooks.sys.js`, `_param.sys.js`, `_response.sys.js`를 함께 맞춘다.
-- 현재 기본 `webhookInit.sys.js`는 registry의 `authRequire`를 처리하지 않는다.
 - 웹훅 세부 규칙은 `backend/docs/WEBHOOK.md`를 따른다.
 
 ## Worker
@@ -75,7 +74,8 @@
 - 실패 응답은 상태를 바로 드러내는 이름을 쓴다. 예: `UserNotFound`, `EmailAlreadyInUse`
 - 입력값 검증 실패는 `InputValueNotValid`로 통일한다.
 - 신규 backend 코드에서 `FormInputRequired`를 만들거나 사용하지 않는다.
-- webhook 응답은 이름에 `Process`, socket 응답은 `Event` 또는 `Message`를 포함한다.
+- webhook 응답은 이름에 `Process`를 포함한다. 예: `AppleSocialLoginProcessOK`
+- socket message ack 응답은 `...MessageOK`, event payload는 `...Event` suffix를 쓴다. socket 실패 응답은 상태를 드러내는 이름으로 짓고 `Event`나 `Message`를 포함하지 않아도 된다.
 
 ## Param Schema
 - 기본 형식은 `설명(type)`이다.
@@ -119,6 +119,7 @@ if(!enums.CardType.includes(param.cardType)) return new response.InputValueNotVa
 - operation 로직과 `module/` 파일은 스캐폴드의 기본 import 블록을 유지한다.
 - 기본 순서는 `response`, `setting`, `util`, `valider`, `enums`다.
 - 추가 import는 기본 import 블록 아래에 한 줄 띄워 배치한다.
+- worker 파일은 이 규칙을 적용하지 않는다. 필요한 모듈만 import하고, `util`이 필요하면 `util`만 import한다.
 
 ## Module
 - `module/`은 1파일 1export 함수만 허용한다.

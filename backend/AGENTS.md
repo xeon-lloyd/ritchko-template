@@ -4,17 +4,18 @@
 `backend/` 작업의 진입점이다. 상세 구현 규칙은 주제별 문서로 나뉘며, 이 파일은 어떤 문서를 언제 봐야 하는지와 backend 공통 작업 흐름만 정의한다.
 
 ## 먼저 볼 것
-1. `backend/_operations.sys.js`
-2. `backend/_param.sys.js`
-3. `backend/_response.sys.js`
-4. `backend/CHECKLIST.md`
-5. `backend/CONVENTION.md`
-6. DB 작업이면 `backend/docs/DB.md`, `backend/docs/DB-CHECKLIST.md`
-7. 파일 업로드 작업이면 `backend/docs/FILE.md`, `backend/docs/FILE-CHECKLIST.md`
-8. 웹훅 작업이면 `backend/docs/WEBHOOK.md`, `backend/docs/WEBHOOK-CHECKLIST.md`
-9. 소켓 작업이면 `backend/docs/SOCKET.md`, `backend/docs/SOCKET-CHECKLIST.md`
-10. cron/worker 작업이면 `backend/docs/WORKER.md`, `backend/docs/WORKER-CHECKLIST.md`
-11. 작업 대상 도메인의 관련 registry와 schema 파일을 확인한다. 예: `_operations.sys.js`, `_param.sys.js`, `_response.sys.js`, `_webhooks.sys.js`, `_sockets.sys.js`, `worker/registCron.js`
+1. `backend/_system_/middleware.sys.js` — 시스템 구조 파악 목적. 루트 `AGENTS.md` 읽기 순서를 따랐다면 이미 읽은 상태다.
+2. `backend/_operations.sys.js`
+3. `backend/_param.sys.js`
+4. `backend/_response.sys.js`
+5. `backend/CHECKLIST.md`
+6. `backend/CONVENTION.md`
+7. DB 작업이면 `backend/docs/DB.md`, `backend/docs/DB-CHECKLIST.md`
+8. 파일 업로드 작업이면 `backend/docs/FILE.md`, `backend/docs/FILE-CHECKLIST.md`
+9. 웹훅 작업이면 `backend/docs/WEBHOOK.md`, `backend/docs/WEBHOOK-CHECKLIST.md`
+10. 소켓 작업이면 `backend/docs/SOCKET.md`, `backend/docs/SOCKET-CHECKLIST.md`
+11. cron/worker 작업이면 `backend/docs/WORKER.md`, `backend/docs/WORKER-CHECKLIST.md`
+12. 작업 대상 도메인의 관련 registry와 schema 파일을 확인한다. 예: `_operations.sys.js`, `_param.sys.js`, `_response.sys.js`, `_webhooks.sys.js`, `_sockets.sys.js`, `worker/registCron.js`
 
 ## 구조
 - `/API`는 `backend/_system_/middleware.sys.js`가 처리한다.
@@ -65,4 +66,4 @@
 - socket 추가/수정 후 `/API-doc/sockets` 반영 여부 확인
 - cron/worker 추가/수정 후 root/도메인 `registCron.js` 집계 확인
 - 루트 집계 파일 갱신 여부 확인
-- 기본 검증은 `npm run build`
+- 수정한 파일은 `node --check <파일>`로 구문을 확인한다

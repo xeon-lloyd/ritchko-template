@@ -24,6 +24,7 @@
 - 기본 생성은 consumer 없음으로 만들고, consumer가 필요하면 `--consumer`를 사용한다.
 - 기본 worker 파일은 producer 중복 실행 방지용 `util.worker.tryWorkerProcessLock(workerName, ttlSeconds)` guard를 포함한다.
 - producer 중복 실행 방지가 필요 없으면 `--no-lock`, TTL을 바꾸려면 `--ttl 600`을 사용한다.
+- `--no-lock`을 사용하면 `util` import가 자동으로 포함되지 않는다. producer에서 DB 등 `util`이 필요하면 직접 추가한다.
 
 ## 언제 worker로 만들지
 - 특정 주기로 실행해야 하는 정리, 동기화, 알림, 통계, 결제, 만료 처리
@@ -165,4 +166,4 @@ worker는 기본적으로 producer와 consumer 영역을 나눠 작성한다. �
 - worker 파일에 `queueName`, `// producer`, `// consumer` 또는 `// consumer 없음`이 모두 있는지 확인한다.
 - worker가 DB를 바꾸면 `backend/docs/DB.md` 규칙을 다시 확인한다.
 - queue worker면 Redis 연결 순서와 consumer 등록 위치를 확인한다.
-- 기본 검증은 `npm run build`로 수행한다.
+- 수정한 파일은 `node --check <파일>`로 구문을 확인한다.

@@ -39,19 +39,20 @@
 - 파일 저장은 업로드 임시파일, 로그, 캐시, export 산출물처럼 파일이 본질인 경우에만 사용한다.
 - DB 날짜 저장 규칙은 `backend/docs/DB.md`를 따른다.
 - cron/worker 작성 규칙은 `backend/docs/WORKER.md`를 따른다.
-- worker 파일은 `queueName = 'WP:<workerName>'`, `// producer`, `// consumer` 구조를 따른다.
+- worker 파일은 `queueName = 'WP:<workerName>'`, `// producer`, `// consumer` 구조를 따른다. consumer가 없으면 `// consumer 없음`을 남긴다.
 
 ## 생성 명령
 - 백엔드 도메인: `npm run create:backend-domain -- <name>`
 - 백엔드 operation: `npm run create:backend-operation -- <domain> <OperationName>`
 - 백엔드 webhook: `npm run create:backend-webhook -- <domain> <webhookNameWithoutProcess>`
 - 백엔드 socket: `npm run create:backend-socket -- <domain> <SocketNameMessage|SocketNameEvent>`
-- 백엔드 worker: `npm run create:backend-worker -- <domain> <workerName>`
+- 백엔드 worker: `npm run create:backend-worker -- <domain> <workerName> [--cron "0 * * * *"] [--comment "1시간마다 실행"] [--consumer] [--no-lock] [--ttl 600]`
 - Windows PowerShell 실행 정책 문제가 있으면 `npm.cmd run ...`을 사용한다.
 
 ## 검증
-- 기본 검증: `npm run build`
-- 필요한 경우: `npm run start:dev`
+- 프론트엔드(SCSS) 빌드: `npm run build`
+- 백엔드 구문 확인: `node --check <수정한 파일>`
+- 서버 기동 확인: `npm run start:dev`
 - operation 추가/수정 시 `/API-doc` 반영 여부를 확인한다.
 - webhook 추가/수정 시 `/API-doc/webhooks` 반영 여부를 확인한다.
 - socket 추가/수정 시 `/API-doc/sockets` 반영 여부를 확인한다.

@@ -6,7 +6,7 @@
 - fileToken decode 실패 response를 도메인 `_response.sys.js`에 둘지 확인한다.
 - 허용 mimeType enum이 필요한지 확인한다.
 - 최종 파일 key/path를 DB에 저장해야 하는지 확인한다.
-- 목적 bucket 설정이 `setting.js`, `setting.template.js`에 함께 잡혀 있는지 확인한다.
+- 목적 bucket 설정이 `setting.js`에 있는지 확인한다.
 - 파일 처리 실패 시 DB row, 새 파일, 기존 파일을 어떻게 정리할지 정한다.
 
 ## 구현 중
@@ -23,4 +23,4 @@
 - `moveTo()` 또는 `toStream()` 후 같은 token을 다시 쓰는 흐름이 없는지 확인한다.
 - 실패 시 생성된 목적 bucket object와 DB 상태가 정리되는지 확인한다.
 - operation 설명, param schema, response schema가 최신 흐름과 맞는지 확인한다.
-- 필요 시 `/API-doc`와 `npm run build`를 확인한다.
+- 필요 시 `/API-doc`를 확인한다.
