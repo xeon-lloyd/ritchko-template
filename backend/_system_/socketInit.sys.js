@@ -1,8 +1,9 @@
-const crypto = require('crypto');
-
 const response = require('../_response.sys.js');
 const setting = require('../core/setting.js');
 const util = require("../core/util.js");
+
+const crypto = require('crypto');
+const getMiddlewareUserData = require('../user/module/getMiddlewareUserData.js');
 
 module.exports = async function(server){
     util.socket = require('socket.io')(server, {
@@ -36,14 +37,14 @@ module.exports = async function(server){
         .filter(key => socketOperations[key].type === 'message')
         .map(key => ({ name: key, operation: socketOperations[key] }))
 
-    util.socket.on('connection', function(socket) {
+    util.socket.on('connection', async function(socket) {
         /* auth에 토큰이 있다면 loginUser로 decode */
         if(socket.handshake.headers.auth){
             try{
-                let [ userData, hash ] = socket.handshake.headers.auth.split('.')
+                let [ tokenData, hash ] = socket.handshake.headers.auth.split('.')
 
                 //유저 정보 무결성 체크
-                const expectedHash = util.encrypt.oneWayLite(userData)
+                const expectedHash = util.encrypt.oneWayLite(tokenData)
                 if(hash.length !== expectedHash.length){
                     throw "user data modified"
                 }
@@ -56,13 +57,13 @@ module.exports = async function(server){
                     throw "user data modified"
                 }
 
-                userData = JSON.parse(Buffer.from(userData, 'base64url').toString('utf8'))
+                tokenData = JSON.parse(Buffer.from(tokenData, 'base64url').toString('utf8'))
                 //토큰 유효시간 체크
-                if(setting.token.enableTimeExpire && (new Date() - new Date(userData._tokenCreateAt) > setting.token.accessTokenExpire*1000)){
+                if(setting.token.enableTimeExpire && (new Date() - new Date(tokenData._tokenCreateAt) > setting.token.accessTokenExpire*1000)){
                     throw "expired token"
                 }
 
-                delete userData._tokenCreateAt;
+                const userData = await getMiddlewareUserData(tokenData);
 
                 socket.loginUser = userData
             }catch(e){
@@ -81,7 +82,14 @@ module.exports = async function(server){
                 if(operation.authRequire && socket.loginUser==undefined) return socket.emit("_error", new response.Unauthorized())
 
                 /* 소켓 로직 실행 */
-                let result = await require(__dirname + '/..' + operation.logic)(socket, data)
+                let result
+                try{
+                    result = await require(__dirname + '/..' + operation.logic)(socket, data)
+                }catch(e){
+                    result = new response.InternalServerError()
+                    console.error(e)
+                }
+                result.label = result.constructor.name
 
                 /* 결과 응답 */
                 socket.emit(name, result)

@@ -1,9 +1,10 @@
-const crypto = require('crypto');
-
-const operationSetting = require('../_operations.sys.js');
 const response = require('../_response.sys.js');
 const setting = require('../core/setting.js');
 const util = require("../core/util.js");
+
+const crypto = require('crypto');
+const operationSetting = require('../_operations.sys.js');
+const getMiddlewareUserData = require('../user/module/getMiddlewareUserData.js');
 
 module.exports = async function(req, res, next){
     if(req.method!='POST'){
@@ -33,10 +34,10 @@ module.exports = async function(req, res, next){
         }
 
         try{
-            let [ userData, hash ] = req.header('auth').split('.')
+            let [ tokenData, hash ] = req.header('auth').split('.')
 
             //유저 정보 무결성 체크
-            const expectedHash = util.encrypt.oneWayLite(userData)
+            const expectedHash = util.encrypt.oneWayLite(tokenData)
             if(hash.length !== expectedHash.length){
                 throw "user data modified"
             }
@@ -49,13 +50,13 @@ module.exports = async function(req, res, next){
                 throw "user data modified"
             }
 
-            userData = JSON.parse(Buffer.from(userData, 'base64url').toString('utf8'))
+            tokenData = JSON.parse(Buffer.from(tokenData, 'base64url').toString('utf8'))
             //토큰 유효시간 체크
-            if(setting.token.enableTimeExpire && (new Date() - new Date(userData._tokenCreateAt) > setting.token.accessTokenExpire*1000)){
+            if(setting.token.enableTimeExpire && (new Date() - new Date(tokenData._tokenCreateAt) > setting.token.accessTokenExpire*1000)){
                 throw "expired token"
             }
 
-            delete userData._tokenCreateAt;
+            const userData = await getMiddlewareUserData(tokenData);
 
             body.param.loginUser = userData;
         }catch(e){
