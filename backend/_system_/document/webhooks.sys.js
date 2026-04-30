@@ -1,6 +1,5 @@
 const setting = require('../../core/setting.js');
 const webhookSetting = require('../../_webhooks.sys.js');
-const response = require('../../_response.sys.js');
 
 module.exports = function(req, res, next){
     if(setting.isProduction){
@@ -69,12 +68,6 @@ module.exports = function(req, res, next){
 
     for(let i=0;i<webhookList.length;i++){
         let responses = '';
-        if(webhookSetting[webhookList[i]].authRequire){
-            responses += `<div>
-                <div class="label">${response.Unauthorized.name}</div>
-                <textarea readonly>${JSON.stringify(new response.Unauthorized(), null, 4)}</textarea>
-            </div>`
-        }
         for(let j=0;j<webhookSetting[webhookList[i]].responseSchema.length;j++){
             responses += `<div>
                 <div class="label">${webhookSetting[webhookList[i]].responseSchema[j].name}</div>
@@ -82,14 +75,11 @@ module.exports = function(req, res, next){
             </div>`
         }
 
-        let needAuth = ""
-        if(webhookSetting[webhookList[i]].authRequire) needAuth = `<i class="auth-icon fa-solid fa-lock"></i>`
         html += `
             <div class="webhook folded" id="${webhookList[i]}" data-group="${webhookSetting[webhookList[i]].group}" data-webhook="${webhookList[i]}" data-method="${webhookSetting[webhookList[i]].method.toLowerCase()}">
                 <div class="title">
                     <span class="method">${webhookSetting[webhookList[i]].method.toUpperCase()}</span>
                     ${webhookList[i]}
-                    ${needAuth}
                     <div class="description">- ${webhookSetting[webhookList[i]].description}</div>
                     <i class="fold-toggle fa-solid fa-chevron-down"></i>
                     <i class="copy-icon fa-solid fa-clipboard"></i>
