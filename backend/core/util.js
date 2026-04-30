@@ -470,70 +470,182 @@ module.exports = {
 		},
 	},
 
+	// redis 관련 기능 모음
 	redis: {
+		// [system] redis client
 		client: null,
+		pubClient: null,
+		subClient: null,
+		queueClient: null,
+
+		// redis 연결 (초기화)
 		connect: async function(){
-			const clientOption = {
+			const options = {
 				socket: {
 					host: setting.redis.host,
 				  	port: setting.redis.port,
+					reconnectStrategy: (retries) => this.reconnectStrategy(retries)
 				},
 				password: setting.redis.password
-			};			
+			}
 
-			this.client = redis.createClient(clientOption);
+			this.client = redis.createClient(options);
+			this.pubClient = redis.createClient(options);
+			this.subClient = redis.createClient(options);
+			this.queueClient = redis.createClient(options);
 
-			await this.client.connect();
+			this.bindEvents(this.client, 'client');
+			this.bindEvents(this.pubClient, 'pubClient');
+			this.bindEvents(this.subClient, 'subClient');
+			this.bindEvents(this.queueClient, 'queueClient');
+
+			await Promise.all([
+				this.client.connect(),
+				this.pubClient.connect(),
+				this.subClient.connect(),
+				this.queueClient.connect()
+			]);
 		},
 
+		// redis 재연결
+		reconnectStrategy: function(retries) {
+			if(retries == 0){
+				console.error('[REDIS] initial reconnect attempt failed');
+			}
+			
+			if(20 < retries){
+				console.error('[REDIS] reconnect stopped after 20 attempts');
+				return false;
+			}
+			
+			return Math.min(200 * 2 ** retries, 5000);
+		},
+
+		// redis 클라이언트별 이벤트 바인딩
+		bindEvents: function(client, name) {
+			client.on('connect', () => {
+			  	// console.log(`[REDIS:${name}] connected`);
+			});
+		  
+			client.on('reconnecting', () => {
+			  	// console.log(`[REDIS:${name}] reconnecting...`);
+			});
+		  
+			client.on('error', (err) => {
+				const message = err instanceof AggregateError
+					? err.errors.map(e => e.message).join(' | ')
+					: err.message;
+
+			  	console.error(`[REDIS:${name}] error`, message);
+			});
+		  
+			client.on('end', () => {
+			  	console.warn(`[REDIS:${name}] connection closed`);
+			});
+		},
+
+		// 키 값 조회
 		get: async function(key){
 			return await this.client.get(key)
 		},
 
-		set: async function(key, value, expire){
-			if(expire!=undefined) return await this.client.set(key, value, { EX: expire }) // s
+		// 키 값 설정
+		set: async function(key, value, ttlSeconds){
+			if(ttlSeconds!=undefined) return await this.client.set(key, value, { EX: ttlSeconds }) // s
 			await this.client.set(key, value)
 		},
 
+		// 키 값 설정 (with lock)
+		setWithLock: async function(key, value, ttlSeconds){
+			if(ttlSeconds!=undefined) return await this.client.set(key, value, { EX: ttlSeconds, NX: true })
+			return await this.client.set(key, value, { NX: true })
+		},
+
+		// 키 값 삭제
 		del: async function(key){
 			return await this.client.del(key)
 		},
 
+		// 키 값 존재 여부 조회
+		exists: async function(key){
+			return await this.client.exists(key)
+		},
+
+		// 키 값 만료 시간 설정
+		expire: async function(key, ttlSeconds){
+			return await this.client.expire(key, ttlSeconds)
+		},
+
+		// 키 값 만료 시간 조회
+		ttl: async function(key){
+			return await this.client.ttl(key)
+		},
+
+		// 키 값 증가
 		incr: async function(key){
 			return await this.client.incr(key)
 		},
 
+		// 키 값 증가 (by value)
+		incrBy: async function(key, value){
+			return await this.client.incrBy(key, value)
+		},
+
+		// 키 값 감소
+		decr: async function(key){
+			return await this.client.decr(key)
+		},
+
+		// 키 값 감소 (by value)
+		decrBy: async function(key, value){
+			return await this.client.decrBy(key, value)
+		},
+
+		// 채널 메시지 발행
 		pub: async function(channel, value) {
 			return await this.pubClient.publish(channel, value)
 		},
 
+		// 채널 메시지 구독
 		sub: async function(channel, func) {
 			return await this.subClient.subscribe(channel, func)
 		},
 
+		// 큐 메시지 추가
 		queue: async function(queueName, value) {
-			return await this.client.lPush(`sys:queue:${queueName}`, JSON.stringify(value));
+			return await this.queueClient.lPush(`sys:queue:${queueName}`, JSON.stringify(value));
 		},
 	
-		consume: async function (queueName, func) {
-			const checkQueue = async () => {
-				try {
-					const message = await this.client.lPop(`sys:queue:${queueName}`);
-		
-					if (message) {
-						await func(JSON.parse(message));
-						checkQueue()
-					} else {
-						setTimeout(checkQueue, 1000);
-					}
-				} catch (err) {
-					console.error('Queue consume error:', err);
-					setTimeout(checkQueue, 1000); // 에러가 나면 1초 후 다시 시도
+		// 큐 메시지 소비 함수 등록
+		consume: async function(queueName, handler) {
+			const client = this.queueClient.duplicate(); // blocking 명령어는 queue별 connetion 필요
+			this.bindEvents(client, `consumeClient:${queueName}`);
+			await client.connect();
+		  
+			let running = true;
+		  
+			const loop = async () => {
+				while(running){
+					try{
+						const result = await client.brPop(`sys:queue:${queueName}`, 5);
+						if(result) await handler(JSON.parse(result.element));
+					}catch(err){
+						console.error('[QUEUE] error:', err);
+						await new Promise(r => setTimeout(r, 1000));
+					}					
 				}
+
+			  	await client.quit();
 			};
-		
-			checkQueue();
-		},
+		  
+			loop();
+		  
+			return () => { running = false };
+			/* 사용 례
+				const stop = await redis.consume('queueName', handler); // stop 함수를 반환
+				stop();
+			*/
+		}
 	},
 
 	socket: {
