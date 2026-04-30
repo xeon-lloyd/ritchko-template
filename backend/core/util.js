@@ -258,21 +258,13 @@ module.exports = {
 		redisSessionStorage: null,
 
 		init: async function(){
-			await this.connect();
-		},
-
-		connect: async function(){
-			const clientOption = {
-				socket: {
-					host: setting.token.redisSessionStorage.host,
-				  	port: setting.token.redisSessionStorage.port,
-				},
+			const config = {
+				host: setting.token.redisSessionStorage.host,
+				port: setting.token.redisSessionStorage.port,
 				password: setting.token.redisSessionStorage.password
-			};		
+			}
 
-			this.redisSessionStorage = redis.createClient(clientOption);
-
-			await this.redisSessionStorage.connect();
+			this.redisSessionStorage = await module.exports.redis.createConnection(config, 'tokenSessionStorage');
 		},
 
 		generateAccessToken: function(userData){
@@ -478,33 +470,41 @@ module.exports = {
 		subClient: null,
 		queueClient: null,
 
-		// redis 연결 (초기화)
-		connect: async function(){
+		// redis 초기화
+		init: async function(){
 			const options = {
-				socket: {
-					host: setting.redis.host,
-				  	port: setting.redis.port,
-					reconnectStrategy: (retries) => this.reconnectStrategy(retries)
-				},
+				host: setting.redis.host,
+				port: setting.redis.port,
 				password: setting.redis.password
 			}
 
-			this.client = redis.createClient(options);
-			this.pubClient = redis.createClient(options);
-			this.subClient = redis.createClient(options);
-			this.queueClient = redis.createClient(options);
-
-			this.bindEvents(this.client, 'client');
-			this.bindEvents(this.pubClient, 'pubClient');
-			this.bindEvents(this.subClient, 'subClient');
-			this.bindEvents(this.queueClient, 'queueClient');
-
 			await Promise.all([
-				this.client.connect(),
-				this.pubClient.connect(),
-				this.subClient.connect(),
-				this.queueClient.connect()
-			]);
+				this.createConnection(options, 'client'),
+				this.createConnection(options, 'pubClient'),
+				this.createConnection(options, 'subClient'),
+				this.createConnection(options, 'queueClient')
+			]).then(([client, pubClient, subClient, queueClient]) => {
+				this.client = client;
+				this.pubClient = pubClient;
+				this.subClient = subClient;
+				this.queueClient = queueClient;
+			})
+		},
+
+		createConnection: async function(config, name){
+			const client = redis.createClient({
+				socket: {
+					host: config.host,
+					port: config.port,
+					reconnectStrategy: (retries) => this.reconnectStrategy(retries)
+				},
+				password: config.password
+			})
+
+			this.bindEvents(client, name);
+			await client.connect();
+
+			return client;
 		},
 
 		// redis 재연결
