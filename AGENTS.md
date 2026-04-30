@@ -31,6 +31,7 @@
 
 ## 핵심 원칙
 - 기존 구조와 네이밍을 우선한다.
+- 백엔드 도메인/operation/webhook/socket/worker는 생성 스크립트를 우선 사용한다.
 - 템플릿에 없는 외부 프레임워크 기준으로 구조를 재편하지 않는다.
 - 실제 비밀번호, API 키, 토큰, DB 접속 정보는 커밋하지 않는다.
 - `backend/core/setting.js`, `public/js/env.js`는 placeholder 성격을 유지한다.
@@ -42,11 +43,15 @@
 ## 생성 명령
 - 백엔드 도메인: `npm run create:backend-domain -- <name>`
 - 백엔드 operation: `npm run create:backend-operation -- <domain> <OperationName>`
+- 백엔드 webhook: `npm run create:backend-webhook -- <domain> <webhookNameWithoutProcess>`
+- 백엔드 socket: `npm run create:backend-socket -- <domain> <SocketNameMessage|SocketNameEvent>`
+- 백엔드 worker: `npm run create:backend-worker -- <domain> <workerName>`
 - Windows PowerShell 실행 정책 문제가 있으면 `npm.cmd run ...`을 사용한다.
 
 ## 검증
 - 기본 검증: `npm run build`
 - 필요한 경우: `npm run start:dev`
 - operation 추가/수정 시 `/API-doc` 반영 여부를 확인한다.
+- webhook 추가/수정 시 `/API-doc/webhooks` 반영 여부를 확인한다.
 - socket 추가/수정 시 `/API-doc/sockets` 반영 여부를 확인한다.
 - cron/worker 추가/수정 시 root/도메인 `registCron.js` 집계를 확인한다.

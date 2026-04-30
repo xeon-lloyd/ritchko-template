@@ -1,0 +1,5 @@
+    /* {{responseGroupName}} */
+    {{responseClassName}}: class {{responseClassName}} extends rootResponse.RedirectTo {
+        path = "# redirect path"
+    },
+

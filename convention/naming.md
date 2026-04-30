@@ -111,6 +111,13 @@ module.exports = async function updateAccessFlag(param){
   - `CreateApiKey`, `GetSignalVaultList`, `VerifyPasswordResetToken`
 - backend operation logic file: `lowerCamelCase`
   - `createApiKey.js`, `getSignalVaultList.js`
+- backend webhook registry key: `/domain/action`
+  - handler 파일은 `<action>Process.js`
+  - 예: `/user/appleSocialLogin` -> `appleSocialLoginProcess.js`
+- backend socket key: `PascalCase` + `Message` 또는 `Event`
+  - `JoinRoomMessage`, `RoomUpdatedEvent`
+- backend worker file: `lowerCamelCase`
+  - `createMonthlyInvoice.js`
 - response class: `PascalCase`
   - 성공은 `...OK`
   - 실패는 `UserNotFound`, `EmailAlreadyInUse`

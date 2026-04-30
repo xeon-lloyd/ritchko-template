@@ -21,7 +21,7 @@
 - 요청 body는 `{ operation, param }` 형태다.
 - operation 정의는 실제 로직 파일, 인증 여부, 문서용 schema를 가리킨다.
 - 응답은 `*_response.sys.js`의 response class를 반환한다.
-- 새 도메인/operation은 가능하면 스캐폴드 스크립트로 생성한다.
+- 새 도메인/operation/webhook/socket/worker는 가능하면 스캐폴드 스크립트로 생성한다.
 - 웹훅은 `backend/_system_/webhookInit.sys.js`가 `/webhook{registryKey}`로 초기화하고, `backend/_webhooks.sys.js`가 도메인별 `_webhooks.sys.js`를 모은다.
 - 웹훅 로직은 `/API` operation middleware를 거치지 않고 `module.exports = async function(req, res){ ... }` 형태로 Express `req`, `res`를 직접 다룬다.
 - 소켓은 `backend/_system_/socketInit.sys.js`가 `/socket`으로 초기화하고, `backend/_sockets.sys.js`가 도메인별 `_sockets.sys.js`를 모은다.
@@ -35,14 +35,18 @@
 - 인증 필요: `--auth`
 - `paramSchema: null` 시작: `--param-null`
 - 설명 지정: `--description "설명"`
+- webhook: `npm run create:backend-webhook -- <domain> <webhookNameWithoutProcess> [--method post|get|put|patch|delete] [--redirect]`
+- socket: `npm run create:backend-socket -- <domain> <SocketNameMessage|SocketNameEvent> [--auth]`
+- worker: `npm run create:backend-worker -- <domain> <workerName> [--cron "0 * * * *"] [--comment "1시간마다 실행"]`
+- worker lock 해제: `--no-lock`, lock TTL 지정: `--ttl 600`
 - Windows PowerShell 실행 정책 문제가 있으면 `npm.cmd run ...`을 사용한다.
 
 ## 구현 흐름
 1. 체크리스트와 관련 주제 문서를 확인한다.
 2. 스캐폴드로 파일과 registry를 만든다.
-3. 로직 파일, `_operations.sys.js`, `_param.sys.js`, `_response.sys.js`를 함께 맞춘다.
+3. 로직 파일, registry, `_param.sys.js`, `_response.sys.js`를 작업 유형에 맞게 함께 맞춘다.
 4. 입력값 검증, 대상 존재 여부, 권한 확인, 핵심 처리, 응답 반환 순서로 작성한다.
-5. `/API-doc`와 빌드 검증을 확인한다.
+5. `/API-doc`, `/API-doc/webhooks`, `/API-doc/sockets`, worker registry와 빌드 검증을 작업 유형에 맞게 확인한다.
 
 ## 반드시 지킬 것
 - operation 로직 기본 export는 `module.exports = async function(param, req, res){ ... }` 형태다.

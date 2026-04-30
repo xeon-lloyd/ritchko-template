@@ -2,6 +2,8 @@
 
 ## 작업 전
 - cron, 부팅 1회 작업, queue worker 중 어떤 유형인지 구분한다.
+- 새 worker는 `npm run create:backend-worker -- <domain> <workerName>`로 생성하는 것을 우선한다.
+- cron을 바로 등록할 작업이면 `--cron`과 `--comment`를 함께 지정할지 확인한다.
 - 즉시 응답이 필요한 기능이면 worker가 아니라 `/API` operation으로 구현한다.
 - 외부 callback endpoint면 worker가 아니라 webhook으로 구현한다.
 - 작업 대상 도메인의 `worker/` 폴더와 `registCron.js` 유무를 확인한다.
@@ -13,6 +15,7 @@
 
 ## 구현 중
 - root `backend/worker/registCron.js`가 도메인 `worker/registCron.js`를 호출하는지 확인한다.
+- 스캐폴드 없이 직접 만들었다면 worker 파일, 도메인 `worker/registCron.js`, root `backend/worker/registCron.js`가 모두 연결됐는지 확인한다.
 - 도메인 `registCron.js`에는 schedule 등록과 에러 처리만 둔다.
 - 실제 비즈니스 로직은 별도 worker 파일 또는 도메인 `module/` 함수로 분리한다.
 - worker 파일명과 export 함수명은 `lowerCamelCase`로 맞춘다.

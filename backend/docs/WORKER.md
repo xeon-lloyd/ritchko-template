@@ -13,6 +13,14 @@
 - worker 로직은 보통 `module.exports = async function workerName(){ ... }` 형태로 작성한다.
 - worker는 `/API-doc` 문서화 대상이 아니다.
 
+## 생성 명령
+- 기본 생성: `npm run create:backend-worker -- <domain> <workerName>`
+- 단일 경로 인자: `npm run create:backend-worker -- <domain>/<workerName>`
+- cron을 바로 활성화하려면 `--cron "0 * * * *"`와 `--comment "1시간마다 실행"`을 함께 지정한다.
+- `--cron`을 생략하면 도메인 `worker/registCron.js`에 주석 처리된 schedule block을 생성한다.
+- 기본 worker 파일은 `util.worker.tryWorkerProcessLock(workerName, ttlSeconds)`를 사용한다.
+- lock이 필요 없으면 `--no-lock`, TTL을 바꾸려면 `--ttl 600`을 사용한다.
+
 ## 언제 worker로 만들지
 - 특정 주기로 실행해야 하는 정리, 동기화, 알림, 통계, 결제, 만료 처리
 - 서버 부팅 후 한 번 초기화해야 하는 캐시, 외부 데이터 갱신, batch bootstrap

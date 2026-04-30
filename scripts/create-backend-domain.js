@@ -94,11 +94,12 @@ function main() {
 
     console.log('');
     console.log('다음 단계:');
-    console.log(`1. ${path.join(domainRoot, '_operations.sys.js')} 내용을 채운다.`);
-    console.log(`2. ${path.join(domainRoot, '_param.sys.js')} 내용을 채운다.`);
-    console.log(`3. ${path.join(domainRoot, '_response.sys.js')} 내용을 채운다.`);
-    console.log('4. backend/AGENTS.md를 확인한다.');
-    console.log('5. operation 추가 후 /API-doc를 확인한다.');
+    console.log('1. backend/AGENTS.md와 작업 주제별 docs를 확인한다.');
+    console.log(`2. operation은 npm run create:backend-operation -- ${domainName} <OperationName> 으로 추가한다.`);
+    console.log(`3. webhook은 npm run create:backend-webhook -- ${domainName} <webhookNameWithoutProcess> 으로 추가한다.`);
+    console.log(`4. socket은 npm run create:backend-socket -- ${domainName} <SocketNameMessage|SocketNameEvent> 으로 추가한다.`);
+    console.log(`5. worker는 npm run create:backend-worker -- ${domainName} <workerName> 으로 추가한다.`);
+    console.log('6. 구현 후 /API-doc, /API-doc/webhooks, /API-doc/sockets, worker registry를 확인한다.');
 }
 
 try {

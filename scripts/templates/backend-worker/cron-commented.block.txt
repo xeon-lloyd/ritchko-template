@@ -1,0 +1,9 @@
+    // TODO: 실행 주기를 정한 뒤 주석을 해제한다.
+    // cron.schedule('0 * * * *', async () => {
+    //     try{
+    //         await {{workerName}}()
+    //     }catch(e){
+    //         console.error(e);
+    //     }
+    // });
+

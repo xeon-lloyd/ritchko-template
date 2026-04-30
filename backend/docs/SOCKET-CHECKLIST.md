@@ -2,6 +2,7 @@
 
 ## 작업 전
 - client > server 요청인지 server > client 이벤트인지 구분한다.
+- 새 socket은 `npm run create:backend-socket -- <domain> <SocketNameMessage|SocketNameEvent>`로 생성하는 것을 우선한다.
 - message 이름은 `Message`, event 이름은 `Event` suffix로 정한다.
 - 인증이 필요하면 `_sockets.sys.js`에 `authRequire: true`를 둘지 확인한다.
 - room join이 필요한지, room 이름을 `<domain>:<id>` 형태로 정할지 확인한다.
@@ -12,6 +13,7 @@
 - 여러 서버 instance에서 broadcast가 필요하면 Redis adapter 설정 필요 여부를 확인한다.
 
 ## 구현 중
+- message/event 추가 시 `_sockets.sys.js`, `_param.sys.js`, `_response.sys.js`를 스캐폴드 산출물 구조와 맞춘다.
 - message 로직 기본 export를 `module.exports = async function(socket, data){ ... }`로 작성한다.
 - 입력값 검증을 가장 먼저 둔다.
 - `data`는 구조분해하지 않고 `data.xxx`로 사용한다.

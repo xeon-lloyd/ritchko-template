@@ -1,0 +1,5 @@
+    /* {{socketName}} */
+    {{responseClassName}}: class {{responseClassName}} {
+        data = "event payload(any)"
+    },
+

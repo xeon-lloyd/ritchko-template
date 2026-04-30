@@ -7,10 +7,21 @@
 - webhook은 `server.js`의 Express app을 `backend/_system_/initialize.sys.js`가 `backend/_system_/webhookInit.sys.js`로 넘겨 초기화한다.
 - webhook registry는 `backend/_webhooks.sys.js`가 도메인별 `backend/<domain>/_webhooks.sys.js`를 모아 만든다.
 - `webhookInit.sys.js`는 registry key를 기준으로 `/webhook{key}` 경로를 등록한다.
-- 예를 들어 key가 `/user/socialLoginProcess`면 실제 endpoint는 `/webhook/user/socialLoginProcess`다.
+- 예를 들어 key가 `/user/appleSocialLogin`이면 실제 endpoint는 `/webhook/user/appleSocialLogin`이다.
+- 생성 스크립트는 webhook 이름에 `Process` suffix를 받지 않고, 로직 파일명에만 자동으로 붙인다.
+- 예를 들어 `appleSocialLogin`을 입력하면 registry key는 `/user/appleSocialLogin`, 로직 파일은 `appleSocialLoginProcess.js`가 된다.
 - webhook 로직은 `/API` operation middleware를 거치지 않는다.
 - webhook 로직은 `module.exports = async function(req, res){ ... }` 형태로 Express `req`, `res`를 직접 사용한다.
 - `/API-doc/webhooks`는 `_webhooks.sys.js`, `_param.sys.js`, `_response.sys.js`를 기준으로 문서를 생성한다.
+
+## 생성 명령
+- 기본 생성: `npm run create:backend-webhook -- <domain> <webhookNameWithoutProcess>`
+- 단일 경로 인자: `npm run create:backend-webhook -- <domain>/<webhookNameWithoutProcess>`
+- 예: `npm run create:backend-webhook -- user appleSocialLogin`
+- method 지정: `--method get|post|put|patch|delete`
+- redirect callback이면 `--redirect`를 사용한다.
+- 문서용 param/response placeholder를 만들지 않으려면 `--param-null`, `--response-null`을 사용한다.
+- 설명 지정은 `--description "설명"`을 사용한다.
 
 ## 언제 webhook으로 만들지
 - 외부 서비스가 서버로 직접 호출하는 callback endpoint
@@ -39,23 +50,24 @@ const paramSchema = require('./_param.sys.js')
 const responseSchema = require('./_response.sys.js')
 
 module.exports = {
-    '/user/socialLoginProcess': {
-        logic: '/user/socialLoginProcess.js',
+    '/user/appleSocialLogin': {
+        logic: '/user/appleSocialLoginProcess.js',
         method: 'post',
 
         //documentation
         description: '소셜 로그인 리다이렉트 처리',
         group: 'user',
-        paramSchema: paramSchema['/user/socialLoginProcess'],
+        paramSchema: paramSchema['/user/appleSocialLogin'],
         responseSchema: [
-            responseSchema.SocialLoginProcessOK,
+            responseSchema.AppleSocialLoginProcessOK,
         ]
     },
 }
 ```
 
 작성 규칙:
-- registry key는 `/domain/action` 형태를 우선한다.
+- registry key는 `/domain/action` 형태를 우선하며, `Process` suffix를 붙이지 않는다.
+- handler 파일명은 `<action>Process.js` 형태를 우선한다.
 - registry key는 전체 webhook registry에서 유일해야 한다.
 - `logic`은 `backend` 기준 절대 경로처럼 `/domain/file.js`로 쓴다.
 - `method`는 실제 호출되는 HTTP method와 맞춘다.
@@ -113,7 +125,7 @@ module.exports = async function(req, res){
 - 소셜 로그인 완료 후 일반 API처럼 token 발급 결과를 반환해야 하면 `/API` operation과 책임을 나눌지 먼저 정한다.
 
 ## Response와 문서화
-- webhook response 이름에는 `Process`를 포함한다. 예: `SocialLoginProcessOK`, `PaymentEventProcessOK`
+- webhook response 이름에는 `Process`를 포함한다. 예: `AppleSocialLoginProcessOK`, `PaymentEventProcessOK`
 - redirect webhook 문서화에는 `RedirectTo` 상속 class를 사용할 수 있다.
 - JSON webhook 응답은 일반 response class를 사용해도 된다.
 - 실패 response가 명확하면 도메인 `_response.sys.js`에 상태를 드러내는 이름으로 추가한다.
@@ -121,13 +133,13 @@ module.exports = async function(req, res){
 
 예:
 ```js
-'/user/socialLoginProcess': {
+'/user/appleSocialLogin': {
     id_token: 'provider id token(string)',
 }
 ```
 
 ```js
-SocialLoginProcessOK: class SocialLoginProcessOK extends rootResponse.RedirectTo {
+AppleSocialLoginProcessOK: class AppleSocialLoginProcessOK extends rootResponse.RedirectTo {
     path = '# (로그인 완료 후 이동할 앱/웹 경로)'
 }
 ```

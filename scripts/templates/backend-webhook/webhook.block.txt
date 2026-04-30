@@ -1,0 +1,13 @@
+    '/{{domainName}}/{{webhookName}}': {
+        logic: '/{{domainName}}/{{logicFileName}}.js',
+        method: '{{method}}',
+
+        //documentation
+        description: '{{description}}',
+        group: '{{domainName}}',
+        paramSchema: {{paramSchema}},
+        responseSchema: [
+{{responseSchemaLine}}
+        ]
+    },
+

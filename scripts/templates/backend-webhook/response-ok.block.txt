@@ -1,0 +1,5 @@
+    /* {{responseGroupName}} */
+    {{responseClassName}}: class {{responseClassName}} extends rootResponse.OK {
+        message = "{{successMessage}}"
+    },
+

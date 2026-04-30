@@ -17,6 +17,11 @@
 - response: `CreateApiKeyOK`, `ApiKeyNotFound`
 - module: `getAccountByUid.js`, `softDeleteStream.js`
 
+## Scaffold 우선
+- 새 도메인/operation/webhook/socket/worker는 생성 스크립트를 우선 사용한다.
+- 수동 생성이 필요한 경우에도 생성 스크립트가 만드는 파일, registry, paramSchema, responseSchema 구조와 맞춘다.
+- 생성 스크립트가 만든 placeholder는 실제 로직 구현 후 삭제하거나 구체화한다.
+
 ## Operation
 - operation key와 `paramSchema` key는 같은 이름을 쓴다.
 - 생성은 `Create`, 조회는 `Get`, 수정은 `Modify` 또는 `Update`, 삭제는 `Delete`, 검증은 `Verify`, 전송은 `Send`를 우선한다.
@@ -39,9 +44,9 @@
 
 ## Webhook
 - webhook registry key와 `paramSchema` key는 같은 이름을 쓴다.
-- webhook registry key는 `/domain/action` 형태를 우선한다. 예: `/user/socialLoginProcess`, `/payment/paymentEventProcess`
+- webhook registry key는 `/domain/action` 형태를 우선하고, `Process` suffix를 붙이지 않는다. 예: `/user/appleSocialLogin`, `/payment/paymentEvent`
 - webhook 로직 파일은 `lowerCamelCase`로 작성한다.
-- 외부 redirect 또는 event 처리 로직 파일은 `Process` 의미가 드러나는 이름을 우선한다.
+- 외부 redirect 또는 event 처리 로직 파일은 `<action>Process.js` 형태를 우선한다. 예: `appleSocialLoginProcess.js`
 - webhook 로직 기본 export는 `module.exports = async function(req, res){ ... }` 형태다.
 - webhook 로직은 `/API` operation middleware를 거치지 않으므로 `req.query`, `req.body`, `req.headers`를 직접 사용한다.
 - webhook 추가 시 로직 파일만 만들지 말고 `_webhooks.sys.js`, `_param.sys.js`, `_response.sys.js`를 함께 맞춘다.

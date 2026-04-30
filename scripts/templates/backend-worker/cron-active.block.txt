@@ -1,0 +1,9 @@
+    // {{cronComment}}
+    cron.schedule('{{cronExpression}}', async () => {
+        try{
+            await {{workerName}}()
+        }catch(e){
+            console.error(e);
+        }
+    });
+

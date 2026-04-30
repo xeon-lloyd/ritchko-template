@@ -13,6 +13,15 @@
 - `type: 'message'`만 `socketInit.sys.js`에서 자동 listener로 등록된다.
 - `/API-doc/sockets`는 `_sockets.sys.js`, `_param.sys.js`, `_response.sys.js`를 기준으로 문서를 생성한다.
 
+## 생성 명령
+- message 생성: `npm run create:backend-socket -- <domain> <SocketNameMessage>`
+- event 생성: `npm run create:backend-socket -- <domain> <SocketNameEvent>`
+- 단일 경로 인자: `npm run create:backend-socket -- <domain>/<SocketNameMessage|SocketNameEvent>`
+- 인증 필요 message는 `--auth`를 사용한다.
+- message param placeholder를 만들지 않으려면 `--param-null`을 사용한다.
+- response placeholder를 만들지 않으려면 `--response-null`을 사용한다.
+- 설명 지정은 `--description "설명"`을 사용한다.
+
 ## 연결과 인증
 - 클라이언트는 socket.io로 `/socket`에 연결한다.
 - 기본 시스템은 연결 시 `auth` header의 토큰을 읽어 `socket.loginUser`에 저장한다.

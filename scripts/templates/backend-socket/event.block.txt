@@ -1,0 +1,11 @@
+    {{socketName}}: {
+        type: 'event',
+
+        //documentation
+        description: '{{description}}',
+        group: '{{domainName}}',
+        responseSchema: [
+{{responseSchemaLine}}
+        ]
+    },
+

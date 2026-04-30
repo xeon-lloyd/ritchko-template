@@ -9,7 +9,10 @@
     "build:css": "sass public/scss:public/css --style=compressed",
     "watch:css": "sass --watch public/scss:public/css",
     "create:backend-domain": "node scripts/create-backend-domain.js",
-    "create:backend-operation": "node scripts/create-backend-operation.js"
+    "create:backend-operation": "node scripts/create-backend-operation.js",
+    "create:backend-webhook": "node scripts/create-backend-webhook.js",
+    "create:backend-socket": "node scripts/create-backend-socket.js",
+    "create:backend-worker": "node scripts/create-backend-worker.js"
   },
   "author": "",
   "license": "ISC",

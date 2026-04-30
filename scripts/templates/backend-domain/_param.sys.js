@@ -3,4 +3,8 @@ module.exports = {
 
     /* // webhooks // */
 
+
+
+    /* // sockets // */
+
 }
