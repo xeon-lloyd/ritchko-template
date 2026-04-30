@@ -61,8 +61,9 @@ worker 로직 파일은 operation과 다르게 response class를 반환하지 �
 const util = require('../../core/util.js')
 
 module.exports = async function leaveAccountConfirm(){
-    // 0번 프로세스에서만 실행
-    if(process.env.NODE_APP_INSTANCE!=0 && process.env.NODE_APP_INSTANCE!=undefined) return
+    // 예상 작업 소요시간보다 넉넉하게 설정
+    const ttlSeconds = 10 * 60
+    if(!await util.worker.tryWorkerProcessLock('leaveAccountConfirm', ttlSeconds)) return
 
     // 핵심 비즈니스 처리
     await util.mysql.update(
@@ -90,14 +91,16 @@ module.exports = async function leaveAccountConfirm(){
 cron worker는 서버 프로세스마다 등록된다. PM2 cluster, nodemon 중복 실행, 여러 서버 instance를 쓰는 경우 같은 작업이 여러 번 실행될 수 있다.
 
 기본 규칙:
-- 단일 프로세스에서만 실행해야 하는 작업은 함수 시작부에 프로세스 가드를 둔다.
-- 이 템플릿에서는 `process.env.NODE_APP_INSTANCE` 또는 배포 환경에서 쓰는 instance id를 확인한다.
-- 여러 서버에서 동시에 실행될 수 있는 배포 구조라면 DB lock, Redis lock, unique key 같은 분산 lock을 먼저 설계한다.
-- 결제, 정산, 알림 발송처럼 중복 실행 피해가 큰 작업은 DB unique key 또는 상태 컬럼으로 멱등성을 보장한다.
+- 단일 실행 worker는 함수 시작부에서 `util.worker.tryWorkerProcessLock(workerName, ttlSeconds)`로 실행 lock 획득을 시도한다.
+- `workerName`은 worker 함수명과 같은 고유한 이름을 사용한다.
+- `ttlSeconds`는 lock key의 만료 시간이며, 예상 작업 소요시간보다 여유 있게 설정한다.
+- lock 획득에 실패하면 이미 다른 프로세스 또는 서버에서 실행 중인 것으로 보고 바로 return한다.
+- 결제, 정산, 알림 발송처럼 중복 실행 피해가 큰 작업은 Redis lock 외에도 DB unique key 또는 상태 컬럼으로 멱등성을 보장한다.
 
 예:
 ```js
-if(process.env.NODE_APP_INSTANCE!=0 && process.env.NODE_APP_INSTANCE!=undefined) return
+const ttlSeconds = 30 * 60
+if(!await util.worker.tryWorkerProcessLock('createMonthlyInvoice', ttlSeconds)) return
 ```
 
 ## Queue Worker
@@ -136,7 +139,7 @@ if(process.env.NODE_APP_INSTANCE!=0 && process.env.NODE_APP_INSTANCE!=undefined)
 ## 작업 후
 - 도메인 `worker/registCron.js`와 root `backend/worker/registCron.js` 집계가 맞는지 확인한다.
 - cron expression과 주석이 서로 맞는지 확인한다.
-- 단일 실행이 필요한 작업이면 프로세스 가드 또는 분산 lock이 있는지 확인한다.
+- 단일 실행이 필요한 작업이면 `tryWorkerProcessLock()`을 사용하고 `ttlSeconds`가 예상 작업 소요시간보다 넉넉한지 확인한다.
 - worker가 DB를 바꾸면 `backend/docs/DB.md` 규칙을 다시 확인한다.
 - queue worker면 Redis 연결 순서와 consumer 등록 위치를 확인한다.
 - 기본 검증은 `npm run build`로 수행한다.

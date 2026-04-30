@@ -8,7 +8,7 @@
 - DB 작업이면 `backend/docs/DB.md`, `backend/docs/DB-CHECKLIST.md`를 확인한다.
 - 파일 처리 작업이면 `backend/docs/FILE.md`, `backend/docs/FILE-CHECKLIST.md`를 확인한다.
 - socket event를 보내면 `backend/docs/SOCKET.md`, `backend/docs/SOCKET-CHECKLIST.md`를 확인한다.
-- 단일 프로세스에서만 실행해야 하는 작업인지 확인한다.
+- 단일 실행 작업이면 `tryWorkerProcessLock()`이 필요한지 확인한다.
 - queue를 쓰면 Redis 연결과 dependency가 준비돼 있는지 확인한다.
 
 ## 구현 중
@@ -18,8 +18,9 @@
 - worker 파일명과 export 함수명은 `lowerCamelCase`로 맞춘다.
 - cron expression 옆에는 실행 주기를 주석으로 남긴다.
 - schedule callback마다 `try/catch`를 둔다.
-- 단일 실행 작업이면 `process.env.NODE_APP_INSTANCE` 같은 프로세스 가드를 둔다.
-- 여러 서버에서 동시에 실행될 수 있으면 DB lock, Redis lock, unique key 같은 멱등성 장치를 설계한다.
+- 단일 실행 작업이면 worker 시작부에서 `util.worker.tryWorkerProcessLock(workerName, ttlSeconds)`를 호출한다.
+- `ttlSeconds`는 예상 작업 소요시간보다 여유 있게 설정한다.
+- 여러 서버에서 동시에 실행될 수 있으면 Redis lock 외에도 DB unique key 같은 멱등성 장치를 설계한다.
 - 결제, 정산, 알림 발송처럼 중복 피해가 큰 작업은 DB unique key 또는 상태 컬럼으로 보호한다.
 - queue payload에는 필요한 최소 식별자와 기준값만 넣는다.
 - consumer worker 파일이 도메인 `worker/registCron.js` 또는 서버 부팅 흐름에서 한 번 import되는지 확인한다.

@@ -27,7 +27,7 @@
 - 소켓 message의 예상 가능한 실패는 `_error` 이벤트로 response class를 emit한다.
 - 소켓 room join 전에는 대상 존재 여부와 권한을 확인한다.
 - cron 등록은 root `backend/worker/registCron.js`와 도메인 `worker/registCron.js` 집계를 함께 확인한다.
-- 단일 실행 worker는 프로세스 가드 또는 멱등성 장치를 둔다.
+- 단일 실행 worker는 `tryWorkerProcessLock()`과 멱등성 장치를 둔다.
 - queue worker는 Redis 연결 순서와 consumer 등록 위치를 확인한다.
 
 ## 구현 후
