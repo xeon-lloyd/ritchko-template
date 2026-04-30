@@ -5,10 +5,14 @@ const valider = require('../core/valider.js');
 const enums = require('./enums.js');
 
 module.exports = async function(param, req, res){
-    if(!param.id || !param.pw) return new response.FormInputRequired();
+    // 입력값 검증
+    if(!valider.isValidString(param.id)) return new response.InputValueNotValid('id');
+    if(!valider.isValidString(param.pw)) return new response.InputValueNotValid('pw');
 
+    // 비밀번호 암호화
     let cryptedPW = util.encrypt.oneWay(param.pw)
 
+    // 유저 조회
     let [ user ] = await util.mysql.select(
         'database1',
         'uid',
@@ -16,10 +20,10 @@ module.exports = async function(param, req, res){
         'id=? AND pw=?',
         [ param.id, cryptedPW ]
     )
+    if(!user) return new response.UserNotFound();
 
-    if(user==undefined) return new response.UserNotFound();
-
-    let token = util.token.createInitialToken({
+    // 토큰 생성
+    let token = await util.token.createInitialToken({
         uid: user.uid
     })
 

@@ -1,15 +1,9 @@
 const rootResponse = require('../_response.default.sys.js')
-const { token } = require('../core/setting.js')
 
 module.exports = {
     ...rootResponse,
 
     /* SignIn */
-    FormInputRequired: class FormInputRequired extends rootResponse.BadRequest {
-        message = "필수 입력 누락"
-        errorCode = "(id|pw)"
-    },
-
     UserNotFound: class UserNotFound extends rootResponse.NotFound {
         message = "해당 유저를 찾을 수 없음"
     },
@@ -42,29 +36,15 @@ module.exports = {
         }
     },
 
+    /* SignOut */
     SignOutOK: class SignOutOK extends rootResponse.OK {
         message = "로그아웃 완료"
     },
 
 
     /* // webhooks (이름에 Process를 포함하여 webhook의 응답이란것을 명시) // */
-    SocialLoginProcessOK: class SocialLoginProcessOK extends rootResponse.RedirectTo{
-        path = "# (마지막 접속 페이지)"
-    },
-
-    UserInfoUpdateProcessOK: class UserInfoUpdateProcessOK extends rootResponse.OK{
-        message = "웹훅 처리 완료"
-    },
 
 
     /* // sockets (이름에 Messagek, Event를 포함하여 socket의 응답이란것을 명시) // */
-    UserStatusUpdateEvent: class UserStatusUpdateEvent extends rootResponse.OK {
-        constructor(data){
-            super()
-            if(data!=undefined) this.data = data
-        }
 
-        message = "유저 상태가 업데이트 됐습니다"
-        data = "유저 상태(enum:online|sleep|offline)"
-    },
 }

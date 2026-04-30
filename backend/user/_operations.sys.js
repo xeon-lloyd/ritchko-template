@@ -11,7 +11,7 @@ module.exports = {
         group: 'user',
         paramSchema: paramSchema.SignIn,
         responseSchema: [
-            responseSchema.FormInputRequired,
+            responseSchema.InputValueNotValid,
             responseSchema.UserNotFound,
             responseSchema.SignInOK,
         ]
