@@ -1,35 +1,14 @@
 const fs = require('fs').promises;
-const path = require('path');
 const crypto = require('crypto');
+const redis = require('redis')
 const setting = require(`./setting.js`);
 
 module.exports = {
-	appRoot: path.dirname(require.main.filename || process.mainModule.filename),
-
-	/* 경로 유효범위 체크(상위 폴더 이동 방지) */
-	securePath: function(src=''){
-		let stack = [];
-
-		src = src.split('/');
-
-		for(let i=0;i<src.length;i++){
-			if(src[i]=='') continue;
-
-			if(src[i]=='..'){
-				stack.pop();
-			}else{
-				stack.push(src[i]);
-			}
-		}
-
-		return stack.join('/');
-	},
-
 	/* DB(mysql) 관련 */
 	mysql: {
 		/* DB 연결 */
 		connection: {},
-		connect: async function(db){
+		connect: function(db){
 			if(!setting.mysql[db]) throw new Error(`mysql alias not found: ${db}`);
 			if(this.connection[db]) return this.connection[db];
 
@@ -276,6 +255,26 @@ module.exports = {
 
 	/* 사용자 토큰 */
 	token: {
+		redisSessionStorage: null,
+
+		init: async function(){
+			await this.connect();
+		},
+
+		connect: async function(){
+			const clientOption = {
+				socket: {
+					host: setting.token.redisSessionStorage.host,
+				  	port: setting.token.redisSessionStorage.port,
+				},
+				password: setting.token.redisSessionStorage.password
+			};		
+
+			this.redisSessionStorage = redis.createClient(clientOption);
+
+			await this.redisSessionStorage.connect();
+		},
+
 		generateAccessToken: function(userData){
 			userData._tokenCreateAt = new Date().getTime()
 			
@@ -291,18 +290,18 @@ module.exports = {
 			do{
 				token = crypto.randomBytes(32).toString('hex')
 				key = `sys:RT:${token}`
-				isKeyExist = ((await module.exports.redis.get(key)) != null)
+				isKeyExist = ((await this.redisSessionStorage.get(key)) != null)
 			}while(isKeyExist)
 
 			userData = JSON.stringify(userData)
-			await module.exports.redis.set(key, userData, setting.token.refreshTokenExpire)
+			await this.redisSessionStorage.set(key, userData, { EX: setting.token.refreshTokenExpire })
 
 			return token
 		},
 
 		createInitialToken: async function(userData){
-			let accessToken = module.exports.token.generateAccessToken(userData);
-			let refreshToken = await module.exports.token.generateRefreshToken(userData);
+			let accessToken = this.generateAccessToken(userData);
+			let refreshToken = await this.generateRefreshToken(userData);
 
 			return {
 				accessToken,
@@ -311,14 +310,14 @@ module.exports = {
 		},
 
 		rotateTokenByRefreshToken: async function(refreshToken){
-			const userDataString = await module.exports.redis.get(`sys:RT:${refreshToken}`);
+			const userDataString = await this.redisSessionStorage.get(`sys:RT:${refreshToken}`);
 			if(!userDataString) return null
 
 			const userData = JSON.parse(userDataString);
 
-			const accessToken = module.exports.token.generateAccessToken(userData);
-			const newRefreshToken = await module.exports.token.generateRefreshToken(userData);
-			await module.exports.token.revokeRefreshToken(refreshToken);
+			const accessToken = this.generateAccessToken(userData);
+			const newRefreshToken = await this.generateRefreshToken(userData);
+			await this.revokeRefreshToken(refreshToken);
 
 			return {
 				accessToken,
@@ -327,7 +326,7 @@ module.exports = {
 		},
 
 		revokeRefreshToken: async function(refreshToken){
-			await module.exports.redis.del(`sys:RT:${refreshToken}`)
+			await this.redisSessionStorage.del(`sys:RT:${refreshToken}`);
 		},
 	},
 
@@ -474,15 +473,15 @@ module.exports = {
 	redis: {
 		client: null,
 		connect: async function(){
-			const redis = require('redis')
-
-			this.client = redis.createClient({
+			const clientOption = {
 				socket: {
 					host: setting.redis.host,
 				  	port: setting.redis.port,
 				},
 				password: setting.redis.password
-			});
+			};			
+
+			this.client = redis.createClient(clientOption);
 
 			await this.client.connect();
 		},

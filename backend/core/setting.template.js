@@ -62,6 +62,11 @@ const setting = {
 		enableTimeExpire: false, // false for local mode
 		accessTokenExpire: 15 * 60, //s (15 minutes)
 		refreshTokenExpire: 14 * 24 * 60 * 60, //s (14 days)
+		redisSessionStorage: {
+			host: 'localhost',
+			port: 6379,
+			password: 'redisPassword',
+		},
 	},
 
 	socket: {

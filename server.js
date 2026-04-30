@@ -57,6 +57,9 @@ server.listen(setting.port, async function(){
     /* s3 초기화 */
     util.s3.setAuth()
 
+    /* token storage 초기화 */
+    util.token.init();
+
     /* cron 등록 */
     appCronRegister()
 
