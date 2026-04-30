@@ -30,7 +30,10 @@ const setting = {
         accessKeyId: 's3 accessKeyId',
         secretAccessKey: 's3 secretAccessKey',
 		region: 'ap-northeast-1',
-		endpoint: ''
+		endpoint: '',
+		buckets: {
+			myBucket: 'my-bucket-name',
+		}
     },
 
 	fileUpload: {
@@ -58,6 +61,7 @@ const setting = {
 		password: 'redisPassword',
 	},
 
+	// 필수 설정 (로그인 토큰 시스템)
 	token: {
 		enableTimeExpire: false, // false for local mode
 		accessTokenExpire: 15 * 60, //s (15 minutes)
@@ -67,6 +71,15 @@ const setting = {
 			port: 6379,
 			password: 'redisPassword',
 		},
+	},
+
+	// 필수 설정 (worker cron 시스템)
+	worker: {
+		redisLockStorage: {
+			host: 'localhost',
+			port: 6379,
+			password: 'redisPassword',
+		}
 	},
 
 	socket: {
