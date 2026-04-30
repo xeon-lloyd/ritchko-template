@@ -648,6 +648,31 @@ module.exports = {
 		}
 	},
 
+	worker: {
+		lockKeyClient: null,
+
+		init: async function(){
+			const options = {
+				host: setting.worker.redisLockStorage.host,
+				port: setting.worker.redisLockStorage.port,
+				password: setting.worker.redisLockStorage.password
+			}
+
+			this.lockKeyClient = await module.exports.redis.createConnection(options, 'workerLockKeyClient');
+		},
+
+		tryWorkerProcessLock: async function(workerName, ttlSeconds){
+			const result = await this.lockKeyClient.set(`sys:WPL:${workerName}`, 'LOCK', { EX: ttlSeconds, NX: true })
+			if(result){
+				console.log(`[WORKER] ${workerName} 잠금 획득 성공, 실행 허용`);
+				return true;
+			}
+
+			console.log(`[WORKER] ${workerName}이 이미 다른 프로세스에서 실행중입니다`);
+			return false;
+		},
+	},
+
 	socket: {
 		io: null,
 	},

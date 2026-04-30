@@ -61,7 +61,7 @@ server.listen(setting.port, async function(){
     util.token.init();
 
     /* cron 등록 */
-    appCronRegister()
+    await appCronRegister()
 
     serverInfoPrinter();
 })
