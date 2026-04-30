@@ -17,8 +17,9 @@ const {
 } = require('./backend-scaffold-utils.js');
 
 function printUsage() {
-    console.log('사용법: npm run create:backend-worker -- <domain> <workerName> [--cron "0 * * * *"] [--comment "1시간마다 실행"] [--ttl 600] [--no-lock]');
+    console.log('사용법: npm run create:backend-worker -- <domain> <workerName> [--cron "0 * * * *"] [--comment "1시간마다 실행"] [--ttl 600] [--no-lock] [--consumer]');
     console.log('또는:   npm run create:backend-worker -- <domain>/<workerName> [options]');
+    console.log('기본 worker는 producer guard를 포함하고 consumer 없음으로 생성합니다. consumer가 필요하면 --consumer를 사용합니다.');
 }
 
 function parseArgs(argv) {
@@ -27,6 +28,7 @@ function parseArgs(argv) {
         cronComment: null,
         ttlSeconds: 10 * 60,
         useLock: true,
+        hasConsumer: false,
     };
     const positional = [];
 
@@ -71,6 +73,11 @@ function parseArgs(argv) {
             continue;
         }
 
+        if (arg === '--consumer') {
+            options.hasConsumer = true;
+            continue;
+        }
+
         if (arg.startsWith('--')) {
             throw new Error(`알 수 없는 옵션입니다: ${arg}`);
         }
@@ -107,6 +114,7 @@ function parseArgs(argv) {
         cronComment: options.cronComment || `${options.cronExpression || '0 * * * *'} 실행`,
         ttlSeconds: options.ttlSeconds,
         useLock: options.useLock,
+        hasConsumer: options.hasConsumer,
     };
 }
 
@@ -120,6 +128,16 @@ function ensureDomainCronFile(workerRoot, templateRoot) {
     return cronFilePath;
 }
 
+function getConsumerBlock(hasConsumer) {
+    if (!hasConsumer) return '// consumer 없음';
+
+    return [
+        'util.redis.consume(queueName, async (data) => {',
+        '    // 핵심 비즈니스 처리',
+        '})',
+    ].join('\n');
+}
+
 function main() {
     const {
         domainName,
@@ -128,6 +146,7 @@ function main() {
         cronComment,
         ttlSeconds,
         useLock,
+        hasConsumer,
     } = parseArgs(process.argv.slice(2));
 
     const backendRoot = repoPath('backend');
@@ -155,6 +174,8 @@ function main() {
     const workerContent = renderTemplate(readTemplate(path.join(templateRoot, workerTemplate)), {
         workerName,
         ttlSeconds: String(ttlSeconds),
+        utilRequire: hasConsumer ? "const util = require('../../core/util.js');\n\n" : '',
+        consumerBlock: getConsumerBlock(hasConsumer),
     });
     writeNewFile(workerFilePath, workerContent);
 
@@ -194,8 +215,10 @@ function main() {
     console.log('다음 단계:');
     [
         `${workerFilePath}에 background 작업 로직을 구현한다.`,
+        `${workerFilePath}의 queueName은 'WP:${workerName}' 형식을 유지한다.`,
+        hasConsumer ? `${workerFilePath}의 // consumer 영역에 queue 처리 로직을 구현한다.` : `${workerFilePath}는 consumer 없음으로 생성됐다.`,
         !cronExpression ? `${cronFilePath}의 cron.schedule 주석을 실제 실행 주기에 맞춰 해제한다.` : null,
-        'root/도메인 registCron.js 집계와 중복 실행 방지 조건을 확인한다.',
+        'root/도메인 registCron.js 집계와 producer guard 필요 여부를 확인한다.',
     ].filter(Boolean).forEach((step, index) => console.log(`${index + 1}. ${step}`));
 }
 
