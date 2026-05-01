@@ -60,7 +60,7 @@ module.exports = async function(req, res, next){
 
             body.param.loginUser = userData;
         }catch(e){
-            return res.send(new response.Unauthorized(null, "잘못된 토큰입니다"))
+            return res.send(new response.Unauthorized("잘못된 토큰입니다"))
         }
     }
 

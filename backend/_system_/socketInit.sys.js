@@ -39,9 +39,10 @@ module.exports = async function(server){
 
     util.socket.on('connection', async function(socket) {
         /* auth에 토큰이 있다면 loginUser로 decode */
-        if(socket.handshake.headers.auth){
+        const authToken = socket.handshake.headers.auth || socket.handshake.auth?.token
+        if(authToken){
             try{
-                let [ tokenData, hash ] = socket.handshake.headers.auth.split('.')
+                let [ tokenData, hash ] = authToken.split('.')
 
                 //유저 정보 무결성 체크
                 const expectedHash = util.encrypt.oneWayLite(tokenData)
@@ -67,7 +68,7 @@ module.exports = async function(server){
 
                 socket.loginUser = userData
             }catch(e){
-                socket.emit("_error", new response.Unauthorized(null, "잘못된 토큰입니다"));
+                socket.emit("_error", new response.Unauthorized("잘못된 토큰입니다"));
                 socket.disconnect(true);
                 return;
             }

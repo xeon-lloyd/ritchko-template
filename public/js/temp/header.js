@@ -26,10 +26,10 @@ const upBarLogin = {
 
 			document.querySelector('#menu').classList.remove('display');
 		})
-    },
+	},
 
-	logout: function(){
-		API.removeAuthKey();
+	logout: async function(){
+		await API.removeToken();
 		location.reload();
 	}
 }
