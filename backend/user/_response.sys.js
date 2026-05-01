@@ -36,6 +36,24 @@ module.exports = {
         }
     },
 
+    /* RotateUserToken */
+    RefreshTokenNotValid: class RefreshTokenNotValid extends rootResponse.Unauthorized {
+        message = "유효하지 않은 리프레시 토큰"
+    },
+    
+    RotateUserTokenOK: class RotateUserTokenOK extends rootResponse.OK {
+        constructor(token){
+            super()
+            if(token) this.data = token
+        }
+    
+        message = "토큰 갱신 성공"
+        data = {
+            accessToken: '로그인 토큰(string)',
+            refreshToken: '리프레시 토큰(string)'
+        }
+    },
+
     /* SignOut */
     SignOutOK: class SignOutOK extends rootResponse.OK {
         message = "로그아웃 완료"

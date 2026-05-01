@@ -30,17 +30,32 @@ module.exports = {
         ]
     },
 
+    RotateUserToken: {
+        logic: '/user/rotateUserToken.js',
+        authRequire: false,
+
+        //documentation
+        description: '리프레시 토큰으로 로그인 토큰 갱신',
+        group: 'user',
+        paramSchema: paramSchema.RotateUserToken,
+        responseSchema: [
+            responseSchema.InputValueNotValid,
+            responseSchema.RefreshTokenNotValid,
+            responseSchema.RotateUserTokenOK,
+        ]
+    },
+
     SignOut: {
         logic: '/user/signOut.js',
         authRequire: false,
 
         //documentation
-        description: '로그아웃(RT 토큰 만료처리)',
+        description: '로그아웃(RT 만료처리)',
         group: 'user',
         paramSchema: paramSchema.SignOut,
         responseSchema: [
             responseSchema.InputValueNotValid,
             responseSchema.SignOutOK,
         ]
-    }
+    },
 }

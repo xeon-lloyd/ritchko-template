@@ -4,6 +4,10 @@ module.exports = {
         pw: '유저 password(string)'
     },
 
+    RotateUserToken: {
+        refreshToken: '리프레시 토큰(string)'
+    },
+
     SignOut: {
         refreshToken: '리프레시 토큰(string)'
     },
