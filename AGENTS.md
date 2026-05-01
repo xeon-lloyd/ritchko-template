@@ -13,11 +13,13 @@
 2. `backend/_system_/initialize.sys.js`
 3. `backend/_system_/middleware.sys.js`
 4. `backend/_operations.sys.js`
-5. 작업 영역의 `AGENTS.md`
-6. 작업 주제별 가이드와 체크리스트
-7. 필요한 `convention/*.md`
+5. `convention/agent.md`
+6. 작업 영역의 `AGENTS.md`
+7. 작업 주제별 가이드와 체크리스트
+8. 필요한 `convention/*.md`
 
 ## 영역별 문서
+- AI agent 작업 방식: `convention/agent.md`
 - 백엔드: `backend/AGENTS.md`, `backend/CHECKLIST.md`, `backend/CONVENTION.md`
 - DB: `backend/docs/DB.md`, `backend/docs/DB-CHECKLIST.md`
 - 파일 업로드: `backend/docs/FILE.md`, `backend/docs/FILE-CHECKLIST.md`
@@ -30,6 +32,7 @@
 - 공통 컨벤션: `convention/README.md`
 
 ## 핵심 원칙
+- 모든 AI agent는 `convention/agent.md`의 작업 방식을 반드시 따른다.
 - 기존 구조와 네이밍을 우선한다.
 - 백엔드 도메인/operation/webhook/socket/worker는 생성 스크립트를 우선 사용한다.
 - 템플릿에 없는 외부 프레임워크 기준으로 구조를 재편하지 않는다.
