@@ -24,10 +24,10 @@ const API = {
 
 					if(_401Retry && result.response == 401){
 						const currentAccessToken = cookie.get('accessToken');
-						if(requestAccessToken && currentAccessToken && requestAccessToken != currentAccessToken){
+						if(currentAccessToken && requestAccessToken != currentAccessToken){
 							result = await API.request(operation, param, false);
 						}else{
-							const rotated = await API.rotateToken();
+							const rotated = await API.rotateToken(requestAccessToken);
 							if(rotated){
 								result = await API.request(operation, param, false);
 							}
@@ -53,46 +53,163 @@ const API = {
 		cookie.set('refreshToken', refreshToken, env.token.refreshTokenExpire)
     },
 
-	rotateToken: async function(){
+	rotateToken: async function(requestAccessToken){
 		if(API._rotateTokenPromise != null) return API._rotateTokenPromise;
 
-		API._rotateTokenPromise = new Promise(async (resolve)=>{
-			try{
-				let result = await API.request(env.token.rotateTokenOperation, {
-					refreshToken: cookie.get('refreshToken')
-				}, false);
-				
-				if(result && result.response == 200){
-					API.setToken(result.data.accessToken, result.data.refreshToken);
-					return resolve(true);
-				}
-
-				await API.removeToken();
-				resolve(false);
-			}catch(e){
-				await API.removeToken();
-				resolve(false);
-			}finally{
-				API._rotateTokenPromise = null;
-			}
-		});
+		API._rotateTokenPromise = API._rotateTokenHelper.run(requestAccessToken);
 
 		return API._rotateTokenPromise;
 	},
 
-    removeToken: async function(){
-		const refreshToken = cookie.get('refreshToken');
+	_rotateTokenHelper: {
+		lockKey: 'API:rotateTokenLock',
+		lockTTL: 10 * 1000,
+		lockWait: 10 * 1000,
+		lockInterval: 50,
+
+		run: async function(requestAccessToken){
+			try{
+				if(typeof navigator != 'undefined' && navigator.locks && navigator.locks.request){
+					return await navigator.locks.request('API:rotateToken', async function(){
+						return await API._rotateTokenHelper.runLocked(requestAccessToken);
+					});
+				}
+
+				return await API._rotateTokenHelper.runWithStorageLock(requestAccessToken);
+			}finally{
+				API._rotateTokenPromise = null;
+			}
+		},
+
+		runWithStorageLock: async function(requestAccessToken){
+			const startAt = Date.now();
+
+			while(Date.now() - startAt < API._rotateTokenHelper.lockWait){
+				const currentAccessToken = cookie.get('accessToken');
+				if(currentAccessToken && requestAccessToken != currentAccessToken){
+					return true;
+				}
+
+				const lockOwner = await API._rotateTokenHelper.acquireLock();
+				if(lockOwner){
+					try{
+						return await API._rotateTokenHelper.runLocked(requestAccessToken);
+					}finally{
+						API._rotateTokenHelper.releaseLock(lockOwner);
+					}
+				}
+
+				await API._rotateTokenHelper.sleep(API._rotateTokenHelper.lockInterval);
+			}
+
+			const currentAccessToken = cookie.get('accessToken');
+			if(currentAccessToken && requestAccessToken != currentAccessToken){
+				return true;
+			}
+
+			await API.removeToken(cookie.get('refreshToken'));
+			return false;
+		},
+
+		runLocked: async function(requestAccessToken){
+			const currentAccessToken = cookie.get('accessToken');
+			if(currentAccessToken && requestAccessToken != currentAccessToken){
+				return true;
+			}
+
+			const refreshToken = cookie.get('refreshToken');
+			if(!refreshToken){
+				await API.removeToken();
+				return false;
+			}
+
+			try{
+				let result = await API.request(env.token.rotateTokenOperation, {
+					refreshToken
+				}, false);
+				
+				if(result && result.response == 200){
+					API.setToken(result.data.accessToken, result.data.refreshToken);
+					return true;
+				}
+
+				await API.removeToken(refreshToken);
+				return false;
+			}catch(e){
+				await API.removeToken(refreshToken);
+				return false;
+			}
+		},
+
+		acquireLock: async function(){
+			const now = Date.now();
+			const currentLock = API._rotateTokenHelper.getLock();
+			if(currentLock && currentLock.expiresAt > now) return null;
+
+			const owner = `${now}:${Math.random().toString(36).slice(2)}`;
+			try{
+				localStorage.setItem(API._rotateTokenHelper.lockKey, JSON.stringify({
+					owner,
+					expiresAt: now + API._rotateTokenHelper.lockTTL
+				}));
+			}catch(e){
+				return owner;
+			}
+
+			await API._rotateTokenHelper.sleep(25);
+
+			const savedLock = API._rotateTokenHelper.getLock();
+			if(savedLock && savedLock.owner == owner) return owner;
+			return null;
+		},
+
+		getLock: function(){
+			try{
+				const lock = JSON.parse(localStorage.getItem(API._rotateTokenHelper.lockKey));
+				if(!lock || !lock.owner || !lock.expiresAt) return null;
+
+				if(lock.expiresAt <= Date.now()){
+					localStorage.removeItem(API._rotateTokenHelper.lockKey);
+					return null;
+				}
+
+				return lock;
+			}catch(e){
+				return null;
+			}
+		},
+
+		releaseLock: function(owner){
+			const currentLock = API._rotateTokenHelper.getLock();
+			if(currentLock && currentLock.owner == owner){
+				try{
+					localStorage.removeItem(API._rotateTokenHelper.lockKey);
+				}catch(e){}
+			}
+		},
+
+		sleep: function(ms){
+			return new Promise(function(resolve){
+				setTimeout(resolve, ms);
+			});
+		},
+	},
+
+    removeToken: async function(refreshToken){
+		const targetRefreshToken = refreshToken || cookie.get('refreshToken');
         
 		try{
 			// 서버 로그아웃 시도
-			if(refreshToken){
+			if(targetRefreshToken){
 				await API.request(env.token.signOutOperation, {
-					refreshToken
+					refreshToken: targetRefreshToken
 				}, false);
 			}
 		}finally{
-			cookie.set('accessToken', null, -1)
-			cookie.set('refreshToken', null, -1)
+			if(!refreshToken || cookie.get('refreshToken') == refreshToken){
+				cookie.set('accessToken', null, -1)
+				cookie.set('refreshToken', null, -1)
+			}
 		}
     },
 }
