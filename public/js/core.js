@@ -15,24 +15,28 @@ const API = {
 			xhr.onreadystatechange = async function(){
 				if(xhr.readyState != 4) return;
 
-				if(xhr.status == 400){
-					resolve(JSON.parse(xhr.responseText));
-				}
+				if(xhr.status == 400) return resolve(JSON.parse(xhr.responseText));
 
-				if(xhr.status == 404){
-					resolve(null);
-				}
+				if(xhr.status == 404) return resolve(null);
 
 				if(xhr.status == 200){
 					let result = JSON.parse(xhr.responseText);
 
 					if(_401Retry && result.response == 401){
-						await API.rotateToken();
-						result = await API.request(operation, param, false);
+						const rotated = await API.rotateToken();
+						if(rotated){
+							result = await API.request(operation, param, false);
+						}
 					}
 
-					resolve(result);
+					return resolve(result);
 				}
+
+				resolve(null);
+			}
+
+			xhr.onerror = function(){
+				resolve(null);
 			}
 
             xhr.send(JSON.stringify({ operation, param }));
@@ -47,19 +51,24 @@ const API = {
 	rotateToken: async function(){
 		if(API._rotateTokenPromise != null) return API._rotateTokenPromise;
 
-		API._rotateTokenPromise = new Promise(async (resolve, reject)=>{
-			let result = await API.request(env.token.rotateTokenOperation, {
-				refreshToken: cookie.get('refreshToken')
-			}, false);
-			
-			if(result.response == 200){
-				API.setToken(result.data.accessToken, result.data.refreshToken);
+		API._rotateTokenPromise = new Promise(async (resolve)=>{
+			try{
+				let result = await API.request(env.token.rotateTokenOperation, {
+					refreshToken: cookie.get('refreshToken')
+				}, false);
+				
+				if(result && result.response == 200){
+					API.setToken(result.data.accessToken, result.data.refreshToken);
+					return resolve(true);
+				}
+
+				await API.removeToken();
+				resolve(false);
+			}catch(e){
+				await API.removeToken();
+				resolve(false);
+			}finally{
 				API._rotateTokenPromise = null;
-				resolve();
-			}else{
-				API.removeToken();
-				API._rotateTokenPromise = null;
-				resolve();
 			}
 		});
 
@@ -67,12 +76,19 @@ const API = {
 	},
 
     removeToken: async function(){
-        await API.request(env.token.signOutOperation, {
-			refreshToken: cookie.get('refreshToken')
-		}, false);
+		const refreshToken = cookie.get('refreshToken');
         
-        cookie.set('accessToken', null, -1)
-		cookie.set('refreshToken', null, -1)
+		try{
+			// 서버 로그아웃 시도
+			if(refreshToken){
+				await API.request(env.token.signOutOperation, {
+					refreshToken
+				}, false);
+			}
+		}finally{
+			cookie.set('accessToken', null, -1)
+			cookie.set('refreshToken', null, -1)
+		}
     },
 }
 
@@ -92,11 +108,11 @@ const cookie = {
 	},
 
 	/* 쿠키 설정하기 */
-	set: function(name, value, days){
+	set: function(name, value, seconds){
 		var expires = "";
-		if(days){
+		if(seconds){
 			var date = new Date();
-			date.setTime(date.getTime() + (days*24*60*60*1000));
+			date.setTime(date.getTime() + (seconds*1000));
 			expires = "; expires=" + date.toUTCString();
 		}
 		document.cookie = name + "=" + (value || "")  + expires + "; path=/";
