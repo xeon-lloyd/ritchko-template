@@ -7,9 +7,9 @@ const API = {
 			xhr.open('POST', `/API`);
 			xhr.setRequestHeader('Content-Type', 'application/json');
 
-            const accessToken = cookie.get('accessToken');
-            if(accessToken){
-                xhr.setRequestHeader('auth', accessToken);
+            const requestAccessToken = cookie.get('accessToken');
+            if(requestAccessToken){
+                xhr.setRequestHeader('auth', requestAccessToken);
             }
 
 			xhr.onreadystatechange = async function(){
@@ -23,9 +23,14 @@ const API = {
 					let result = JSON.parse(xhr.responseText);
 
 					if(_401Retry && result.response == 401){
-						const rotated = await API.rotateToken();
-						if(rotated){
+						const currentAccessToken = cookie.get('accessToken');
+						if(requestAccessToken && currentAccessToken && requestAccessToken != currentAccessToken){
 							result = await API.request(operation, param, false);
+						}else{
+							const rotated = await API.rotateToken();
+							if(rotated){
+								result = await API.request(operation, param, false);
+							}
 						}
 					}
 
