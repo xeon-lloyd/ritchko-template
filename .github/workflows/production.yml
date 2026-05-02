@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      APP_NAME: ${{ secrets.APP_NAME }}
       DEPLOY_PATH: /home/${{ secrets.SERVER1_USER }}/${{ secrets.APP_NAME }}
       SERVER_HOST: ${{ secrets.SERVER1_IP }}
       SERVER_USER: ${{ secrets.SERVER1_USER }}
@@ -22,20 +23,37 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+
+      - name: Validate deploy secrets
+        run: |
+          missing=0
+
+          check_required_secret() {
+            if [ -z "$1" ]; then
+              echo "$2 secret이 필요합니다."
+              missing=1
+            fi
+          }
+
+          check_required_secret "$APP_NAME" "APP_NAME"
+          check_required_secret "$SERVER_HOST" "SERVER1_IP"
+          check_required_secret "$SERVER_USER" "SERVER1_USER"
+          check_required_secret "$SERVER_PORT" "SERVER1_PORT"
+          check_required_secret "$BACK_SETTING_JS" "BACK_SETTING_PROD"
+          check_required_secret "$FRONT_ENV_JS" "FRONT_ENV_PROD"
+
+          if [ -z "$SERVER_KEY" ] && [ -z "$SERVER_PASSWORD" ]; then
+            echo "SERVER1_KEY 또는 SERVER1_PASSWORD secret 중 하나가 필요합니다."
+            missing=1
+          fi
+
+          if [ "$missing" -eq 1 ]; then
+            exit 1
+          fi
 
       - name: Write app config files
         run: |
-          if [ -z "$BACK_SETTING_JS" ]; then
-            echo "BACK_SETTING_PROD secret이 필요합니다."
-            exit 1
-          fi
-
-          if [ -z "$FRONT_ENV_JS" ]; then
-            echo "FRONT_ENV_PROD secret이 필요합니다."
-            exit 1
-          fi
-
           printf '%s\n' "$BACK_SETTING_JS" > backend/core/setting.js
           printf '%s\n' "$FRONT_ENV_JS" > public/js/env.js
 
