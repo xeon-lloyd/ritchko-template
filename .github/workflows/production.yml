@@ -1,5 +1,5 @@
 # production.yml
-name: production branch auto ci process script
+name: production deploy
 
 on:
   push:
@@ -10,21 +10,76 @@ jobs:
     name: deploy
     runs-on: ubuntu-latest
 
+    env:
+      DEPLOY_PATH: /home/${{ secrets.SERVER1_USER }}/${{ secrets.APP_NAME }}
+      SERVER_HOST: ${{ secrets.SERVER1_IP }}
+      SERVER_USER: ${{ secrets.SERVER1_USER }}
+      SERVER_PORT: ${{ secrets.SERVER1_PORT }}
+      SERVER_KEY: ${{ secrets.SERVER1_KEY }}
+      SERVER_PASSWORD: ${{ secrets.SERVER1_PASSWORD }}
+      BACK_SETTING_JS: ${{ secrets.BACK_SETTING_PROD }}
+      FRONT_ENV_JS: ${{ secrets.FRONT_ENV_PROD }}
+
     steps:
-      - name: Deploy to server
-        uses: appleboy/ssh-action@v0.1.6
-        with:
-          host: ${{ secrets.SERVER1_IP }} # 인스턴스 IP
-          username: ${{ secrets.SERVER1_USER }} # ssh 아이디
-          key: ${{ secrets.SERVER1_KEY }} # ec2 pem key
-          #password: ${{ secrets.SERVER1_KEY }} # raw password
-          port: ${{ secrets.SERVER1_PORT }} # ssh 접속포트
-          script: |
-            cd /home/${{ secrets.SERVER1_USER }}/${{ secrets.APP_NAME }}
-            sudo git reset --hard
-            sudo git pull "https://${{ secrets.GITHUB_USER_TOKEN }}@github.com/${{ secrets.SERVER1_GITHUB_USER }}/${{ secrets.APP_NAME }}.git" production
-            sudo npm i --force
-            sudo mv ./ecosystem.config.js.prod ./ecosystem.config.js
-            sudo mv ./public/js/env.js.prod ./public/js/env.js
-            sudo mv ./backend/core/setting.js.prod ./backend/core/setting.js
-            sudo pm2 reload ${{ secrets.APP_NAME }}
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Write app config files
+        run: |
+          if [ -z "$BACK_SETTING_JS" ]; then
+            echo "BACK_SETTING_PROD secret이 필요합니다."
+            exit 1
+          fi
+
+          if [ -z "$FRONT_ENV_JS" ]; then
+            echo "FRONT_ENV_PROD secret이 필요합니다."
+            exit 1
+          fi
+
+          printf '%s\n' "$BACK_SETTING_JS" > backend/core/setting.js
+          printf '%s\n' "$FRONT_ENV_JS" > public/js/env.js
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p "$SERVER_PORT" "$SERVER_HOST" >> ~/.ssh/known_hosts
+
+          if [ -n "$SERVER_KEY" ]; then
+            printf '%s\n' "$SERVER_KEY" > ~/.ssh/deploy_key
+            chmod 600 ~/.ssh/deploy_key
+          elif [ -n "$SERVER_PASSWORD" ]; then
+            sudo apt-get update
+            sudo apt-get install -y sshpass
+          else
+            echo "SERVER1_KEY 또는 SERVER1_PASSWORD secret이 필요합니다."
+            exit 1
+          fi
+
+      - name: Sync files
+        run: |
+          if [ -n "$SERVER_KEY" ]; then
+            SSH_COMMAND="ssh -i ~/.ssh/deploy_key -p $SERVER_PORT"
+          else
+            export SSHPASS="$SERVER_PASSWORD"
+            SSH_COMMAND="sshpass -e ssh -p $SERVER_PORT"
+          fi
+
+          $SSH_COMMAND "$SERVER_USER@$SERVER_HOST" "mkdir -p '${DEPLOY_PATH}'"
+
+          rsync -az --delete \
+            --exclude ".git" \
+            --exclude "node_modules" \
+            -e "$SSH_COMMAND" \
+            ./ "$SERVER_USER@$SERVER_HOST:${DEPLOY_PATH}/"
+
+      - name: Install, build, and reload PM2
+        run: |
+          if [ -n "$SERVER_KEY" ]; then
+            SSH_COMMAND="ssh -i ~/.ssh/deploy_key -p $SERVER_PORT"
+          else
+            export SSHPASS="$SERVER_PASSWORD"
+            SSH_COMMAND="sshpass -e ssh -p $SERVER_PORT"
+          fi
+
+          $SSH_COMMAND "$SERVER_USER@$SERVER_HOST" \
+            "cd '${DEPLOY_PATH}' && npm ci && npm run build && (pm2 reload ecosystem.config.js || pm2 start ecosystem.config.js)"
