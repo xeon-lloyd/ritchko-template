@@ -1,6 +1,7 @@
 const setting = {
-	AppName: 'Ritchko Template',
+	AppName: 'ritchko-template',
 	hostName: 'https://example.com',
+	pm2InstanceCount: 0,
 	
 	port: 80,
 

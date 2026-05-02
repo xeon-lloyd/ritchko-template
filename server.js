@@ -49,8 +49,9 @@ app.get('/:view(*)', function(req, res, next){
 })
 
 
-/* 서버 시작 */
-server.listen(setting.port, async function(){
+
+// 최초 init 함수
+async function init(){
     /* DB 연결 */
     util.mysql.connect('database1');
 
@@ -61,7 +62,18 @@ server.listen(setting.port, async function(){
     await util.redis.init();
 
     /* cron 등록 */
-    await appCronRegister()
+    appCronRegister()
 
-    serverInfoPrinter();
-})
+
+    /* 서버 listen 시작 */
+    server.listen(setting.port, async function(){
+        /* pm2 준비 완료 알림 */
+        if(process.send) process.send('ready');
+
+        serverInfoPrinter();
+    })
+}
+init().catch((e) => {
+    console.error('[서버 시작 실패]', e);
+    process.exit(1);
+});

@@ -1,5 +1,3 @@
-const util = require('../core/util.js');
-
-module.exports = async function(){
+module.exports = function(){
     require('../user/worker/registCron.js')()
 }
