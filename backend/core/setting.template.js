@@ -84,7 +84,6 @@ const setting = {
 	logging: {
 		uploadBucket: 'log-bucket',
 		uploadKeyPrefix: 'api_prod',
-		rotateInterval: '1d', // 1h, 3h, 6h, 12h, 1d
 		maskParams: [
 			'pw',
 			'refreshToken',

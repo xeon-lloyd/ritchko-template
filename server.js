@@ -53,9 +53,6 @@ app.get('/:view(*)', function(req, res, next){
 
 // 최초 init 함수
 async function init(){
-    /* 로깅 초기화 */
-    loggingModule.init();
-
     /* DB 연결 */
     util.mysql.connect('database1');
 
@@ -64,6 +61,9 @@ async function init(){
 
     /* redis 초기화 */
     await util.redis.init();
+
+    /* 로깅 초기화 */
+    loggingModule.init();
 
     /* cron 등록 */
     appCronRegister()
