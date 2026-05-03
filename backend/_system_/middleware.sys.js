@@ -1,10 +1,13 @@
+const crypto = require('crypto');
+const fs = require('fs').promises;
+
 const response = require('../_response.sys.js');
 const setting = require('../core/setting.js');
 const util = require("../core/util.js");
 
-const crypto = require('crypto');
 const operationSetting = require('../_operations.sys.js');
 const getMiddlewareUserData = require('../user/module/getMiddlewareUserData.js');
+const loggingModule = require('./loggingModule.sys.js');
 
 module.exports = async function(req, res, next){
     if(req.method!='POST'){
@@ -74,4 +77,33 @@ module.exports = async function(req, res, next){
     result.label = result.constructor.name
 
     res.send(result)
+
+
+
+    // 로그 기록
+    // 유저 uid 기록
+    const uid = body.param.loginUser?.uid || null;
+    delete body.param.loginUser;
+
+    // 요청 param 마스킹
+    const reqParam = Object.fromEntries(
+        Object.entries(body.param).map(([key, value]) => {
+            if(setting.logging.maskParams.includes(key)) return [key, '**'];
+            if(typeof value === 'object') return [key, JSON.stringify(value)];
+            return [key, value];
+        })
+    );
+
+    // 요청 param 문자열 길이 제한
+    const maxParamLogLength = setting.logging.maxParamLogLength ?? 1000;
+    let paramString = JSON.stringify(reqParam);
+    if(0 < maxParamLogLength && maxParamLogLength < paramString.length){
+        const originLength = paramString.length;
+        paramString = `${paramString.slice(0, maxParamLogLength)}... [truncated:${originLength}]`;
+    }
+
+    // 로그 기록
+    const ip = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']?.split(',')[0] || req.ip
+    const log = `[${body.operation}] ${result.response} ${result.label} U:${uid} ${ip} ${paramString}`
+    await loggingModule.recordLog('operation', log)
 }

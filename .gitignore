@@ -6,7 +6,10 @@ node_modules/
 public/css
 
 
+## logs
+logs/
+
+
 ##app_configs
-### 실제 사용시 주석 해제하고 github 연결
-setting.js
-env.js
+backend/core/setting.js
+public/js/env.js

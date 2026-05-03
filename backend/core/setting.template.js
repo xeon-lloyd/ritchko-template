@@ -79,6 +79,19 @@ const setting = {
 			},
 		}
 	},
+
+	// s3 사전 설정 및 초기화 필수
+	logging: {
+		uploadBucket: 'log-bucket',
+		uploadKeyPrefix: 'api_prod',
+		rotateInterval: '1d', // 1h, 3h, 6h, 12h, 1d
+		maskParams: [
+			'pw',
+			'refreshToken',
+		],
+		maxParamLogLength: 500, // 요청 param 문자열 길이 제한 (0 for no limit)
+		captureConsole: false, // console 출력 로깅 여부
+	}
 }
 
 module.exports = setting;

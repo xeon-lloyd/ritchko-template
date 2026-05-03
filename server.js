@@ -3,6 +3,7 @@ const app = express();
 const server = require('http').createServer(app);
 
 const fs = require('fs');
+const loggingModule = require('./backend/_system_/loggingModule.sys.js');
 const serverInfoPrinter = require('./backend/_system_/serverInfoPrinter.sys.js');
 
 const setting = require('./backend/core/setting.js');
@@ -52,6 +53,9 @@ app.get('/:view(*)', function(req, res, next){
 
 // 최초 init 함수
 async function init(){
+    /* 로깅 초기화 */
+    loggingModule.init();
+
     /* DB 연결 */
     util.mysql.connect('database1');
 
