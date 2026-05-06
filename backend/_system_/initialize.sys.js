@@ -4,8 +4,11 @@ module.exports = function(expressApp, httpServer){
     /* fileUpload 초기화 */
     const fileUpload = require('./fileUploadInit.sys.js')(expressApp);
 
+    /* 전역 rate limit 설정 */
+    expressApp.use('/API', require('../core/globalRateLimiter.js'));
+
     /* API 및 API 문서 라우팅 설정(B) */
-    const API = require('./middleware.sys.js');    
+    const API = require('./middleware.sys.js');
     expressApp.use(express.json());
     expressApp.use('/API', API);
 

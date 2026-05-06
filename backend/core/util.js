@@ -652,6 +652,27 @@ module.exports = {
 	socket: {
 		io: null,
 	},
+
+	// operation별 rate limit 체크 (key를 ip로 사용한다면 #IP 사용)
+	rateLimit: async function({ operation, key='#IP', windowMs, max }, req) {
+		if(key=='#IP') {
+			const rawIp = req.headers['cf-connecting-ip'] ||
+				req.headers['x-forwarded-for']?.split(',')[0]?.trim() ||
+				req.ip;
+			if (!rawIp) key = 'unknown';
+			else if (rawIp.startsWith('::ffff:')) key = rawIp.slice(7);
+			else if (rawIp.includes(':')) key = rawIp.split(':').slice(0, 4).join(':') + '::/64';
+			else key = rawIp;
+		}
+
+		const redisKey = `sys:rl:${operation}:${key}`;
+		const ttlSec = Math.ceil(windowMs / 1000);
+
+		const count = await module.exports.redis.incr(redisKey);
+		if (count === 1) await module.exports.redis.expire(redisKey, ttlSec);
+
+		return count <= max;
+	}
 }
 
 

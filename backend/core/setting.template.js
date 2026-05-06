@@ -90,7 +90,12 @@ const setting = {
 		],
 		maxParamLogLength: 500, // 요청 param 문자열 길이 제한 (0 for no limit)
 		captureConsole: false, // console 출력 로깅 여부
-	}
+	},
+
+	rateLimit: {
+		windowMs: 30 * 1000, // 30초
+		limit: 250,          // windowMs당 최대 요청 수
+	},
 }
 
 module.exports = setting;
