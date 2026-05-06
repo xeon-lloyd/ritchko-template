@@ -14,7 +14,7 @@
 - 공통 규칙은 `backend/CONVENTION.md`와 필요한 `convention/*.md`를 확인한다.
 
 ## 구현 중
-- 입력값 검증을 가장 먼저 둔다.
+- rate limit 체크가 필요한 operation은 입력값 검증보다 먼저 둔다.
 - 검증 실패는 `InputValueNotValid`로 반환한다.
 - 한 줄 가드 절은 인라인으로 작성한다.
 - operation 로직에서 `param`은 `param.xxx`로 직접 사용한다.

@@ -46,6 +46,7 @@ module.exports = rateLimit({
 	standardHeaders: false,
 	legacyHeaders: false,
 	validate: false,
+	passOnStoreError: true,
 	handler: (req, res) => {
 		res.send(new response.TooManyRequests());
 	},

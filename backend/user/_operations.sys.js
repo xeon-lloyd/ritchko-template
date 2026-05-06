@@ -11,6 +11,7 @@ module.exports = {
         group: 'user',
         paramSchema: paramSchema.SignIn,
         responseSchema: [
+            responseSchema.TooManyRequests,
             responseSchema.InputValueNotValid,
             responseSchema.UserNotFound,
             responseSchema.SignInOK,

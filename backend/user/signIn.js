@@ -6,7 +6,7 @@ const enums = require('./enums.js');
 
 module.exports = async function(param, req, res){
     // ratelimit 체크
-    const rateLimitAllowed = await util.rateLimit({ operation: 'signIn', key: '#IP', windowMs: 60 * 1000, max: 5 }, req);
+    const rateLimitAllowed = await util.rateLimit({ operation: 'SignIn', key: '#IP', windowMs: 60 * 1000, max: 5 }, req);
     if(!rateLimitAllowed) return new response.TooManyRequests();
 
     // 입력값 검증
