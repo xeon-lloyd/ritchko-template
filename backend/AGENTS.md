@@ -46,7 +46,7 @@
 1. 체크리스트와 관련 주제 문서를 확인한다.
 2. 스캐폴드로 파일과 registry를 만든다.
 3. 로직 파일, registry, `_param.sys.js`, `_response.sys.js`를 작업 유형에 맞게 함께 맞춘다.
-4. 입력값 검증, 대상 존재 여부, 권한 확인, 핵심 처리, 응답 반환 순서로 작성한다.
+4. rate limit 체크(필요 시), 입력값 검증, 대상 존재 여부, 권한 확인, 핵심 처리, 응답 반환 순서로 작성한다.
 5. `/API-doc`, `/API-doc/webhooks`, `/API-doc/sockets`, worker registry와 빌드 검증을 작업 유형에 맞게 확인한다.
 
 ## 반드시 지킬 것

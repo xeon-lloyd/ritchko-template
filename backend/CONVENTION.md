@@ -102,10 +102,24 @@ module.exports = {
 }
 ```
 
+## Rate Limit
+
+operation별 rate limit이 필요할 때 `util.rateLimit()`을 사용한다.
+
+```js
+const rateLimitAllowed = await util.rateLimit({ operation: 'OperationName', key: '#IP', windowMs: 60 * 1000, max: 5 }, req);
+if (!rateLimitAllowed) return new response.TooManyRequests();
+```
+
+- `key: '#IP'` — 요청 IP 기준으로 카운팅 (기본값, Cloudflare/프록시 헤더 자동 처리 및 IPv6 정규화 포함)
+- `key: param.loginUser.uid` — 로그인한 유저 uid 기준으로 카운팅
+- rate limit 체크는 입력값 검증보다 먼저 실행한다.
+- `operation` 값은 operation key와 동일하게 맞춘다.
+
 ## Operation 로직
 - 기본 export는 `module.exports = async function(param, req, res){ ... }` 형태다.
 - `param`은 구조분해하지 않고 `param.xxx`로 사용한다.
-- 처리 순서는 입력값 검증, 대상 존재 여부 확인, 권한 확인, 핵심 처리, 응답 반환을 기본으로 한다.
+- 처리 순서는 rate limit 체크, 입력값 검증, 대상 존재 여부 확인, 권한 확인, 핵심 처리, 응답 반환을 기본으로 한다.
 - 실패는 가능한 한 빠르게 response class로 반환한다.
 - 한 줄 반환 가드 절은 인라인으로 작성한다.
 
