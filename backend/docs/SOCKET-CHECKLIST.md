@@ -25,7 +25,7 @@
 - 서비스 핵심 상태는 DB에 저장하고 socket 메모리에만 의존하지 않는다.
 - event 전송은 `socket.emit(...)` 또는 `util.socket.to(room).emit(...)`을 사용한다.
 - emit하는 event는 `_sockets.sys.js`에 `type: 'event'`로 문서화한다.
-- fileToken을 받으면 decode, mimeType 검증, 이동/정리 규칙을 `FILE.md` 기준으로 처리한다.
+- uploadKey를 받으면 `await valider.isValidUploadKey(uploadKey)`, `util.fileUpload.getFileInfo(uploadKey)`, `util.fileUpload.checkFileSize(fileInfo)`를 확인하고, `moveTo()` 또는 `toStream()` 성공 후 socket handler에서 반드시 `util.fileUpload.revokeUploadKey(uploadKey)`를 호출한다.
 
 ## 구현 후
 - 도메인 `_sockets.sys.js`의 `description`, `group`, `paramSchema`, `responseSchema`가 최신인지 확인한다.

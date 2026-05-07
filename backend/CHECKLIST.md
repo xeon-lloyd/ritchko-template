@@ -23,7 +23,9 @@
 - update/delete 전에는 존재 여부와 권한 여부를 확인한다.
 - raw SQL에는 사용자 입력을 문자열 결합으로 넣지 않는다.
 - DB 기반 작업을 JSON, txt, 로컬 파일 저장으로 우회하지 않는다.
-- fileToken을 최종 서비스 데이터처럼 DB에 저장하지 않는다.
+- uploadKey를 최종 서비스 데이터처럼 DB에 저장하지 않는다.
+- uploadKey 파일은 `valider.isValidUploadKey(uploadKey)`, `util.fileUpload.getFileInfo()`, `util.fileUpload.checkFileSize(fileInfo)` 순서로 검증한다.
+- `moveTo()` 또는 `toStream()`으로 uploadKey 파일 소비 성공 후 반드시 `util.fileUpload.revokeUploadKey(uploadKey)`를 호출한다.
 - tempBucket 파일을 영구 파일처럼 사용하지 않는다.
 - webhook 로직은 `/API` operation 형식이 아니라 `req`, `res`를 직접 사용한다.
 - webhook registry key에는 `Process` suffix를 붙이지 않고, handler 파일명만 `<action>Process.js`로 둔다.

@@ -345,14 +345,16 @@ module.exports = {
 		setAuth: function(){
 			const awsS3 = require("@aws-sdk/client-s3");
 
-			this.auth = new awsS3.S3({
-				endpoint: setting.s3.endpoint,
+			const option = {
 				region: setting.s3.region,
 				credentials: {
 					accessKeyId: setting.s3.accessKeyId,
 					secretAccessKey: setting.s3.secretAccessKey,
 				}
-			});
+			};
+			if(setting.s3.endpoint) option.endpoint = setting.s3.endpoint;
+
+			this.auth = new awsS3.S3(option);
 		},
 
 		upload: async function(option){
@@ -406,47 +408,53 @@ module.exports = {
 	},
 
 	fileUpload: {
-		decodeFileToken: function(token){
-			return JSON.parse(module.exports.encrypt.decode(token))
-		},
-
-		moveTo: async function(token, bucket, key){
+		getFileInfo: async function(uploadKey){
 			try{
-				let fileName = this.decodeFileToken(token).name
-
-				await module.exports.s3.copy({
-					Bucket: bucket,
-					CopySource: encodeURI(`/${setting.fileUpload.tempBucket}/${fileName}`),
-					Key: key,
-				})
+				let fileInfo = await module.exports.s3.headObject({
+					Bucket: setting.fileUpload.tempBucket,
+					Key: uploadKey,
+				});
 	
-				await module.exports.s3.delete({   
-					Bucket: setting.fileUpload.tempBucket,      
-					Key: fileName,
-				})
+				if(!fileInfo) return null;
+
+				return fileInfo;
 			}catch(e){
-				throw new Error("유효하지 않은 File Token")
+				return null
 			}
 		},
 
-		toStream: async function(token){
-			try{
-				let fileName = this.decodeFileToken(token).name
+		checkFileSize: function(fileInfo){
+			if(setting.fileUpload.limitSize < parseInt(fileInfo.ContentLength)) return false;
+			return true;
+		},
 
+		moveTo: async function(uploadKey, bucket, key){
+			try{
+				await module.exports.s3.copy({
+					Bucket: bucket,
+					CopySource: encodeURI(`/${setting.fileUpload.tempBucket}/${uploadKey}`),
+					Key: key,
+				})
+			}catch(e){
+				throw new Error("유효하지 않은 Upload Key")
+			}
+		},
+
+		toStream: async function(uploadKey){
+			try{
 				let data = await module.exports.s3.auth.getObject({   
 					Bucket: setting.fileUpload.tempBucket,      
-					Key: fileName,
-				});
-
-				await module.exports.s3.delete({   
-					Bucket: setting.fileUpload.tempBucket,      
-					Key: fileName,
+					Key: uploadKey,
 				})
 
 				return data.Body
 			}catch(e){
-				throw new Error("유효하지 않은 File Token")
+				throw new Error("유효하지 않은 Upload Key")
 			}
+		},
+
+		revokeUploadKey: async function(uploadKey){
+			await module.exports.redis.del(`sys:fileUpload:${uploadKey}`);
 		},
 	},
 

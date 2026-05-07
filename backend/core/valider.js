@@ -1,3 +1,5 @@
+const util = require('./util.js');
+
 module.exports = {
     isValueExist: (value) => (value!==undefined && value!==null),
 
@@ -6,6 +8,14 @@ module.exports = {
     
     /* 문자 형식인지 확인 */
     isValidString: (value) => (typeof value=='string' && value!==''),
+
+    /* 업로드 키 유효성 확인 */
+    isValidUploadKey: async (value) => {
+        if(typeof value != 'string') return false;
+        if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(value)) return false;
+
+        return (await util.redis.get(`sys:fileUpload:${value}`)) != null;
+    },
 
     /* boolean 형식인지 확인 */
     isValidBoolean: (value) => (typeof value=='boolean'),

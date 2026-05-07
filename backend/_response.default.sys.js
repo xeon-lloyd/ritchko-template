@@ -95,6 +95,20 @@ module.exports = {
         data = null;
     },
 
+    UploadKeyIsNotValid: class UploadKeyIsNotValid {
+        response = 400;
+        message = "Upload Key is not valid";
+        target = null;
+        data = null;
+    },
+
+    FileTooLarge: class FileTooLarge {
+        response = 400;
+        message = "File is too large";
+        target = null;
+        data = null;
+    },
+
 
     /* // webhooks // */
     RedirectTo: class{

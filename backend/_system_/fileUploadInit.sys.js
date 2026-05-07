@@ -1,80 +1,80 @@
+const express = require('express');
+const crypto = require('crypto');
+const { S3RequestPresigner } = require("@aws-sdk/s3-request-presigner");
+const { HttpRequest } = require("@smithy/protocol-http");
+const { Hash } = require("@smithy/hash-node");
+const { formatUrl } = require("@aws-sdk/util-format-url");
+
 const setting = require('../core/setting.js');
 const util = require("../core/util.js");
-const busboy = require("connect-busboy");
+const response = require('../_response.sys.js');
+
+const endpoint = new URL(setting.s3.endpoint);
+const uploadHost = `${setting.fileUpload.tempBucket}.${endpoint.host}`;
+const presigner = new S3RequestPresigner({
+    credentials: {
+        accessKeyId: setting.s3.accessKeyId,
+        secretAccessKey: setting.s3.secretAccessKey,
+    },
+    region: setting.s3.region,
+    sha256: Hash.bind(null, 'sha256')
+});
 
 module.exports = function(app){
-    app.use(busboy({
-        limits: {
-            files: 1,
-            fileSize: setting.fileUpload.limitSize
-        }
-    }));
+    app.post('/API/fileUpload', express.json({ limit: '20kb' }), async function(req, res){
+        try{
+            const rateLimitAllowed = await util.rateLimit({
+                operation: 'sys:FileUpload',
+                key: '#IP',
+                windowMs: setting.fileUpload.rateLimit.windowMs,
+                max: setting.fileUpload.rateLimit.max
+            }, req);
+            if(!rateLimitAllowed) return res.send(new response.TooManyRequests());
 
-    app.post('/API/fileUpload', async function(req, res){
-        let chunks = [], fInfo;
-        let IS_LIMIT = false
-    
-        if(req.busboy==undefined){
-            // 파일 없음 응답
-            return res.status(400).json({
-                response: 400,
-                errorCode: "FileNotFound",
+            const uploadKey = crypto.randomUUID();
+            const uploadKeyExpire = setting.fileUpload.uploadKeyExpire;
+            const expiresAt = new Date(Date.now() + uploadKeyExpire * 1000).toISOString();
+
+            const redisKey = `sys:fileUpload:${uploadKey}`;
+            await util.redis.set(redisKey, 'true', uploadKeyExpire);
+
+            const url = new URL(`${endpoint.protocol}//${uploadHost}/${uploadKey}`);
+
+            const signedRequest = await presigner.presign(new HttpRequest({
+                protocol: url.protocol,
+                hostname: url.hostname,
+                port: url.port ? Number(url.port) : undefined,
+                method: 'PUT',
+                path: url.pathname,
+                headers: {
+                    host: uploadHost,
+                    'if-none-match': '*'
+                }
+            }), {
+                expiresIn: uploadKeyExpire,
+                unhoistableHeaders: new Set([ 'if-none-match' ])
+            });
+
+            res.json({
+                response: 200,
+                label: 'GetFileUploadURLOK',
                 target: null,
-                message: "첨부한 파일이 없습니다. 1개의 파일을 첨부해주시기 바랍니다.",
+                message: "파일 업로드 URL 발급 완료",
+                data: {
+                    uploadKey,
+                    uploadUrl: formatUrl(signedRequest),
+                    expiresAt
+                }
+            })
+        }catch(e){
+            console.error(e);
+            res.status(500).json({
+                response: 500,
+                label: "GetFileUploadURLFail",
+                target: null,
+                message: "파일 업로드 URL 발급 실패",
                 data: null
             })
         }
-    
-        req.busboy.on('file', function(fieldname, file, fileInfo) {
-            fInfo = fileInfo
-    
-            file.on('data', function(data) {
-                chunks.push(data)
-            });
-    
-            file.on('limit', async function(){
-                IS_LIMIT = true
-            })
-    
-            file.on('end', async function() {
-                
-            });
-        });
-    
-        req.busboy.on('finish', async function() {
-            if(IS_LIMIT){
-                // 용량 초과 응답
-                return res.status(413).json({
-                    response: 413,
-                    errorCode: "FileTooLarge",
-                    target: null,
-                    message: `첨부된 파일의 용량이 ${setting.fileUpload.limitSize.byteSizeToString()}를 초과하여 업로드가 거부 되었습니다`,
-                    data: null
-                })
-            }
-
-            let fileName = `${new Date().getTime()}-${parseInt(Math.random()*9999+1000)}-${parseInt(Math.random()*9999+1000)}`
-    
-            await util.s3.upload({
-                Bucket: setting.fileUpload.tempBucket,
-                Key: fileName,
-                BodyRaw: Buffer.concat(chunks),
-                ContentType: fInfo.mimeType
-            })
-    
-            // 완료 응답
-            res.json({
-                response: 200,
-                errorCode: null,
-                target: null,
-                message: "파일 업로드 완료",
-                data: util.encrypt.encode(JSON.stringify({
-                    name: fileName,
-                    mimeType: fInfo.mimeType
-                }))
-            })
-        });
-    
-        req.pipe(req.busboy)
     })
 }

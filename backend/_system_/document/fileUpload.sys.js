@@ -42,18 +42,18 @@ module.exports = function(req, res, next){
                 <div class="header">
                     <div class="label">Header</div>
                     <div>
-                        Content-Type: multipart/form-data
+                        Content-Type: application/json
                     </div>
                 </div>
 
                 <div class="description">
                     <ul>
-                        <li>파일을 저장소로 업로드하는 통합 파일 업로드 시스템</li>
-                        <li>key(name)에 상관없이 파일 업로드</li>
-                        <li>한 번에 1개의 파일만 업로드</li>
-                        <li>${setting.fileUpload.limitSize.byteSizeToString()}의 파일 용량 제한</li>
-                        <li>파일을 업로드 한 후 "File Token" 응답</li>
-                        <li>응답된 "File Token"을 API(Operation)의 param으로 전달하면 백엔드 로직에서 파일 처리</li>
+                        <li>S3 호환 저장소에 직접 업로드하기 위한 presigned PUT URL 발급</li>
+                        <li>응답된 uploadKey를 저장소 object key로 사용</li>
+                        <li>클라이언트는 uploadUrl로 직접 PUT 업로드</li>
+                        <li>PUT 업로드 시 If-None-Match: * 헤더 필수</li>
+                        <li>uploadKey는 ${(setting.fileUpload.uploadKeyExpire || 10 * 60).secToTime()} 동안 유효</li>
+                        <li>최종 API(Operation)의 param으로 uploadKey를 전달하면 백엔드 로직에서 파일 처리</li>
                     </ul>
                 </div>
             </div>
@@ -63,37 +63,41 @@ module.exports = function(req, res, next){
                 <div class="title">Response</div>
 
                 <div class="section">
-                    <div class="title">파일 미첨부</div>
+                    <div class="title">요청 제한 초과</div>
                     <pre>{
-    "response": 400,
-    "errorCode": "FileNotFound",
+    "response": 429,
+    "errorCode": "TooManyRequests",
     "target": null,
-    "message": "첨부한 파일이 없습니다. 1개의 파일을 첨부해주시기 바랍니다.",
+    "message": "Too many file upload URL requests",
     "data": null
 }</pre>
                     
                 </div>
 
                 <div class="section">
-                    <div class="title">파일 용량 초과</div>
+                    <div class="title">업로드 URL 발급 실패</div>
                     <pre>{
-    "response": 413,
-    "errorCode": "FileTooLarge",
+    "response": 500,
+    "errorCode": "InternalServerError",
     "target": null,
-    "message": "첨부된 파일의 용량이 ${setting.fileUpload.limitSize.byteSizeToString()}를 초과하여 업로드가 거부 되었습니다",
+    "message": "파일 업로드 URL 발급 실패",
     "data": null
 }</pre>
                     
                 </div>
 
                 <div class="section">
-                    <div class="title">업로드 완료</div>
+                    <div class="title">업로드 URL 발급 완료</div>
                     <pre>{
     "response": 200,
     "errorCode": null,
     "target": null,
-    "message": "파일 업로드 완료",
-    "data": "File Token(String)"
+    "message": "파일 업로드 URL 발급 완료",
+    "data": {
+        "uploadKey": "UUID",
+        "uploadUrl": "Presigned PUT URL",
+        "expiresAt": "2026-01-01T00:00:00.000Z"
+    }
 }</pre>
                     
                 </div>

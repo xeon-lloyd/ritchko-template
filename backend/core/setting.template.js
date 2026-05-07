@@ -38,8 +38,13 @@ const setting = {
     },
 
 	fileUpload: {
-		limitSize: 5 * 1000 * 1000, // 5mb
-		tempBucket: 'upload-temp',		
+		limitSize: 5 * 1000 * 1000, // (bytes) 5mb
+		tempBucket: 'upload-temp',
+		uploadKeyExpire: 10 * 60, // (seconds) 10분
+		rateLimit: {
+			windowMs: 10 * 60 * 1000, // 10분
+			max: 30, // windowMs당 최대 요청 수
+		}
 	},
 
 	gmailSmtp: {

@@ -174,8 +174,13 @@ socket.emit(
 ## 파일과 DB 처리
 - 소켓 message도 서비스 핵심 데이터는 DB에 저장한다.
 - DB 접근 규칙은 `backend/docs/DB.md`를 따른다.
-- 소켓으로 fileToken을 받는 경우에도 파일 처리 규칙은 `backend/docs/FILE.md`를 따른다.
-- fileToken을 DB에 최종 데이터처럼 저장하지 않는다.
+- 소켓으로 uploadKey를 받는 경우에도 `backend/docs/FILE.md`의 uploadKey 검증, 파일 정보 조회, 크기/형식 검증, 소비 규칙을 따른다.
+- uploadKey는 `await valider.isValidUploadKey(data.uploadKey)`로 먼저 검증한다.
+- 파일 정보는 `util.fileUpload.getFileInfo(data.uploadKey)`로 조회한다.
+- 파일 크기는 `util.fileUpload.checkFileSize(fileInfo)`로 확인한다.
+- uploadKey를 DB에 최종 데이터처럼 저장하지 않는다.
+- `util.fileUpload.moveTo()` 또는 `toStream()`으로 파일을 소비한 socket handler는 성공 직후 반드시 `util.fileUpload.revokeUploadKey(data.uploadKey)`를 호출한다.
+- `revokeUploadKey()` 호출 후 같은 uploadKey 재사용을 전제하지 않는다.
 - 채팅 이미지처럼 파일 처리와 DB 저장이 함께 일어나면 일부 성공 후 실패할 때의 정리 정책을 먼저 정한다.
 
 ## Response와 문서화
