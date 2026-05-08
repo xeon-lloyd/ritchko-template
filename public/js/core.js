@@ -48,6 +48,48 @@ const API = {
 		});
     },
 
+	uploadFile: async function(file){
+		if(!(file instanceof Blob)) return null;
+
+		let initResponse;
+		try{
+			const initFetchResponse = await fetch('/API/fileUpload', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: '{}'
+			});
+
+			initResponse = await initFetchResponse.json();
+		}catch(e){
+			return null;
+		}
+
+		if(!initResponse || initResponse.response != 200 || !initResponse.data) return null;
+
+		const uploadKey = initResponse.data.uploadKey;
+		const uploadUrl = initResponse.data.uploadUrl;
+		if(!uploadKey || !uploadUrl) return null;
+
+		try{
+			const uploadResponse = await fetch(uploadUrl, {
+				method: 'PUT',
+				headers: {
+					'If-None-Match': '*',
+					'Content-Type': file.type || 'application/octet-stream'
+				},
+				body: file
+			});
+
+			if(!uploadResponse.ok) return null;
+		}catch(e){
+			return null;
+		}
+
+		return uploadKey;
+	},
+
     setToken: function(accessToken, refreshToken){
         cookie.set('accessToken', accessToken, env.token.accessTokenExpire)
 		cookie.set('refreshToken', refreshToken, env.token.refreshTokenExpire)
