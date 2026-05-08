@@ -12,7 +12,7 @@
 6. PUT 업로드에는 `If-None-Match: *` 헤더를 반드시 포함한다.
 7. 실제 operation은 param으로 uploadKey를 받는다.
 8. operation은 `valider.isValidUploadKey()`로 발급/만료 여부를 검증한다.
-9. operation은 `util.fileUpload.getFileInfo()`, `checkFileSize()`으로 `fileInfo.contentType`으로 파일 유효성을 확인한다.
+9. operation은 `util.fileUpload.getFileInfo()`, `checkFileSize()`와 `fileInfo.ContentType`으로 파일 유효성을 확인한다.
 10. operation은 `moveTo()` 또는 `toStream()`으로 업로드 파일을 소비한다.
 11. operation은 파일 소비 성공 직후 `util.fileUpload.revokeUploadKey(uploadKey)`를 호출한다.
 
