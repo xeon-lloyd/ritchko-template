@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('{{includeBase}}/head.html') %>
+    <title>{{documentTitle}}</title>
+    <link rel="stylesheet" href="{{styleHref}}">
+</head>
+<body class="sidebar before-sidebar-calc">
+    <!-- Elements -->
+    <%- include('{{includeBase}}/elements.html') %>
+
+    <!-- Header -->
+    <%- include('{{includeBase}}/header.html') %>
+
+    <!-- Sidebar -->
+    <%- include('{{includeBase}}/sidebar.html') %>
+
+    <main>
+		<div class="container">
+			<div id="title">{{title}}</div>
+
+			<section class="section">
+			</section>
+		</div>
+    </main>
+	
+
+	<!-- Modals -->
+	<div id="modals">
+
+	</div>
+
+    <!-- Footer -->
+    <%- include('{{includeBase}}/footer.html') %>
+
+	<script src="{{scriptSrc}}"></script>
+</body>
+</html>
