@@ -32,7 +32,7 @@ input[type="checkbox"]:not(.toggle):checked::after {
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 70% 70%;
-    filter: brightness(0) invert(1);
+    // filter: brightness(0) invert(1);
     pointer-events: none;
 }
 
@@ -149,7 +149,7 @@ input[type="checkbox"].toggle:checked {
 input[type="checkbox"].toggle:checked::after {
     left: 1.12rem;
     background-image: url("/img/component/toggleCheck.svg");
-    filter: brightness(0) invert(1);
+    // filter: brightness(0) invert(1);
 }
 
 input[type="checkbox"].toggle:disabled {
