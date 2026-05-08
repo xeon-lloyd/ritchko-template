@@ -43,7 +43,7 @@ module.exports = {
             if(!file.endsWith('.log')) return false;
             if(!file.startsWith(`${setting.logging.uploadKeyPrefix}_`)) return false;
 
-            let logDate = file.replace('.log', '').split('.').pop();
+            let logDate = file.slice(`${setting.logging.uploadKeyPrefix}_`.length).split('.')[0]
             
             return (logDate!==today)
         });
