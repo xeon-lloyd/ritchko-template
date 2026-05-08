@@ -49,7 +49,11 @@ const API = {
     },
 
 	uploadFile: async function(file){
-		if(!(file instanceof Blob)) return null;
+		if(!(file instanceof Blob)) return {
+			success: false,
+			label: 'FileIsNotBlob',
+			uploadKey: null,
+		};
 
 		let initResponse;
 		try{
@@ -63,14 +67,38 @@ const API = {
 
 			initResponse = await initFetchResponse.json();
 		}catch(e){
-			return null;
+			return {
+				success: false,
+				label: 'FileUploadInitFail',
+				uploadKey: null,
+			};
 		}
 
-		if(!initResponse || initResponse.response != 200 || !initResponse.data) return null;
+		if(initResponse && initResponse.response == 429) return {
+			success: false,
+			label: 'TooManyRequests',
+			uploadKey: null,
+		};
+
+		if(!initResponse || initResponse.response != 200 || !initResponse.data) return {
+			success: false,
+			label: 'FileUploadInitFail',
+			uploadKey: null,
+		};
 
 		const uploadKey = initResponse.data.uploadKey;
 		const uploadUrl = initResponse.data.uploadUrl;
-		if(!uploadKey || !uploadUrl) return null;
+		if(!uploadKey || !uploadUrl) return {
+			success: false,
+			label: 'FileUploadInitFail',
+			uploadKey: null,
+		};
+
+		if(parseInt(initResponse.data.limitSize) < file.size) return {
+			success: false,
+			label: 'FileIsTooLarge',
+			uploadKey: null,
+		};
 
 		try{
 			const uploadResponse = await fetch(uploadUrl, {
@@ -82,12 +110,24 @@ const API = {
 				body: file
 			});
 
-			if(!uploadResponse.ok) return null;
+			if(!uploadResponse.ok) return {
+				success: false,
+				label: 'FileUploadFail',
+				uploadKey: null,
+			};
 		}catch(e){
-			return null;
+			return {
+				success: false,
+				label: 'FileUploadFail',
+				uploadKey: null,
+			};
 		}
 
-		return uploadKey;
+		return {
+			success: true,
+			label: 'FileUploadOK',
+			uploadKey,
+		};
 	},
 
     setToken: function(accessToken, refreshToken){
