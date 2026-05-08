@@ -41,7 +41,8 @@
     "data": {
         "uploadKey": "UUID",
         "uploadUrl": "Presigned PUT URL",
-        "expiresAt": "2026-01-01T00:00:00.000Z"
+        "expiresAt": "2026-01-01T00:00:00.000Z",
+        "limitSize": 5000000
     }
 }
 ```
@@ -80,6 +81,7 @@ await fetch(uploadUrl, {
 ```
 
 - `If-None-Match: *`는 presigned URL에 서명된 헤더다. 클라이언트가 반드시 같은 헤더를 보내야 한다.
+- `limitSize`보다 큰 파일은 클라이언트에서 PUT 업로드 전에 먼저 차단한다.
 - 같은 uploadKey object가 이미 있으면 저장소가 재업로드를 거부한다.
 - `Content-Type`은 현재 presigned URL 서명 조건이 아니다. operation에서 `fileInfo.ContentType`으로 형식을 검증할 수 있도록 클라이언트가 실제 파일 타입을 보내는 것을 전제로 한다.
 - 브라우저 직접 업로드를 쓰려면 임시 업로드 bucket CORS에 `PUT` method와 `If-None-Match`, `Content-Type` request header를 허용한다.

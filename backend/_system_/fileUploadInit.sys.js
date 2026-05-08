@@ -63,7 +63,8 @@ module.exports = function(app){
                 data: {
                     uploadKey,
                     uploadUrl: formatUrl(signedRequest),
-                    expiresAt
+                    expiresAt,
+                    limitSize: setting.fileUpload.limitSize
                 }
             })
         }catch(e){

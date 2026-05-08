@@ -96,7 +96,8 @@ module.exports = function(req, res, next){
     "data": {
         "uploadKey": "UUID",
         "uploadUrl": "Presigned PUT URL",
-        "expiresAt": "2026-01-01T00:00:00.000Z"
+        "expiresAt": "2026-01-01T00:00:00.000Z",
+        "limitSize": ${setting.fileUpload.limitSize || 0}
     }
 }</pre>
                     
