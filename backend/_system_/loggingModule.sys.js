@@ -30,7 +30,7 @@ module.exports = {
         const logDate = new Date().stringFormat('y-m-d')
         const logString = `${timestamp} ${log}`
         
-        await fs.appendFile(`./logs/${setting.logging.uploadKeyPrefix}_${category}.${logDate}.log`, `${logString}\n`)
+        await fs.appendFile(`./logs/${setting.logging.uploadKeyPrefix}_${logDate}.${category}.log`, `${logString}\n`)
     },
 
     rotateAndUploadLog: async function(){

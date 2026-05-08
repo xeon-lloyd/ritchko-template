@@ -719,16 +719,7 @@ Number.prototype.secToTime = function(type){
 Date.prototype.toSQLDatetime = function() {
 	if (isNaN(this)) throw new Error('Invalid date string');
   
-	const year = this.getUTCFullYear();
-	const month = this.getUTCMonth() + 1;
-	const day = this.getUTCDate();
-	const hour = this.getUTCHours();
-	const minute = this.getUTCMinutes();
-	const second = this.getUTCSeconds();
-  
-	const pad2 = n => (n < 10 ? '0' + n : n);
-  
-	return `${year}-${pad2(month)}-${pad2(day)} ${pad2(hour)}:${pad2(minute)}:${pad2(second)}`;
+	return this.toISOString().replace('T', ' ').slice(0, 19);
 }
 
 /* 숫자 타입에서 쓸 수 있도록 format() 함수 추가 */

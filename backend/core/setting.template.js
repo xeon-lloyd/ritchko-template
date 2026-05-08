@@ -1,6 +1,7 @@
 const setting = {
 	AppName: 'ritchko-template',
 	hostName: 'https://example.com',
+	appTimeZone: 'Z', // app timezone (cron, date...)
 	pm2InstanceCount: 0,
 	
 	port: 80,

@@ -1,15 +1,16 @@
-const express = require('express');
-const app = express();
-const server = require('http').createServer(app);
-
-const fs = require('fs');
-const loggingModule = require('./backend/_system_/loggingModule.sys.js');
-const serverInfoPrinter = require('./backend/_system_/serverInfoPrinter.sys.js');
-
 const setting = require('./backend/core/setting.js');
+process.env.TZ = setting.appTimeZone;
 const util = require('./backend/core/util.js');
 
+const express = require('express');
+const fs = require('fs');
+
+const loggingModule = require('./backend/_system_/loggingModule.sys.js');
 const appCronRegister = require('./backend/worker/registCron.js')
+const serverInfoPrinter = require('./backend/_system_/serverInfoPrinter.sys.js');
+
+const app = express();
+const server = require('http').createServer(app);
 
 /* 쿠키 사용 설정(F/B) */
 app.use(require('cookie-parser')());
