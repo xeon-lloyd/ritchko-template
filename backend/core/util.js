@@ -715,13 +715,6 @@ Number.prototype.secToTime = function(type){
 	else return `약 ${parseInt(this/(60*60*24*365))}년`;
 }
 
-/* mysql 검색용으로 사용할 UTC 시간 포멧으로 변환 */
-Date.prototype.toSQLDatetime = function() {
-	if (isNaN(this)) throw new Error('Invalid date string');
-  
-	return this.toISOString().replace('T', ' ').slice(0, 19);
-}
-
 /* 숫자 타입에서 쓸 수 있도록 format() 함수 추가 */
 Number.prototype.format = function(){
 	if(this==0) return 0;

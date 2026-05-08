@@ -146,7 +146,8 @@ if(!enums.CardType.includes(param.cardType)) return new response.InputValueNotVa
 - update/delete 전에는 대상 존재 여부와 권한 여부를 먼저 확인한다.
 - `createdAt`, `updatedAt`은 DB 기본값으로 처리한다.
 - insert/update에 업무 날짜값을 저장해야 하면 `new Date()`를 그대로 사용한다.
-- `toSQLDatetime()`은 날짜/시간 범위 검색 조건의 `params`에만 사용한다.
+- 날짜/시간 검색 조건도 `?` placeholder와 `params` 바인딩을 사용하고, `Date` 객체를 그대로 넣는다.
+- 날짜/시간 값을 SQL 문자열로 직접 변환하지 않는다.
 
 ## 주석
 - 일반 주석 정책은 `convention/comment.md`를 따른다.

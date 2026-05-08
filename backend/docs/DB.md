@@ -32,7 +32,8 @@
 - `createdAt`, `updatedAt`은 기본적으로 DB 기본값(`DEFAULT`, `ON UPDATE`)으로 관리한다.
 - insert/update data에 `createdAt`, `updatedAt`을 직접 넣지 않는다.
 - 업무상 저장해야 하는 날짜/시간 컬럼은 `new Date()`를 그대로 넣는다.
-- `toSQLDatetime()`은 날짜/시간 범위 검색 조건의 `params`에 넣는 값이 필요할 때만 사용한다.
+- 날짜/시간 검색 조건도 `?` placeholder와 `params` 바인딩을 사용하고, 값은 `Date` 객체 그대로 넣는다.
+- 날짜/시간 값을 SQL 문자열로 직접 변환하지 않는다. 문자열 변환은 mysql2의 timezone 처리를 우회하므로 사용하지 않는다.
 - 날짜만 저장하는 컬럼은 date-only 값이 필요할 때 `new Date(param.birthday).stringFormat('y-m-d')`처럼 맞춘다.
 
 ## 기본 흐름 예시
@@ -114,8 +115,8 @@ let streamList = await util.mysql.select(
     'uid=? AND createdAt>=? AND createdAt<? AND isDeleted=0',
     [
         param.loginUser.uid,
-        new Date(param.startedAt).toSQLDatetime(),
-        new Date(param.endedAt).toSQLDatetime()
+        new Date(param.startedAt),
+        new Date(param.endedAt)
     ]
 )
 ```

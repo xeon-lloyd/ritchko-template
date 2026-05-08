@@ -11,7 +11,8 @@
 ## 저장 규칙
 - `createdAt`, `updatedAt`은 DB 기본값으로 처리하고 코드에서 직접 넣지 않는다.
 - insert/update에 업무 날짜값을 저장해야 하면 `new Date()`를 그대로 쓴다.
-- `toSQLDatetime()`은 날짜/시간 범위 검색 조건의 `params`에만 쓴다.
+- 날짜/시간 검색 조건도 `?` placeholder와 `params` 바인딩을 사용하고, `Date` 객체를 그대로 넣는다.
+- 날짜/시간 값을 SQL 문자열로 직접 변환하지 않는다.
 - 문자열 컬럼 길이가 명확하면 저장 전에 `substring()` 등으로 자른다.
 - DB 설정이 비어 있어도 서비스 데이터를 JSON, txt, 로컬 파일 저장소로 우회하지 않는다.
 
