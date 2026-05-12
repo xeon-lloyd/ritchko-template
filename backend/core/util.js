@@ -321,19 +321,17 @@ module.exports = {
 					host: 'smtp.gmail.com',
 					port: 465,
 					secure: true,
-					auth:{
-						type: 'OAuth2',
+					auth: {
 						user: setting.gmailSmtp.user,
-						clientId: setting.gmailSmtp.clientId,
-						clientSecret: setting.gmailSmtp.clientSecret,
-						refreshToken: setting.gmailSmtp.refreshToken,
+						pass: setting.gmailSmtp.appPassword
 					}
 				});
 
-				mailOption.from = setting.gmailSmtp.fromEmail;
+				if(!mailOption.from) mailOption.from = setting.gmailSmtp.fromEmail;
 
 				transporter.sendMail(mailOption, (error, info) => {
-					resolve(info)
+					if(error) reject(error);
+					else resolve(info);
 				});
 			})
 		}
