@@ -599,12 +599,12 @@ module.exports = {
 
 		// 채널 메시지 발행
 		pub: async function(channel, value) {
-			return await this.pubClient.publish(channel, value)
+			return await this.pubClient.publish(channel, JSON.stringify(value))
 		},
 
 		// 채널 메시지 구독
 		sub: async function(channel, func) {
-			return await this.subClient.subscribe(channel, func)
+			return await this.subClient.subscribe(channel, (message) => func(JSON.parse(message)))
 		},
 
 		// 큐 메시지 추가
