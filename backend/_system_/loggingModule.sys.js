@@ -1,5 +1,5 @@
 const fs = require('fs').promises;
-const { createReadStream } = require('fs');
+const { createReadStream, mkdirSync } = require('fs');
 
 const setting = require('../core/setting.js');
 const util = require('../core/util.js');
@@ -9,6 +9,8 @@ const originalConsoleError = console.error.bind(console);
 
 module.exports = {
     init: function(){
+        mkdirSync('./logs', { recursive: true });
+
         if(setting.logging.captureConsole){
             console.log = (...args) => {
                 originalConsoleLog(...args);
