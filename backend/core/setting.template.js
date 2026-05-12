@@ -49,13 +49,9 @@ const setting = {
 	},
 
 	gmailSmtp: {
-		user: 'user@gmail.com',
 		fromEmail: 'custom-user@gmail.com',
-		clientId: 'google-api-clientId.apps.googleusercontent.com',
-		clientSecret: 'google-api-clientSecret',
-		accessToken: 'aa00.access_token',
-		refreshToken: '1//refresh-token',
-		fromEmail: 'user@gmail.com'
+		user: 'user@gmail.com',
+		appPassword: 'gmail-app-password'
 	},
 
 	encrypt: {
