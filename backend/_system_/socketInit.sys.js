@@ -23,9 +23,11 @@ module.exports = async function(server){
             },
             password: setting.socket.redisAdapter.redis.password,
         });
-        await pubClient.connect();
-
         const subClient = pubClient.duplicate();
+        await Promise.all([
+            pubClient.connect(),
+            subClient.connect(),
+        ]);
 
         util.socket.adapter(createAdapter(pubClient, subClient));
     }
