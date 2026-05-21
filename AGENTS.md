@@ -45,6 +45,7 @@
 - worker 파일은 `queueName = 'WP:<workerName>'`, `// producer`, `// consumer` 구조를 따른다. consumer가 없으면 `// consumer 없음`을 남긴다.
 
 ## 생성 명령
+- 프론트 페이지: `npm run create:frontend-page -- <path> [--title "페이지 제목"]`
 - 백엔드 도메인: `npm run create:backend-domain -- <name>`
 - 백엔드 operation: `npm run create:backend-operation -- <domain> <OperationName>`
 - 백엔드 webhook: `npm run create:backend-webhook -- <domain> <webhookNameWithoutProcess>`
