@@ -182,8 +182,10 @@ const itemList = {
     },
 
     init: function(){
+        // 검색 및 더보기 이벤트
         itemList.htmlEle.searchButton.addEventListener('click', itemList.searchItems);
         itemList.htmlEle.loadMoreButton.addEventListener('click', itemList.getItemList);
+
         itemList.getItemList();
     },
 
@@ -232,6 +234,7 @@ const itemList = {
     },
 
     composeItemRowHTML: function(item){
+        // 서버 값을 row HTML에 넣기 전에 escape 처리
         const name = (item.name || '').toString().escapeHtml();
 
         return `
@@ -282,6 +285,7 @@ const apiKey = {
     },
 
     init: function(){
+        // 생성 모달 이벤트
         apiKey.htmlEle.openCreateModalButton.addEventListener('click', apiKey.openCreateModal);
         apiKey.htmlEle.closeCreateModalButton.addEventListener('click', apiKey.closeCreateModal);
         apiKey.htmlEle.createButton.addEventListener('click', apiKey.requestCreateApiKey);
