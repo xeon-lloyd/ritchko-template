@@ -4,7 +4,8 @@
 - 수정 대상이 `public/scss/` 원본 파일인가?
 - `public/css/` 빌드 결과물을 직접 수정하지 않았는가?
 - 페이지 HTML `views/<path>.html`과 SCSS `public/scss/<path>.scss` 경로가 대응되는가?
-- 공통 partial 변경이면 `public/scss/temp/`, 디자인 시스템 변경이면 `public/scss/designSystem/` 영향 범위를 확인했는가?
+- `_auth.scss`, `_form.scss`, `_list.scss` 같은 임의 Sass partial 파일을 새로 만들지 않았는가?
+- 공통 layout 조각 변경이면 `public/scss/temp/`, 디자인 시스템 변경이면 `public/scss/designSystem/` 영향 범위를 확인했는가?
 
 ## 디자인 시스템
 - 색상을 모두 `var(--...)` token으로 작성했는가?
@@ -18,6 +19,12 @@
 - `.title`, `.description`, `.row`, `.value`, `.action` 같은 흔한 class가 전역처럼 새지 않는가?
 - `body`, `main`, `input`, `button`, `a` 같은 전역 selector를 페이지 SCSS에서 새로 재정의하지 않았는가?
 - 공통 스타일로 옮긴 변경이 실제로 여러 페이지에서 필요한 규칙인가?
+
+## 구성과 공백
+- 주제가 바뀌는 지점에 빈 줄 2줄로 간격을 두었는가?
+- 큰 UI 섹션 앞에 `/* 리스트 섹션 */` 같은 섹션 주석을 넣었는가?
+- 같은 주제 안의 selector는 가까이 묶고, 다른 주제와는 시각적으로 구분했는가?
+- `/* margin */`, `/* color */`처럼 코드 자체를 반복하는 주석을 만들지 않았는가?
 
 ## 상태와 JS 연계
 - JS에서 토글하는 class 이름과 SCSS selector가 일치하는가?

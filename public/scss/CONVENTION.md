@@ -9,9 +9,28 @@ HTML 구조 규칙은 `views/AGENTS.md`, `views/CONVENTION.md`, `views/docs/PAGE
 - 페이지 HTML `views/<path>.html`의 페이지 전용 스타일은 `public/scss/<path>.scss`에 둔다.
 - SCSS 빌드 결과는 `public/css/<path>.css`에 생성된다.
 - `public/css/`는 빌드 결과물이므로 직접 수정하지 않는다.
-- 공통 partial 스타일은 `public/scss/temp/`에 둔다.
+- 공통 layout 조각 스타일은 `public/scss/temp/`에 둔다.
 - 공통 디자인 시스템 스타일은 `public/scss/designSystem/`에 둔다.
 - `public/scss/core.scss`는 기존 호환용 파일로 보고, 새 스타일의 기본 추가 위치로 사용하지 않는다.
+
+## 파일 생성 금지
+페이지나 기능 묶음을 이유로 `_auth.scss`, `_form.scss`, `_list.scss` 같은 임의 Sass partial 파일을 새로 만들지 않는다.
+
+금지:
+
+```text
+public/scss/_auth.scss
+public/scss/account/_form.scss
+public/scss/shared/_table.scss
+```
+
+스타일은 아래 위치 중 하나에 둔다.
+
+- 페이지 전용 스타일: `public/scss/<path>.scss`
+- 공통 partial HTML 전용 스타일: `public/scss/temp/<name>.scss`
+- 디자인 시스템으로 승격된 공통 컴포넌트/토큰: `public/scss/designSystem/<name>.scss`
+
+로그인, 회원가입, 비밀번호 재설정처럼 비슷한 화면이 여러 개 있어도 `_auth.scss` 같은 묶음 파일을 만들지 않는다. 먼저 각 페이지 SCSS에 작성하고, 실제로 디자인 시스템 컴포넌트로 승격할 만큼 반복될 때만 사용자 확인 후 `designSystem/`에 추가한다.
 
 ## 생성과 연결
 새 일반 페이지는 `npm run create:frontend-page -- <path> [--title "페이지 제목"]`로 생성한다.
@@ -81,7 +100,7 @@ background-color: rgba(0, 0, 0, 0.1);
 border-color: blue;
 ```
 
-페이지 SCSS, partial SCSS, 컴포넌트 SCSS에서 hex/rgb/hsl/color keyword를 직접 쓰지 않는다. 새 색상이 정말 필요하면 구현 전에 사용자에게 확인하고, 승인된 경우 `designSystem/color.scss`에 token으로 추가한 뒤 `var(--...)`로 사용한다.
+페이지 SCSS, temp SCSS, 디자인 시스템 SCSS에서 hex/rgb/hsl/color keyword를 직접 쓰지 않는다. 새 색상이 정말 필요하면 구현 전에 사용자에게 확인하고, 승인된 경우 `designSystem/color.scss`에 token으로 추가한 뒤 `var(--...)`로 사용한다.
 
 타이포는 반드시 `designSystem/typo.scss`의 mixin을 사용한다.
 
@@ -137,6 +156,52 @@ button, input, checkbox, radio, toggle, modal은 `designSystem/` 기본 스타�
 - JS가 상태 class를 토글하는 요소는 selector 이름을 JS와 맞춘다.
 - `body`, `main`, `input`, `button`, `a` 같은 전역 selector를 페이지 SCSS에서 새로 재정의하지 않는다.
 - 전역 수정이 필요하면 `designSystem/` 또는 `temp/` 영향 범위를 먼저 확인한다.
+
+## 파일 구성과 공백
+SCSS는 한 파일 안에서 주제 단위가 눈에 보여야 한다. 서로 다른 UI 섹션이나 다른 책임의 스타일이 시작될 때는 빈 줄 2줄로 간격을 둔다.
+
+권장:
+
+```scss
+/* 검색 영역 */
+#itemList > .filter {
+    ...
+}
+
+#itemList > .filter > input {
+    ...
+}
+
+
+/* 리스트 섹션 */
+#itemList > .listHead {
+    ...
+}
+
+#itemList > .list > .row {
+    ...
+}
+```
+
+같은 주제 안의 selector끼리는 빈 줄 1줄만 둔다. 예를 들어 list header와 list row는 같은 리스트 섹션이므로 가까이 두고, 다음 주제인 modal이나 responsive가 시작될 때 빈 줄 2줄과 섹션 주석을 둔다.
+
+권장 섹션 주석:
+
+```scss
+/* 폼 영역 */
+/* 리스트 섹션 */
+/* 상세 정보 */
+/* 모달 */
+/* 모바일 반응형 */
+```
+
+금지:
+
+```scss
+/* margin */
+/* color */
+/* div style */
+```
 
 ## 상태 class
 이 프로젝트는 UI 상태를 class 토글로 표현한다.
@@ -214,12 +279,15 @@ URL, token, key, email, 파일명처럼 길어질 수 있는 값은 overflow를 
 모달 스타일을 추가할 때도 색상 token과 typo mixin 규칙은 그대로 적용한다.
 
 ## 주석
-SCSS 주석은 구조 구분이 필요할 때만 짧게 쓴다.
+SCSS 주석은 섹션 구분과 복잡한 반응형 의도를 설명할 때 사용한다.
 
 권장:
 
 ```scss
-// 모바일에서 목록 header를 숨기고 row 내부 label로 전환
+/* 리스트 섹션 */
+
+/* 모바일 반응형 */
+// 목록 header를 숨기고 row 내부 label로 전환
 ```
 
 금지:
