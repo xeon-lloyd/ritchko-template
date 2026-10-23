@@ -1,0 +1,104 @@
+# develop.yml
+name: develop deploy
+
+on:
+  push:
+    branches: [ develop ]
+
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+
+    env:
+      APP_NAME: ${{ secrets.APP_NAME_DEV }}
+      DEPLOY_PATH: /home/${{ secrets.SERVER1_USER }}/${{ secrets.APP_NAME_DEV }}
+      SERVER_HOST: ${{ secrets.SERVER1_IP }}
+      SERVER_USER: ${{ secrets.SERVER1_USER }}
+      SERVER_PORT: ${{ secrets.SERVER1_PORT }}
+      SERVER_KEY: ${{ secrets.SERVER1_KEY }}
+      SERVER_PASSWORD: ${{ secrets.SERVER1_PASSWORD }}
+      BACK_SETTING_JS: ${{ secrets.BACK_SETTING_DEV }}
+      FRONT_ENV_JS: ${{ secrets.FRONT_ENV_DEV }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Validate deploy secrets
+        run: |
+          missing=0
+
+          check_required_secret() {
+            if [ -z "$1" ]; then
+              echo "$2 secret이 필요합니다."
+              missing=1
+            fi
+          }
+
+          check_required_secret "$APP_NAME" "APP_NAME_DEV"
+          check_required_secret "$SERVER_HOST" "SERVER1_IP"
+          check_required_secret "$SERVER_USER" "SERVER1_USER"
+          check_required_secret "$SERVER_PORT" "SERVER1_PORT"
+          check_required_secret "$BACK_SETTING_JS" "BACK_SETTING_DEV"
+          check_required_secret "$FRONT_ENV_JS" "FRONT_ENV_DEV"
+
+          if [ -z "$SERVER_KEY" ] && [ -z "$SERVER_PASSWORD" ]; then
+            echo "SERVER1_KEY 또는 SERVER1_PASSWORD secret 중 하나가 필요합니다."
+            missing=1
+          fi
+
+          if [ "$missing" -eq 1 ]; then
+            exit 1
+          fi
+
+      - name: Write app config files
+        run: |
+          printf '%s\n' "$BACK_SETTING_JS" > backend/core/setting.js
+          printf '%s\n' "$FRONT_ENV_JS" > public/js/env.js
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p "$SERVER_PORT" "$SERVER_HOST" >> ~/.ssh/known_hosts
+
+          if [ -n "$SERVER_KEY" ]; then
+            printf '%s\n' "$SERVER_KEY" > ~/.ssh/deploy_key
+            chmod 600 ~/.ssh/deploy_key
+          elif [ -n "$SERVER_PASSWORD" ]; then
+            sudo apt-get update
+            sudo apt-get install -y sshpass
+          else
+            echo "SERVER1_KEY 또는 SERVER1_PASSWORD secret이 필요합니다."
+            exit 1
+          fi
+
+      - name: Sync files
+        run: |
+          if [ -n "$SERVER_KEY" ]; then
+            SSH_COMMAND="ssh -i ~/.ssh/deploy_key -p $SERVER_PORT"
+          else
+            export SSHPASS="$SERVER_PASSWORD"
+            SSH_COMMAND="sshpass -e ssh -p $SERVER_PORT"
+          fi
+
+          $SSH_COMMAND "$SERVER_USER@$SERVER_HOST" "mkdir -p '${DEPLOY_PATH}'"
+
+          rsync -az --delete \
+            --exclude ".git" \
+            --exclude "node_modules" \
+            --exclude "logs" \
+            -e "$SSH_COMMAND" \
+            ./ "$SERVER_USER@$SERVER_HOST:${DEPLOY_PATH}/"
+
+      - name: Install, build, and reload PM2
+        run: |
+          if [ -n "$SERVER_KEY" ]; then
+            SSH_COMMAND="ssh -i ~/.ssh/deploy_key -p $SERVER_PORT"
+          else
+            export SSHPASS="$SERVER_PASSWORD"
+            SSH_COMMAND="sshpass -e ssh -p $SERVER_PORT"
+          fi
+
+          $SSH_COMMAND "$SERVER_USER@$SERVER_HOST" \
+            "cd '${DEPLOY_PATH}' && npm ci && npm run build && (pm2 reload ecosystem.config.js || pm2 start ecosystem.config.js)"

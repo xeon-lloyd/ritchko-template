@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      APP_NAME: ${{ secrets.APP_NAME }}
-      DEPLOY_PATH: /home/${{ secrets.SERVER1_USER }}/${{ secrets.APP_NAME }}
+      APP_NAME: ${{ secrets.APP_NAME_PROD }}
+      DEPLOY_PATH: /home/${{ secrets.SERVER1_USER }}/${{ secrets.APP_NAME_PROD }}
       SERVER_HOST: ${{ secrets.SERVER1_IP }}
       SERVER_USER: ${{ secrets.SERVER1_USER }}
       SERVER_PORT: ${{ secrets.SERVER1_PORT }}
@@ -36,7 +36,7 @@ jobs:
             fi
           }
 
-          check_required_secret "$APP_NAME" "APP_NAME"
+          check_required_secret "$APP_NAME" "APP_NAME_PROD"
           check_required_secret "$SERVER_HOST" "SERVER1_IP"
           check_required_secret "$SERVER_USER" "SERVER1_USER"
           check_required_secret "$SERVER_PORT" "SERVER1_PORT"
