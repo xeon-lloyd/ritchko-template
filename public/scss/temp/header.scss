@@ -4,52 +4,80 @@
 #header{
 	position: fixed;
 	top: 0;
-	width: 100vw;
-	overflow: hidden;
+	width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    box-sizing: border-box;
+    padding: 0 0.7rem;
 	height: 2.8rem;
-	background-color: #FFFFFF;
-	border-bottom: 1px solid #E2E8F0;
+	background-color: var(--neutral-100);
+	border-bottom: 1px solid var(--line-neutral);
 	z-index: 10;
 }
 
 
-#header > .logo{
-	display: inline-block;
-	margin: 0.7rem 0 0 0.7rem;
-}
-#header > .logo > img{
-	height: 1.5rem;
-}
-
-
-#header > #createAccount{
-	@include typo.label1;
-    float: right;
-	margin: 0.4rem 0.3rem 0 0;
-	display: none;
-}
+#header > .logo { display: inline-block; margin-right: auto; min-width: 0; }
+#header > .logo > img { display: block; height: 1.5rem; max-width: 100%; object-fit: contain; }
+#header > #createAccount { @include typo.label1; margin: 0; display: none; }
 
 #header > #login{
 	@include typo.label1;
-    float: right;
-    margin: 0.4rem 1.6rem 0 0;
+
+    margin: 0;
     display: none;
+    gap: 0.25rem;
+}
+
+#header > #login.display{
+    display: flex !important;
 }
 
 #header > #login > i{
-	font-size: 0.9rem;
-	position: relative;
-	top: 0.1rem;
-	margin-right: 0.1rem;
+	font-size: 0.8125rem;
+	margin: 0;
 }
 
 
-#header > #menu-toggle{
+#header > #profileMenuToggle{
 	display: none;
-	float: right;
-	font-size: 1.2rem;
-	margin: 0.3rem 1.5rem 0 0;
-	padding: 0.5rem;
+
+	margin: 0;
+    flex: 0 0 auto;
+	padding: 0;
+	width: 2rem;
+	height: 2rem;
+	border: 1px solid var(--line-neutral);
+	border-radius: 50%;
+	overflow: hidden;
+	background-color: var(--neutral-90);
+	cursor: pointer;
+	transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+#header > #profileMenuToggle.active{
+	border-color: var(--primary-normal);
+	box-shadow: 0 0 0 2px var(--tint-80);
+}
+
+#header > #profileMenuToggle.display{
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+}
+
+#header > #profileMenuToggle > .profileFallback{
+	display: none;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	color: var(--neutral-50);
+	font-size: 0.9rem;
+}
+
+#header > #profileMenuToggle > .profileFallback.display{
+	display: flex !important;
 }
 
 
@@ -61,77 +89,116 @@
 
 #menu{
 	position: fixed;
-	right: 1.1rem;
-	top: 2.5rem;
-	background-color: #FFF;
-	border-radius: 0.5rem;
-	border: 1px solid #333333;
-	padding: 0.5rem;
-	cursor: default;
-	user-select: none;
+	right: 1.5rem;
+	top: calc(0.4rem + 2rem + 0.15rem);
 	z-index: 10;
 	display: none;
+	width: max-content;
+	min-width: 8.75rem;
+	max-width: 10rem;
+	box-sizing: border-box;
+	border: 1px solid var(--line-neutral);
+	border-radius: 0.375rem;
+	background-color: var(--neutral-100);
+	box-shadow: 0 0.75rem 1.75rem var(--line-neutral);
+	padding: 0.2rem;
+	cursor: default;
+	user-select: none;
 }
 
-#menu > #nickname{
-	padding: 0.5rem 0.7rem;
-	border-bottom: 1px solid #c9c9c9;
-	margin-bottom: 0.5rem;
-	font-weight: bold;
+#menu.display{
+	display: grid;
+	gap: 0.25rem;
 }
 
-#menu > ul{
+#menu > .profileSummary{
+	padding: 0.375rem 0.5rem 0.3rem;
+	border-bottom: 1px solid var(--line-neutral);
+	margin-bottom: 0.1rem;
+}
+
+#menu > .profileSummary > #nickname{
+	@include typo.body2-normal;
+	display: block;
+	color: var(--caption-strong);
+	font-weight: 500;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+#menu > .menuList{
 	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#menu > .menuList > li{
 	padding: 0;
 }
 
-#menu > ul > li{
-	list-style: none;
-	padding-left: 0;
-}
-
-#menu a{
+#menu .menuItem{
+	@include typo.body2-normal;
+	display: flex;
+	align-items: center;
+	gap: 0.375rem;
+	width: 100%;
+	box-sizing: border-box;
+	padding: 0.4375rem 0.5rem;
 	border: none;
-	padding: 0.3rem 0.5rem;
-	border-radius: 0.5rem;
-	display: block;
-}
-#menu a:hover{
-	color: inherit !important;
-	background-color: #c9c9c9;
+	border-radius: 0.25rem;
+	color: var(--caption-neutral);
+	text-decoration: none;
+	transition: background-color 0.16s ease, color 0.16s ease;
 }
 
-#menu a > i{
-	margin-right: 0.37rem;
+#menu .menuItem:hover{
+	color: var(--caption-strong);
+	background-color: var(--neutral-90);
 }
 
-#menu > #logoutSection{
-	border-top: 1px solid #c9c9c9;
-	margin-top: 0.5rem;
-	padding: 0.5rem 0 0 0;
+#menu .menuItem > i{
+	width: 0.875rem;
+	font-size: 0.8125rem;
+	color: var(--caption-assistive);
+	text-align: center;
+}
+
+#menu .menuItem:hover > i{
+	color: var(--caption-neutral);
+}
+
+#menu > .menuFooter{
+	border-top: 1px solid var(--line-neutral);
+	padding-top: 0.125rem;
+}
+
+#menu > .menuFooter > .menuItem.danger{
+	color: var(--error-text);
+}
+
+#menu > .menuFooter > .menuItem.danger > i{
+	color: var(--error-text);
+}
+
+#menu > .menuFooter > .menuItem.danger:hover{
+	background-color: var(--error-fill);
+	color: var(--error-text);
 }
 
 
 
 @media screen and (max-width: 736px) {
-	#header > .logo{
-		margin: 0.7rem 0 0 0.77rem;
-	}
-
-	#header > #createAccount{
-		margin: 0.35rem 0.1rem 0 0;
-	}
-
-	#header > #login{
-		margin: 0.35rem 0.5rem 0 0;
-	}
-
-	#header > #menu-toggle{
-		margin: 0.35rem 0.5rem 0 0;
-	}
-
-	#menu{
-		top: 2.5rem;
-		right: 0.6rem;
-	}
+    #header { padding: 0 0.5rem; }
+    #header > #login,
+    #header > #createAccount { padding: 0.5rem; }
+    #menu { right: 0.5rem; }
 }
+
+#header > #login,
+#header > #createAccount { flex: 0 0 auto; white-space: nowrap; }
+#header > #createAccount.display { display: flex !important; }
+#header > #profileMenuToggle:focus-visible,
+#menu .menuItem:focus-visible { outline: 2px solid var(--primary-normal); outline-offset: 2px; }
+#menu button.menuItem { background-color: transparent; cursor: pointer; text-align: left; }
+#menu button.menuItem:hover { background-color: var(--error-fill); }

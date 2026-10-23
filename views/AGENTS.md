@@ -19,3 +19,7 @@
 - 템플릿 구조를 무시하고 한 파일에 모든 마크업을 몰아넣지 않는다.
 - 스타일이나 동작을 HTML 안에 직접 과하게 넣지 않는다.
 - 프론트 동작 규칙은 `public/js/AGENTS.md`, 스타일 규칙은 `public/scss/AGENTS.md`를 따른다.
+
+## 디자인 참고
+- 컴포넌트는 `docs/COMPONENTS.md`를 참고한다.
+- 내부 샘플은 `_designSystemSample.html`이다.

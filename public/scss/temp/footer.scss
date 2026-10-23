@@ -1,3 +1,5 @@
+@use "../designSystem/typo";
+
 /* Footer */
 
 #footer {
@@ -151,3 +153,8 @@
                 }
 
     }
+
+/* 브랜드 소개 */
+#footer > .inner > .brand { width: 100%; margin-bottom: 1rem; }
+#footer > .inner .brandLogo { display: block; height: 1.5rem; max-width: 100%; object-fit: contain; }
+#footer > .inner .brandTagline { @include typo.label1; color: var(--caption-alternative); margin: 0.5rem 0 0; }

@@ -1,36 +1,51 @@
-/* 메뉴바에 로그인 버튼 관련 */
+/* 메뉴바 로그인 상태 */
 const upBarLogin = {
+    htmlEle: {
+        login: document.querySelector('#header #login'),
+        createAccount: document.querySelector('#header #createAccount'),
+        profileMenuToggle: document.querySelector('#header #profileMenuToggle'),
+        menu: document.querySelector('#menu'),
+        nickname: document.querySelector('#menu #nickname'),
+        logoutButton: document.querySelector('#logoutButton'),
+    },
+
     init: async function(){
+        this.htmlEle.profileMenuToggle.addEventListener('click', () => {
+            this.setMenuOpen(!this.htmlEle.menu.classList.contains('display'));
+        });
+        this.htmlEle.logoutButton.addEventListener('click', () => this.logout());
+        window.addEventListener('click', (event) => {
+            if(this.htmlEle.profileMenuToggle.contains(event.target)) return;
+            if(this.htmlEle.menu.contains(event.target)) return;
+            this.setMenuOpen(false);
+        });
+        window.addEventListener('keydown', (event) => {
+            if(event.key != 'Escape' || !this.htmlEle.menu.classList.contains('display')) return;
+            this.setMenuOpen(false);
+            this.htmlEle.profileMenuToggle.focus();
+        });
+        this.setLoggedInState(null);
         const userInfo = await API.request('GetUserInfo');
+        this.setLoggedInState(userInfo?.response == 200 ? userInfo.data : null);
+    },
 
-		if(userInfo.response==200){
-			document.querySelector('#menu #nickname').innerHTML = userInfo.data.name;
-			document.querySelector('#header #login').classList.remove('display');
-			document.querySelector('#header #createAccount').classList.remove('display');
-			document.querySelector('#header #menu-toggle').classList.add('display');
-		}else{
-			document.querySelector('#header #login').classList.add('display');
-			document.querySelector('#header #createAccount').classList.add('display');
-			document.querySelector('#header #menu-toggle').classList.remove('display');
-		}
+    setLoggedInState: function(user){
+        this.htmlEle.login.classList.toggle('display', !user);
+        this.htmlEle.createAccount.classList.toggle('display', !user);
+        this.htmlEle.profileMenuToggle.classList.toggle('display', !!user);
+        this.htmlEle.nickname.textContent = user ? user.name : '';
+        this.setMenuOpen(false);
+    },
 
-		document.querySelector('#header #menu-toggle').addEventListener('click', ()=>{
-			document.querySelector('#menu').classList.add('display');
-		})
+    setMenuOpen: function(isOpen){
+        this.htmlEle.menu.classList.toggle('display', isOpen);
+        this.htmlEle.profileMenuToggle.classList.toggle('active', isOpen);
+        this.htmlEle.profileMenuToggle.setAttribute('aria-expanded', String(isOpen));
+    },
 
-		window.addEventListener('click', (e)=>{
-			if(
-				e.target.id=="menu-toggle" ||
-				e.target.parentNode.id=="menu-toggle"
-			) return;
-
-			document.querySelector('#menu').classList.remove('display');
-		})
-	},
-
-	logout: async function(){
-		await API.removeToken();
-		location.reload();
-	}
+    logout: async function(){
+        await API.removeToken();
+        location.reload();
+    }
 }
-window.addEventListener('load', upBarLogin.init)
+window.addEventListener('load', () => upBarLogin.init());

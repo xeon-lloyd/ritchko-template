@@ -48,6 +48,11 @@ app.get('/', function(req, res){
 
 /* 프론트 라우팅 */
 app.get('/:view(*)', function(req, res, next){
+    /* 프로덕션 환경에서는 _designSystemSample 접근 불가 */
+	if(setting.isProduction && req.params.view == '_designSystemSample'){
+		return res.sendStatus(404);
+	}
+
 	if(!fs.existsSync(`./views/${req.params.view}.html`)){
 		next();
 		return false;

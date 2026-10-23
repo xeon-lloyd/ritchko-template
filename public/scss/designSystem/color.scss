@@ -47,6 +47,13 @@ $primary-normal: #6366F1;
 $primary-strong: #4F46E5;
 $primary-heavy: #4338CA;
 
+/* accent */
+$accent-normal: #FFB020;
+$accent-strong: #E89A00;
+$accent-heavy: #B97600;
+$accent-soft: #FFE8B8;
+$accent-muted: #FFF6E5;
+
 /* caption */
 $caption-heavy: #161616;
 $caption-strong: #363636;
@@ -120,6 +127,13 @@ $state-success: #59BD83;
     --primary-normal: #{$primary-normal};
     --primary-strong: #{$primary-strong};
     --primary-heavy: #{$primary-heavy};
+
+    /* accent */
+    --accent-normal: #{$accent-normal};
+    --accent-strong: #{$accent-strong};
+    --accent-heavy: #{$accent-heavy};
+    --accent-soft: #{$accent-soft};
+    --accent-muted: #{$accent-muted};
 
     /* caption */
     --caption-heavy: #{$caption-heavy};

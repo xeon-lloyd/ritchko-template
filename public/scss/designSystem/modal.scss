@@ -17,20 +17,23 @@
     position: fixed;
     top: 50%;
     left: 50%;
-    min-width: 15rem;
-    max-width: calc(100vw - 3.5rem);
-    max-height: calc(96vh - 3.5rem);
+    width: min(28rem, calc(100vw - 2rem));
+    max-height: calc(100vh - 2rem);
+    max-height: calc(100dvh - 2rem);
     transform: translate(-50%, -50%);
-    border-radius: 2rem;
-    background-color: #FFFFFF;
+    box-sizing: border-box;
+    border-radius: 0.75rem;
+    background-color: var(--neutral-100);
     z-index: 21;
-    padding: 2em 1.5rem;
+    padding: 1.5rem;
     overflow-y: auto;
     cursor: default;
     display: none;
 }
 
 #modals > div > #title{
+    display: grid;
+    gap: 0.25rem;
     margin-bottom: 1rem;
 }
 
@@ -42,6 +45,7 @@
 #modals > div > #title > #subtitle{
     @include typo.label1;
     color: var(--caption-assistive);
+    overflow-wrap: anywhere;
 }
 
 #modals > div > #content{
@@ -52,6 +56,11 @@
 
 #modals > div > #action{
     display: flex;
+    gap: 0.5rem;
     margin-top: 1rem;
     justify-content: center;
+}
+
+#modals > div > #action > button{
+    margin: 0;
 }

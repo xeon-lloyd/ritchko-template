@@ -18,3 +18,7 @@
 ## 검증
 - `npm run build` 또는 `npm run build:css`
 - 필요한 경우 `npm run watch:css`
+
+## 상세 규칙
+- 스타일 작성 시 `CONVENTION.md`를 함께 따른다.
+- 실행 검증은 루트 `AGENTS.md`에 따라 사용자 명시 요청이 있을 때만 수행한다.
