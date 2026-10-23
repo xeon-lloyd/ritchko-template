@@ -9,19 +9,33 @@ const setting = require('../core/setting.js');
 const util = require("../core/util.js");
 const response = require('../_response.sys.js');
 
-const endpoint = new URL(setting.s3.endpoint);
-const uploadHost = `${setting.fileUpload.tempBucket}.${endpoint.host}`;
-const presigner = new S3RequestPresigner({
-    credentials: {
-        accessKeyId: setting.s3.accessKeyId,
-        secretAccessKey: setting.s3.secretAccessKey,
-    },
-    region: setting.s3.region,
-    sha256: Hash.bind(null, 'sha256')
-});
-
 module.exports = function(app){
+    const enabled = util.s3.isConfigured() && !!setting.s3.endpoint && !!setting.fileUpload?.tempBucket?.trim();
+    let endpoint, uploadHost, presigner;
+    if(enabled){
+        endpoint = new URL(setting.s3.endpoint);
+        uploadHost = `${setting.fileUpload.tempBucket}.${endpoint.host}`;
+        presigner = new S3RequestPresigner({
+            credentials: {
+                accessKeyId: setting.s3.accessKeyId,
+                secretAccessKey: setting.s3.secretAccessKey,
+            },
+            region: setting.s3.region,
+            sha256: Hash.bind(null, 'sha256')
+        });
+    }else{
+        console.error('[파일 업로드] S3 설정 또는 endpoint·tempBucket 미설정으로 비활성화합니다. setting.s3와 setting.fileUpload.tempBucket을 확인하세요.');
+    }
+
     app.post('/API/fileUpload', express.json({ limit: '20kb' }), async function(req, res){
+        if(!enabled) return res.status(503).json({
+            response: 503,
+            label: 'GetFileUploadURLFail',
+            target: null,
+            message: '파일 업로드 저장소가 설정되지 않았습니다',
+            data: null
+        });
+
         try{
             const rateLimitAllowed = await util.rateLimit({
                 operation: 'sys:FileUpload',

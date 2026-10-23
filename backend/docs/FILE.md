@@ -30,6 +30,10 @@
 
 `setting.s3.endpoint`는 파일 업로드 URL 발급에 필요하다. R2는 `https://<accountId>.r2.cloudflarestorage.com` 형태를 사용한다.
 
+S3 인증키가 비어 있거나 템플릿 placeholder인 경우, region이 없거나 endpoint가 HTTP(S) URL이 아닌 경우에는 S3 초기화를 건너뛴다. 파일 업로드는 endpoint와 임시 업로드 bucket도 필요하다. 설정이 준비되지 않아도 서버 초기화와 라우트 등록은 진행하며, 업로드 요청에는 Redis uploadKey를 생성하지 않고 HTTP 503을 반환한다. 설정 변경 후에는 서버를 재시작한다.
+
+로그 백업은 S3 설정·클라이언트·로그 bucket이 준비된 경우에만 실행한다. AWS S3 로그 백업은 endpoint를 생략할 수 있다. 업로드에 실패한 로그 파일은 로컬에 보존하고 다음 예약 실행에서 재시도하며, 업로드에 성공한 파일만 삭제한다.
+
 ## `/API/fileUpload` 응답
 성공:
 ```json
@@ -53,6 +57,17 @@
     "response": 429,
     "message": "Too many requests",
     "target": null,
+    "data": null
+}
+```
+
+저장소 미설정 (HTTP 503):
+```json
+{
+    "response": 503,
+    "label": "GetFileUploadURLFail",
+    "target": null,
+    "message": "파일 업로드 저장소가 설정되지 않았습니다",
     "data": null
 }
 ```

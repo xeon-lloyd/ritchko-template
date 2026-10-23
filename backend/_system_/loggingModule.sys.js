@@ -25,7 +25,12 @@ module.exports = {
         }
 
         /* 서버 시작 시 남은 로그 파일 업로드 */
-        this.rotateAndUploadLog();
+        if(!util.s3.isConfigured() || !util.s3.auth || !setting.logging?.uploadBucket?.trim()){
+            console.error('[로그 백업] S3 미초기화 또는 uploadBucket 미설정으로 백업을 건너뜁니다. 로컬 로그는 유지합니다.');
+        }
+        this.rotateAndUploadLog().catch(err => {
+            console.error('로그 백업 오류: ', err);
+        });
     },
 
     recordLog: async function(category, log){
@@ -37,6 +42,8 @@ module.exports = {
     },
 
     rotateAndUploadLog: async function(){
+        if(!util.s3.isConfigured() || !util.s3.auth || !setting.logging?.uploadBucket?.trim()) return;
+
         // pm2 cluster에서는 0번 프로세스에서만 실행한다. (tryWorkerProcessLock 사용 X)
         if(process.env.NODE_APP_INSTANCE!==undefined && process.env.NODE_APP_INSTANCE!=='0') return
 
@@ -54,19 +61,23 @@ module.exports = {
         for(let i=0; i<uploadTarget.length; i++){
             let file = uploadTarget[i];
             let filePath = `./logs/${file}`;
+            let stream;
 
             try{
                 let stat = await fs.stat(filePath);
+                stream = createReadStream(filePath);
                 await util.s3.auth.putObject({
                     Bucket: setting.logging.uploadBucket,
                     Key: file.replaceAll('_', '/'),
-                    Body: createReadStream(filePath),
+                    Body: stream,
                     ContentLength: stat.size,
                     ContentType: 'text/plain; charset=utf-8',
                 });
             }catch(err){
                 console.error(`로그파일 업로드 오류 (${file}): `, err);
-                throw err
+                continue;
+            }finally{
+                stream?.destroy();
             }
 
             try{
@@ -74,7 +85,6 @@ module.exports = {
                 console.log(`로그파일 업로드 및 삭제 완료 (${file})`);
             }catch(err){
                 console.error(`로그 파일 삭제 오류 (${file}): `, err);
-                throw err
             }
         }
     }

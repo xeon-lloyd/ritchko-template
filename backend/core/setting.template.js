@@ -91,7 +91,7 @@ const setting = {
 		}
 	},
 
-	// s3 사전 설정 및 초기화 필수
+	// s3 사전 설정 및 초기화 필수 (S3 미설정 시 로컬 로그만 기록하고 백업은 건너뜀)
 	logging: {
 		uploadBucket: 'log-bucket',
 		uploadKeyPrefix: 'api_prod',

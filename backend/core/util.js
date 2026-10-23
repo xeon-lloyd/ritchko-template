@@ -365,7 +365,33 @@ module.exports = {
 	/* aws s3 관련 */
 	s3: {
 		auth: null,
+
+		// setting.js s3 설정 여부 조회
+		isConfigured: function(){
+			const config = setting.s3;
+			if(!config?.accessKeyId?.trim() || config.accessKeyId.trim() === 's3 accessKeyId') return false;
+			if(!config.secretAccessKey?.trim() || config.secretAccessKey.trim() === 's3 secretAccessKey') return false;
+			if(!config.region?.trim()) return false;
+
+			if(config.endpoint){
+				try{
+					const endpoint = new URL(config.endpoint);
+					if(!['http:', 'https:'].includes(endpoint.protocol)) return false;
+				}catch(e){
+					return false;
+				}
+			}
+			return true;
+		},
+
+		// s3 초기화
 		setAuth: function(){
+			this.auth = null;
+			if(!this.isConfigured()){
+				console.error('[S3] 인증키·region 미설정 또는 endpoint 오류로 초기화를 건너뜁니다. setting.s3를 확인하세요.');
+				return;
+			}
+
 			const awsS3 = require("@aws-sdk/client-s3");
 
 			const option = {
