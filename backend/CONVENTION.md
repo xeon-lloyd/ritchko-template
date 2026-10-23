@@ -40,7 +40,7 @@
 - message 로직에서 `data`는 구조분해하지 않고 `data.xxx`로 사용한다.
 - message 추가 시 로직 파일만 만들지 말고 `_sockets.sys.js`, `_param.sys.js`, `_response.sys.js`를 함께 맞춘다.
 - event는 직접 emit하는 계약이므로 `_sockets.sys.js`에 `type: 'event'`로 문서화한다.
-- 예상 가능한 실패는 `socket.emit('_error', new response.X())` 후 return한다.
+- message의 성공과 예상 가능한 실패는 response 인스턴스를 반환한다. 공통 listener가 요청의 ack callback으로 전달한다.
 - room 이름은 `<domain>:<id>` 형태를 우선한다.
 - room join 전에는 대상 존재 여부와 권한 여부를 먼저 확인한다.
 - 소켓 세부 규칙은 `backend/docs/SOCKET.md`를 따른다.

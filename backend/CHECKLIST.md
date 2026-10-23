@@ -31,7 +31,7 @@
 - tempBucket 파일을 영구 파일처럼 사용하지 않는다.
 - webhook 로직은 `/API` operation 형식이 아니라 `req`, `res`를 직접 사용한다.
 - webhook registry key에는 `Process` suffix를 붙이지 않고, handler 파일명만 `<action>Process.js`로 둔다.
-- 소켓 message의 예상 가능한 실패는 `_error` 이벤트로 response class를 emit한다.
+- 소켓 message의 성공과 예상 가능한 실패는 response class를 반환하고, 공통 listener가 ack callback으로 전달한다.
 - 소켓 room join 전에는 대상 존재 여부와 권한을 확인한다.
 - cron 등록은 root `backend/worker/registCron.js`와 도메인 `worker/registCron.js` 집계를 함께 확인한다.
 - 중복 실행되면 안 되는 worker producer는 `tryWorkerProcessLock()`과 멱등성 장치를 둔다.

@@ -39,8 +39,8 @@ module.exports = async function(server){
         .filter(key => socketOperations[key].type === 'message')
         .map(key => ({ name: key, operation: socketOperations[key] }))
 
-    util.socket.on('connection', async function(socket) {
-        /* auth에 토큰이 있다면 loginUser로 decode */
+    util.socket.use(async function(socket, next) {
+        /* 토큰이 없으면 익명으로 연결하고, 있으면 연결 승인 전에 인증한다. */
         const authToken = socket.handshake.headers.auth || socket.handshake.auth?.token
         if(authToken){
             try{
@@ -70,41 +70,45 @@ module.exports = async function(server){
 
                 socket.loginUser = userData
 
-                if(!socket.connected) return;
+                // 사용자 room 가입
                 await socket.join(`user:${userData.uid}`);
-                socket.emit('UserSocketReadyEvent', new response.UserSocketReadyEvent());
             }catch(e){
-                socket.emit("_error", new response.Unauthorized("잘못된 토큰입니다"));
-                socket.disconnect(true);
-                return;
+                const error = new Error("잘못된 토큰입니다");
+                error.data = new response.Unauthorized(error.message);
+                return next(error);
             }
         }
 
+        next();
+    });
+
+    util.socket.on('connection', function(socket) {
         /* 소켓 리스너 설정 */
         for(let i=0; i<messageOperations.length; i++){
             const { name, operation } = messageOperations[i]
 
-            socket.on(name, async function(data) {
-                /* 로그인 필수 체크 */
-                if(operation.authRequire && socket.loginUser==undefined) return socket.emit("_error", new response.Unauthorized())
-
+            socket.on(name, async function(data, ack) {
                 /* 소켓 로직 실행 */
                 let result
                 try{
-                    result = await require(__dirname + '/..' + operation.logic)(socket, data)
+                    if(operation.authRequire && socket.loginUser==undefined){
+                        result = new response.Unauthorized()
+                    }else{
+                        result = await require(__dirname + '/..' + operation.logic)(socket, data)
+                        if(result == null) result = new response.OK()
+                    }
                 }catch(e){
                     console.error(e)
                     void util.discord.sendErrorReport(e?.stack || String(e));
-                    return socket.emit("_error", new response.InternalServerError())
+                    result = new response.InternalServerError()
                 }
 
-                /* result가 response 인스턴스가 아니면 로직이 직접 처리(_error emit 등)한 것 */
-                if(result == null || typeof result !== 'object') return
+                if(typeof ack !== 'function') return
 
                 result.label = result.constructor.name
 
                 /* 결과 응답 */
-                socket.emit(name, result)
+                ack(result)
             });
         }
 

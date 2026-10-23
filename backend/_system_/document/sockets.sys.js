@@ -50,11 +50,13 @@ module.exports = function(req, res, next){
 
                 <div class="body">
                     <div class="label">Body</div>
-                    <pre>socket.emit("messageName", param)</pre>
+                    <pre>socket.emit("messageName", param, result => handler(result))</pre>
                     <div class="description">
                         <ul>
                             <li>client > server 로 전송되는 소켓 operation은 "Message"라고 지칭됨</li>
                             <li>해당 소켓 operation의 Param이 param으로 전달됨</li>
+                            <li>성공·검증·인증·시스템 오류 응답은 해당 요청의 ack callback으로 전달됨</li>
+                            <li>callback이 없으면 처리만 수행하며, 반환값이 없으면 기본 OK로 응답함</li>
                         </ul>
                     </div>
 
@@ -70,11 +72,11 @@ module.exports = function(req, res, next){
 
                     <br>
 
-                    <pre>socket.on("_error", data => errorHandler(data))</pre>
+                    <pre>socket.on("connect_error", error => errorHandler(error.data || error.message))</pre>
                     <div class="description">
                         <ul>
-                            <li>시스템 에러는 "_error" 이름의 이벤트로 응답됨</li>
-                            <li>ex) 유효하지 않은 토큰(소켓 연결 시)</li>
+                            <li>잘못되거나 만료된 토큰은 연결 승인 전에 거절됨 (error.data.response: 401)</li>
+                            <li>refresh가 가능하면 토큰 갱신 후 명시적으로 재연결하며 반복 재시도에 유의</li>
                         </ul>
                     </div>
                 </div>                
@@ -85,7 +87,8 @@ module.exports = function(req, res, next){
                 <div class="title">Set Auth Key</div>
                 <div class="description">
                     <ul>
-                        <li>인증키는 socket.io 연결시(초기화 시) header에 <b>auth</b> 이름으로 포함</li>
+                        <li>인증키는 연결 시 header의 <b>auth</b> 또는 auth 옵션의 <b>token</b>으로 전달 (header 우선)</li>
+                        <li>토큰이 없으면 익명 연결 허용. 인증 연결은 사용자 room 가입 완료 후 기본 connect 발생</li>
                     </ul>
                 </div>
             </div>`;
@@ -142,7 +145,7 @@ module.exports = function(req, res, next){
                 </div>
 
                 <div class="response">
-                    <div class="label">${operationSetting[opreationList[i]].type=='message'?'_error':'Response'}</div>
+                    <div class="label">${operationSetting[opreationList[i]].type=='message'?'Ack Response':'Response'}</div>
                     <div class="list">
                         ${responses}
                     </div>

@@ -5,7 +5,7 @@ const valider = require('../core/valider.js');
 const enums = require('./enums.js');
 
 module.exports = async function(socket, data){
-    // 입력값 검증
+    // 입력값 검증 (실패 시 response 인스턴스 반환)
 
     // 핵심 비즈니스 처리
 
