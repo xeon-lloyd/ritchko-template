@@ -91,6 +91,13 @@ function getIncludeBase(pagePath) {
     return `${'../'.repeat(depth)}temp`;
 }
 
+function getScssDesignSystemBase(pagePath) {
+    const depth = pagePath.split('/').length - 1;
+    if (depth === 0) return './designSystem';
+
+    return `${'../'.repeat(depth)}designSystem`;
+}
+
 function toPageObjectName(pagePath) {
     const segments = pagePath.split('/');
     return segments[segments.length - 1];
@@ -113,6 +120,7 @@ function main() {
         includeBase: getIncludeBase(pagePath),
         pageClass: toPageObjectName(pagePath),
         pageObjectName: toPageObjectName(pagePath),
+        scssDesignSystemBase: getScssDesignSystemBase(pagePath),
         scriptSrc: `/js/${pagePath}.js`,
         styleHref: `/css/${pagePath}.css`,
         title,

@@ -87,6 +87,7 @@ jobs:
           rsync -az --delete \
             --exclude ".git" \
             --exclude "node_modules" \
+            --exclude "logs" \
             -e "$SSH_COMMAND" \
             ./ "$SERVER_USER@$SERVER_HOST:${DEPLOY_PATH}/"
 
