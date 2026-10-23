@@ -14,6 +14,8 @@
 - 공통 규칙은 `backend/CONVENTION.md`와 필요한 `convention/*.md`를 확인한다.
 
 ## 구현 중
+- 인증 필수/선택/없음이 operation의 계약과 맞는지 확인하고 `param.loginUser`를 클라이언트 입력으로 신뢰하지 않는다.
+- 트랜잭션 사용 시 지원 유틸에 같은 연결을 전달하고 호출부에서 commit/rollback/release를 처리한다.
 - rate limit 체크가 필요한 operation은 입력값 검증보다 먼저 둔다.
 - 검증 실패는 `InputValueNotValid`로 반환한다.
 - 한 줄 가드 절은 인라인으로 작성한다.
@@ -37,6 +39,8 @@
 - queue worker는 Redis 연결 순서와 consumer 등록 위치를 확인한다.
 
 ## 구현 후
+- 선택적 인증은 토큰 없음·정상·오류와 위조된 `loginUser` 입력을 확인한다.
+- SMTP·Discord 설정은 placeholder를 유지하고 이메일·Pub/Sub 계약은 `backend/docs/OPERATIONS.md`와 맞춘다.
 - 성공/실패 응답이 response class인지 확인한다.
 - operation의 `description`, `group`, `paramSchema`, `responseSchema`가 맞는지 확인한다.
 - webhook/socket/worker를 스캐폴드 없이 직접 만들었다면 생성 스크립트 산출물과 registry/schema 구조가 같은지 확인한다.

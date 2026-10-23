@@ -23,6 +23,9 @@
 - 생성 스크립트가 만든 placeholder는 실제 로직 구현 후 삭제하거나 구체화한다.
 
 ## Operation
+- 인증 필수는 `authRequire: true`, 선택적 인증은 `authOptional: true`로 선언한다. 둘을 함께 설정하지 않는다.
+- 선택적 인증은 토큰이 없을 때 익명 실행하고, 제공된 토큰이 잘못되면 `Unauthorized`를 반환한다.
+- `param.loginUser`는 middleware가 인증 후 설정하는 서버 전용 값이다. 클라이언트가 전달한 값은 사용하지 않는다.
 - operation key와 `paramSchema` key는 같은 이름을 쓴다.
 - 생성은 `Create`, 조회는 `Get`, 수정은 `Modify` 또는 `Update`, 삭제는 `Delete`, 검증은 `Verify`, 전송은 `Send`를 우선한다.
 - 목록 조회는 `Get...List`, 단건 상세는 `Get...Info` 또는 더 구체적인 이름을 쓴다.
@@ -142,6 +145,8 @@ if(!enums.CardType.includes(param.cardType)) return new response.InputValueNotVa
 - operation 한 곳에서만 쓰는 짧은 조회/검증은 operation 파일 안에 둔다.
 
 ## DB
+- 트랜잭션은 원자성·동시성 제어가 필요한 경우에만 사용한다. 외부 호출·긴 연산·대기를 포함하지 않고 연결·잠금 점유 시간을 최소화한다. commit/rollback 후 외부 후속 작업 전에 연결을 반환한다.
+- `select`, `insert`, `update`, `count`, `exec`는 마지막 인자로 트랜잭션용 연결을 받을 수 있다. 연결 수명과 commit/rollback은 호출자가 관리한다.
 - DB 세부 규칙은 `backend/docs/DB.md`를 따른다.
 - update/delete 전에는 대상 존재 여부와 권한 여부를 먼저 확인한다.
 - `createdAt`, `updatedAt`은 DB 기본값으로 처리한다.

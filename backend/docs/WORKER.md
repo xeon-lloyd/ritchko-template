@@ -153,6 +153,7 @@ worker는 기본적으로 producer와 consumer 영역을 나눠 작성한다. �
 - 반복 실행되는 작업이면 부팅 1회 호출과 cron 등록을 분리한다.
 
 ## 에러 처리와 관측
+- 반복 worker에서 처리 대상이 없거나 재시도를 기다릴 때 `await util.sleep(ms)`를 사용할 수 있다. cron 등록이나 queue consumer에 일괄적으로 대기를 추가하지 않는다.
 - cron callback에는 `try/catch`를 둔다.
 - worker 함수는 호출자가 에러 처리 방침을 정할 수 있게 예상 밖 에러를 숨기지 않는다.
 - 예상 가능한 데이터 상태는 throw보다 조건 분기로 처리한다.

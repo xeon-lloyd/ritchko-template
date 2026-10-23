@@ -1,5 +1,7 @@
 # Backend Worker Checklist
 
+- 반복 worker가 빈 조회·오류 재시도로 계속 루프를 돌면 `await util.sleep(ms)` 등 적절한 대기 간격이 있는지 확인한다.
+
 ## 작업 전
 - cron, 부팅 1회 작업, queue worker 중 어떤 유형인지 구분한다.
 - 새 worker는 `npm run create:backend-worker -- <domain> <workerName>`로 생성하는 것을 우선한다.

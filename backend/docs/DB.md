@@ -12,13 +12,23 @@
 - 서비스 핵심 데이터는 DB에 저장한다. JSON, txt, 로컬 캐시 파일을 본 저장소로 만들지 않는다.
 
 ## util.mysql 기준
-- `select(db, select, table, where='', params=[], orderBy='', limit='')`: 목록/단건 조회. 반환값은 배열.
-- `count(db, table, where='', params=[])`: 존재 여부, 중복 여부, 총개수.
+- 연결 생략 시 기존 pool을 사용한다. 트랜잭션에서는 같은 연결을 전달하고 호출자가 `beginTransaction`, `commit`, 실패·조기 반환 시 `rollback`, `finally`의 `release`를 관리한다.
+- `delete`, `insertMany`, `sum`은 연결 인자를 지원하지 않는다. 트랜잭션 안에서 필요하면 연결을 지정한 `exec` 또는 해당 연결의 바인딩 쿼리를 사용한다.
+- `select(db, select, table, where='', params=[], orderBy='', limit='', connection=null)`: 목록/단건 조회. 반환값은 배열.
+- `count(db, table, where='', params=[], connection=null)`: 존재 여부, 중복 여부, 총개수.
 - `sum(db, select, table, where='', params=[])`: 합계.
-- `insert(db, table, data)`: 단건 insert.
-- `update(db, table, data, where, params)`: update.
+- `insert(db, table, data, connection)`: 단건 insert. 연결 인자는 선택적이다.
+- `update(db, table, data, where, params, connection)`: update. 연결 인자는 선택적이다.
 - `delete(db, table, where='', params=[])`: hard delete가 꼭 필요할 때만 사용.
-- `exec(db, sql, params)`: join, group by, subquery처럼 helper로 표현하기 어색할 때만 사용.
+- `exec(db, sql, params, connection)`: join, group by, subquery처럼 helper로 표현하기 어색할 때만 사용. 연결 인자는 선택적이다.
+
+## 트랜잭션과 연결 점유
+- 트랜잭션은 여러 DB 변경을 함께 성공·실패시켜야 하거나 동시성 제어가 필요한 경우에만 사용한다. 단순 조회·단일 쿼리·서로 독립적인 작업에는 관성적으로 추가하지 않는다.
+- 단일 조건부 UPDATE나 unique 제약 등으로 요구사항을 충족할 수 있으면 명시적 트랜잭션보다 우선 검토한다.
+- 외부 API, SMTP, S3, Discord, 파일 처리, 오래 걸리는 연산, `sleep`·재시도 대기를 트랜잭션 안에 넣지 않는다. 외부 호출은 DB rollback으로 취소되지 않는다.
+- 입력 검증과 준비 작업은 연결 획득 전에 끝내고, 연결은 필요한 직전에 획득한다. 트랜잭션에는 원자성·잠금 유지에 필요한 DB 작업만 포함한다. 동시성에 민감한 상태 확인은 트랜잭션 안에서 다시 확인한다.
+- 성공 시 commit, 실패·조기 반환 시 rollback하고, finally에서 즉시 release한다. commit 후 외부 호출을 기다리는 동안에도 전용 연결을 잡아두지 않는다. 외부 후속 작업은 연결 반환 뒤 실행한다.
+- 장시간 batch는 전체를 하나의 트랜잭션으로 묶지 말고 필요한 원자성 단위로 나눈다. 연결과 잠금의 장기 점유로 pool 고갈·잠금 경합·요청 지연을 유발하지 않도록 범위를 최소화한다.
 
 ## 작성 규칙
 - 입력값 검증을 먼저 한다.

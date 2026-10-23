@@ -26,12 +26,16 @@
 - 웹훅: `backend/docs/WEBHOOK.md`, `backend/docs/WEBHOOK-CHECKLIST.md`
 - 소켓: `backend/docs/SOCKET.md`, `backend/docs/SOCKET-CHECKLIST.md`
 - cron/worker: `backend/docs/WORKER.md`, `backend/docs/WORKER-CHECKLIST.md`
+- SMTP·Discord·Redis 공통 유틸: `backend/docs/OPERATIONS.md`
+- 이메일 템플릿: `backend/emailTemplate/README.md`
 - 뷰 템플릿: `views/AGENTS.md`
 - 프론트 스크립트: `public/js/AGENTS.md`
 - 스타일: `public/scss/AGENTS.md`
 - 공통 컨벤션: `convention/README.md`
 
 ## 핵심 원칙
+- 테스트는 사용자가 직접 수행한다. 사용자의 명시적 요청 없이 AI agent는 테스트 코드를 작성하거나 테스트·빌드·구문 검사·서버 기동 등 실행 검증을 수행하지 않는다. 불필요한 테스트로 토큰과 시간을 소비하지 않는다.
+- AI agent는 코드와 diff를 읽어 변경 범위를 검토하고, 필요한 수동 확인 사항만 간단히 전달한다. 이 원칙은 아래 검증 명령과 영역별 문서의 실행 검증 안내보다 우선한다.
 - 모든 AI agent는 `convention/agent.md`의 작업 방식을 반드시 따른다.
 - 기존 구조와 네이밍을 우선한다.
 - 백엔드 도메인/operation/webhook/socket/worker는 생성 스크립트를 우선 사용한다.
@@ -53,6 +57,8 @@
 - Windows PowerShell 실행 정책 문제가 있으면 `npm.cmd run ...`을 사용한다.
 
 ## 검증
+아래 항목은 사용자 직접 검증용이다. AI agent는 사용자가 명시적으로 요청한 경우에만 실행한다.
+
 - 프론트엔드(SCSS) 빌드: `npm run build`
 - 백엔드 구문 확인: `node --check <수정한 파일>`
 - 서버 기동 확인: `npm run start:dev`

@@ -4,13 +4,14 @@ const fs = require('fs');
 const path = require('path');
 
 function printUsage() {
-    console.log('사용법: npm run create:backend-operation -- <domain> <OperationName> [--auth] [--param-null] [--description "설명"]');
-    console.log('또는:   npm run create:backend-operation -- <domain>/<OperationName> [--auth] [--param-null] [--description "설명"]');
+    console.log('사용법: npm run create:backend-operation -- <domain> <OperationName> [--auth|--auth-optional] [--param-null] [--description "설명"]');
+    console.log('또는:   npm run create:backend-operation -- <domain>/<OperationName> [--auth|--auth-optional] [--param-null] [--description "설명"]');
 }
 
 function parseArgs(argv) {
     const options = {
         authRequire: false,
+        authOptional: false,
         paramSchemaNull: false,
         description: null,
     };
@@ -21,6 +22,11 @@ function parseArgs(argv) {
 
         if (arg === '--auth') {
             options.authRequire = true;
+            continue;
+        }
+
+        if (arg === '--auth-optional') {
+            options.authOptional = true;
             continue;
         }
 
@@ -45,6 +51,10 @@ function parseArgs(argv) {
         }
 
         positional.push(arg);
+    }
+
+    if (options.authRequire && options.authOptional) {
+        throw new Error('--auth와 --auth-optional은 함께 사용할 수 없습니다.');
     }
 
     let domainName = positional[0];
@@ -73,6 +83,7 @@ function parseArgs(argv) {
         domainName,
         operationName,
         authRequire: options.authRequire,
+        authOptional: options.authOptional,
         paramSchemaNull: options.paramSchemaNull,
         description: options.description || `${operationName} 설명`,
     };
@@ -218,7 +229,7 @@ function validateInsertTargets(operationsFilePath, paramsFilePath, operationName
 }
 
 function main() {
-    const { domainName, operationName, authRequire, paramSchemaNull, description } = parseArgs(process.argv.slice(2));
+    const { domainName, operationName, authRequire, authOptional, paramSchemaNull, description } = parseArgs(process.argv.slice(2));
 
     const repoRoot = path.resolve(__dirname, '..');
     const domainRoot = path.join(repoRoot, 'backend', domainName);
@@ -254,6 +265,7 @@ function main() {
         operationName,
         logicFileName,
         authRequire: String(authRequire),
+        authOptional: String(authOptional),
         paramSchema: paramSchemaNull ? 'null' : `paramSchema.${operationName}`,
         description: escapeSingleQuote(description),
     });

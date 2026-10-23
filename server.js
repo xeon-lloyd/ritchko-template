@@ -12,6 +12,12 @@ const serverInfoPrinter = require('./backend/_system_/serverInfoPrinter.sys.js')
 const app = express();
 const server = require('http').createServer(app);
 
+/* 비운영 환경 검색 색인 차단 */
+app.use(function(req, res, next){
+    if(!setting.isProduction) res.set('X-Robots-Tag', 'noindex, nofollow');
+    next();
+});
+
 /* 쿠키 사용 설정(F/B) */
 app.use(require('cookie-parser')());
 
@@ -81,4 +87,19 @@ async function init(){
 init().catch((e) => {
     console.error('[서버 시작 실패]', e);
     process.exit(1);
+});
+
+
+
+
+
+// 전역 오류를 기록하고 알림을 전송한 뒤 프로세스는 유지한다.
+process.on('uncaughtException', (error) => {
+    console.error(error);
+    void util.discord.sendErrorReport(error?.stack || String(error));
+});
+
+process.on('unhandledRejection', (error) => {
+    console.error(error);
+    void util.discord.sendErrorReport(error?.stack || String(error));
 });

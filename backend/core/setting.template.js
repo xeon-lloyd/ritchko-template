@@ -48,10 +48,19 @@ const setting = {
 		}
 	},
 
-	gmailSmtp: {
-		fromEmail: 'custom-user@gmail.com',
-		user: 'user@gmail.com',
-		appPassword: 'gmail-app-password'
+	emailSmtp: {
+		host: 'smtp.example.com', // SMTP 호스트
+		port: 465, // SMTP 포트
+		secure: true, // SMTP 프로토콜
+		user: 'smtp-user', // SMTP 사용자 이름
+		password: 'smtp-password', // SMTP 비밀번호
+		fromEmail: 'noreply@example.com', // 발신 주소 (선택)
+		replyTo: '', // 답장 주소 (선택)
+	},
+
+	errorReport: {
+		enable: false,
+		webhookUrl: '',
 	},
 
 	encrypt: {

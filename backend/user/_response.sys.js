@@ -64,5 +64,8 @@ module.exports = {
 
 
     /* // sockets (이름에 Message, Event를 포함하여 socket의 응답이란것을 명시) // */
+    UserSocketReadyEvent: class UserSocketReadyEvent {
+        data = {}
+    },
 
 }

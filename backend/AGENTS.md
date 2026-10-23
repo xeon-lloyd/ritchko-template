@@ -34,6 +34,7 @@
 - 도메인: `npm run create:backend-domain -- <name>`
 - operation: `npm run create:backend-operation -- <domain> <OperationName>`
 - 인증 필요: `--auth`
+- 선택적 인증: `--auth-optional` (`--auth`와 동시 사용 불가)
 - `paramSchema: null` 시작: `--param-null`
 - 설명 지정: `--description "설명"`
 - webhook: `npm run create:backend-webhook -- <domain> <webhookNameWithoutProcess> [--method post|get|put|patch|delete] [--redirect]`
@@ -50,6 +51,9 @@
 5. `/API-doc`, `/API-doc/webhooks`, `/API-doc/sockets`, worker registry와 빌드 검증을 작업 유형에 맞게 확인한다.
 
 ## 반드시 지킬 것
+- `param.loginUser`는 서버 인증 결과 전용이다. 클라이언트 입력값은 middleware에서 제거한다.
+- `authOptional: true`는 토큰이 없으면 익명, 있으면 인증한다. 잘못된 토큰은 `Unauthorized`를 반환한다.
+- SMTP·Discord·Redis Pub/Sub·URL 검증은 `backend/docs/OPERATIONS.md`, 이메일 템플릿은 `backend/emailTemplate/README.md`를 따른다.
 - operation 로직 기본 export는 `module.exports = async function(param, req, res){ ... }` 형태다.
 - operation의 `param`은 구조분해하지 않고 `param.xxx`로 사용한다.
 - 입력값 검증 실패는 `new response.InputValueNotValid('{param}')`로 통일한다.

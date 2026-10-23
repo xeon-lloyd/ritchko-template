@@ -27,17 +27,19 @@ module.exports = async function(req, res, next){
     }
 
     if(body.param==undefined) body.param = {};
+    delete body.param.loginUser; // 사용자 위조 방지
 
     const operation = operationSetting[body.operation];
 
     //로그인 필수인데 로그인 안했으면
-    if(operation.authRequire){
-        if(req.header('auth')==undefined){
+    const authToken = req.header('auth');
+    if(operation.authRequire || (operation.authOptional && authToken != undefined)){
+        if(operation.authRequire && authToken == undefined){
             return res.send(new response.Unauthorized())
         }
 
         try{
-            let [ tokenData, hash ] = req.header('auth').split('.')
+            let [ tokenData, hash ] = authToken.split('.')
 
             //유저 정보 무결성 체크
             const expectedHash = util.encrypt.oneWayLite(tokenData)
@@ -72,7 +74,8 @@ module.exports = async function(req, res, next){
     }catch(e){
         result = new response.InternalServerError()
         console.error(e)
-        // util.slack.sendErrorReport(e.stack) // 비동기 실행
+        
+        void util.discord.sendErrorReport(e?.stack || String(e));
     }
     result.label = result.constructor.name
 

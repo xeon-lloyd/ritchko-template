@@ -1,6 +1,7 @@
     {{operationName}}: {
         logic: '/{{domainName}}/{{logicFileName}}.js',
         authRequire: {{authRequire}},
+        authOptional: {{authOptional}},
 
         //documentation
         description: '{{description}}',

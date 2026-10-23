@@ -24,25 +24,35 @@
 
 ## 연결과 인증
 - 클라이언트는 socket.io로 `/socket`에 연결한다.
-- 기본 시스템은 연결 시 `auth` header의 토큰을 읽어 `socket.loginUser`에 저장한다.
+- 기본 시스템은 연결 시 `socket.handshake.headers.auth` 또는 `socket.handshake.auth.token`에서 토큰을 읽고, 인증한 사용자 정보를 `socket.loginUser`에 저장한다.
 - `authRequire: true`인 message는 `socket.loginUser`가 없으면 로직 실행 전 `Unauthorized`를 `_error`로 emit한다.
 - 인증 토큰 해석 규칙은 `/API` 인증과 같은 token/hash 구조를 따른다.
-- 브라우저 환경에서 header 전달이 어려운 방식의 클라이언트를 써야 하면, `socket.handshake.auth.token` 같은 추가 입력 경로를 쓰도록 `socketInit.sys.js`를 먼저 일관되게 확장한다.
+- 인증 성공 후 서버가 `user:<uid>` room에 가입시키고 `UserSocketReadyEvent` (`{ data: {} }`)를 전송한다. 사용자 대상 전송은 ``util.socket.to(`user:${uid}`).emit(...)`` 형태로 사용한다.
+- 클라이언트는 준비 이벤트 listener를 연결 전에 등록한다. 익명 연결에는 사용자 room과 준비 이벤트가 없다.
+- Redis adapter를 사용하면 발행·구독 클라이언트가 모두 연결된 뒤 adapter를 등록한다.
+- 브라우저처럼 header 전달이 어려운 클라이언트는 `auth: { token: accessToken }`으로 전달한다. 서버의 `socket.handshake.auth.token` 입력 경로는 이미 구현되어 있어 추가 확장이 필요 없다. 두 경로로 함께 전달하면 값이 있는 `auth` header를 우선한다.
 
-클라이언트 예시:
+브라우저 클라이언트 예시:
 ```js
 const socket = io('', {
     path: '/socket',
     transports: ['websocket'],
-    extraHeaders: {
-        auth: accessToken
-    }
+    auth: { token: accessToken },
+    autoConnect: false,
+})
+
+socket.on('UserSocketReadyEvent', () => {
+    console.log('인증 및 사용자 room 가입 완료')
 })
 
 socket.on('_error', data => {
     console.error(data)
 })
+
+socket.connect()
 ```
+
+header를 지원하는 클라이언트는 `auth` 옵션 대신 `extraHeaders: { auth: accessToken }`으로 전달할 수 있다.
 
 ## Registry 작성
 도메인별 `backend/<domain>/_sockets.sys.js`는 `paramSchema`, `responseSchema`를 import하고 socket 항목을 export한다.

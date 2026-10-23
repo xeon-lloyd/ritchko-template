@@ -1,5 +1,8 @@
 # Backend Socket Checklist
 
+- 인증 연결은 `user:<uid>` 가입 후 `UserSocketReadyEvent`를 받는지, 익명 연결에는 보내지 않는지 확인한다.
+- Redis adapter를 사용하는 경우 발행·구독 클라이언트 연결을 모두 확인한다.
+
 ## 작업 전
 - client > server 요청인지 server > client 이벤트인지 구분한다.
 - 새 socket은 `npm run create:backend-socket -- <domain> <SocketNameMessage|SocketNameEvent>`로 생성하는 것을 우선한다.

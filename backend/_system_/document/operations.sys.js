@@ -98,7 +98,7 @@ module.exports = function(req, res, next){
 
     for(let i=0;i<opreationList.length;i++){
         let responses = '';
-        if(operationSetting[opreationList[i]].authRequire){
+        if(operationSetting[opreationList[i]].authRequire || operationSetting[opreationList[i]].authOptional){
             responses += `<div>
                 <div class="label">${response.Unauthorized.name}</div>
                 <textarea readonly>${JSON.stringify(new response.Unauthorized(), null, 4)}</textarea>
@@ -113,6 +113,7 @@ module.exports = function(req, res, next){
 
         let needAuth = ""
         if(operationSetting[opreationList[i]].authRequire) needAuth = `<i class="auth-icon fa-solid fa-lock"></i>`
+        else if(operationSetting[opreationList[i]].authOptional) needAuth = `<span class="auth-icon" title="토큰 제공 시 인증, 잘못된 토큰은 Unauthorized">선택적 인증</span>`
         html += `
             <div class="operation folded" id="${opreationList[i]}" data-group="${operationSetting[opreationList[i]].group}" data-operation="${opreationList[i]}">
                 <div class="title">

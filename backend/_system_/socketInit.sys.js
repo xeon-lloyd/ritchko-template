@@ -23,9 +23,11 @@ module.exports = async function(server){
             },
             password: setting.socket.redisAdapter.redis.password,
         });
-        await pubClient.connect();
-
         const subClient = pubClient.duplicate();
+        await Promise.all([
+            pubClient.connect(),
+            subClient.connect()
+        ]);
 
         util.socket.adapter(createAdapter(pubClient, subClient));
     }
@@ -67,6 +69,10 @@ module.exports = async function(server){
                 const userData = await getMiddlewareUserData(tokenData);
 
                 socket.loginUser = userData
+
+                if(!socket.connected) return;
+                await socket.join(`user:${userData.uid}`);
+                socket.emit('UserSocketReadyEvent', new response.UserSocketReadyEvent());
             }catch(e){
                 socket.emit("_error", new response.Unauthorized("잘못된 토큰입니다"));
                 socket.disconnect(true);
@@ -88,6 +94,7 @@ module.exports = async function(server){
                     result = await require(__dirname + '/..' + operation.logic)(socket, data)
                 }catch(e){
                     console.error(e)
+                    void util.discord.sendErrorReport(e?.stack || String(e));
                     return socket.emit("_error", new response.InternalServerError())
                 }
 

@@ -1,6 +1,9 @@
 const fs = require('fs').promises;
 const crypto = require('crypto');
+const path = require('path');
 const redis = require('redis')
+const nodemailer = require('nodemailer');
+
 const setting = require(`./setting.js`);
 
 module.exports = {
@@ -100,13 +103,13 @@ module.exports = {
 		snakeToCamel: str => setting.sqlCamelToSnakeMapping?str.toLowerCase().replace(/([_][a-z])/g, group => group.toUpperCase().replace('_', '')):str,
 
 		/* select 실행 */
-		select: async function(db, select, table, where='', params=[], orderBy='', limit=''){
+		select: async function(db, select, table, where='', params=[], orderBy='', limit='', connection=null){
 			let sql = `SELECT ${this.camelToSnake(select)} FROM ${this.camelToSnake(table)}`;
 			if(where!='') sql += ` WHERE ${this.camelToSnake(where)}`;
 			if(orderBy!='') sql += ` ORDER BY ${this.camelToSnake(orderBy)}`;
 			if(limit!='') sql += ` LIMIT ${limit}`;
 
-			let [result] = await this.connection[db].query(sql, params);
+			let [result] = await (connection || this.connection[db]).query(sql, params);
 
 			result = result.map(ele=>{
 				let newObj = {};
@@ -122,7 +125,7 @@ module.exports = {
 		},
 
 		/* insert 실행 */
-		insert: async function(db, table, data){
+		insert: async function(db, table, data, connection){
 			let keys = Object.keys(data);
 			let params = [];
 			let setter = '(';
@@ -138,7 +141,7 @@ module.exports = {
 
 			let sql = `INSERT INTO ${this.camelToSnake(table)} ${setter} ${value}`;
 
-			let [result] = await this.connection[db].query(sql, params);
+			let [result] = await (connection || this.connection[db]).query(sql, params);
 
 			return result;
 		},
@@ -154,7 +157,7 @@ module.exports = {
 		},
 
 		/* update 실행 */
-		update: async function(db, table, data, where, Wparams){
+		update: async function(db, table, data, where, Wparams, connection){
 			let keys = Object.keys(data);
 			let params = [];
 			let setter = 'SET ';
@@ -169,7 +172,7 @@ module.exports = {
 
 			if(Wparams!=undefined) params = params.concat(Wparams);
 			
-			let [result] = await this.connection[db].query(sql, params);
+			let [result] = await (connection || this.connection[db]).query(sql, params);
 
 			return result;
 		},
@@ -185,11 +188,11 @@ module.exports = {
 		},
 
 		/* 조건 count */
-		count: async function(db, table, where='', params){
+		count: async function(db, table, where='', params=[], connection=null){
 			let sql = `SELECT COUNT(*) as result FROM ${this.camelToSnake(table)}`;
 			if(where!='') sql += ` WHERE ${this.camelToSnake(where)}`;
 
-			let [result] = await this.connection[db].query(sql, params);
+			let [result] = await (connection || this.connection[db]).query(sql, params);
 
 			return parseInt(result[0].result);
 		},
@@ -205,8 +208,8 @@ module.exports = {
 		},
 
 		/* sql 실행 */
-		exec: async function(db, sql, params){
-			let [result] = await this.connection[db].query(sql, params);
+		exec: async function(db, sql, params, connection){
+			let [result] = await (connection || this.connection[db]).query(sql, params);
 
 			return result;
 		}
@@ -312,24 +315,46 @@ module.exports = {
 
 	/* 메일 전송 관련 */
 	mail: {
+		transporter: null,
+
+		/* 이메일 템플릿 렌더링 */
+		renderTemplate: async function(templatePath, data={}){
+			const templateRoot = path.resolve(__dirname, '../emailTemplate');
+			const filePath = path.resolve(templateRoot, `${templatePath}.html`);
+			const relativePath = path.relative(templateRoot, filePath);
+			if(path.isAbsolute(templatePath) || relativePath.startsWith(`..${path.sep}`) || path.isAbsolute(relativePath)){
+				throw new Error('email template path must stay inside emailTemplate');
+			}
+
+			const rawHtml = await fs.readFile(filePath, 'utf8');
+			const html = rawHtml.replace(/\{\{(\w+)\}\}/g, (placeholder, key) => {
+				if(!Object.hasOwn(data, key)) return placeholder;
+				return escapeEmailTemplateValue(data[key]);
+			});
+			const subjectMatch = html.match(/<title>([\s\S]*?)<\/title>/i);
+			if(!subjectMatch) throw new Error(`email template title not found: ${templatePath}.html`);
+
+			return { subject: subjectMatch[1].trim(), html };
+		},
+
 		/* 메일 전송 */
 		send: function(mailOption){
-			const nodemailer = require('nodemailer');
-
 			return new Promise((resolve, reject) => {
-				const transporter = nodemailer.createTransport({
-					host: 'smtp.gmail.com',
-					port: 465,
-					secure: true,
+				if(!this.transporter) this.transporter = nodemailer.createTransport({
+					pool: true,
+					host: setting.emailSmtp.host,
+					port: setting.emailSmtp.port,
+					secure: setting.emailSmtp.secure,
 					auth: {
-						user: setting.gmailSmtp.user,
-						pass: setting.gmailSmtp.appPassword
+						user: setting.emailSmtp.user,
+						pass: setting.emailSmtp.password
 					}
 				});
 
-				if(!mailOption.from) mailOption.from = setting.gmailSmtp.fromEmail;
+				if(!mailOption.from) mailOption.from = setting.emailSmtp.fromEmail;
+				if(!mailOption.replyTo && setting.emailSmtp.replyTo) mailOption.replyTo = setting.emailSmtp.replyTo;
 
-				transporter.sendMail(mailOption, (error, info) => {
+				this.transporter.sendMail(mailOption, (error, info) => {
 					if(error) reject(error);
 					else resolve(info);
 				});
@@ -597,12 +622,12 @@ module.exports = {
 
 		// 채널 메시지 발행
 		pub: async function(channel, value) {
-			return await this.pubClient.publish(channel, value)
+			return await this.pubClient.publish(channel, JSON.stringify(value))
 		},
 
 		// 채널 메시지 구독
 		sub: async function(channel, func) {
-			return await this.subClient.subscribe(channel, func)
+			return await this.subClient.subscribe(channel, (message) => func(JSON.parse(message)))
 		},
 
 		// 큐 메시지 추가
@@ -657,6 +682,32 @@ module.exports = {
 
 	socket: {
 		io: null,
+	},
+
+	discord: {
+		sendErrorReport: async function(content){
+			if(!setting.errorReport.enable) return;
+			await this.sendMessage(setting.errorReport.webhookUrl, { content });
+		},
+
+		sendMessage: async function(webhookUrl, data){
+			try{
+				const result = await fetch(webhookUrl, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(data),
+					signal: AbortSignal.timeout(5000),
+				});
+				if(!result.ok) console.error(`[Discord 알림 실패] HTTP ${result.status}`);
+			}catch(e){
+				console.error('[Discord 알림 실패]', e);
+			}
+		},
+	},
+
+	// 비동기 대기 (ms)
+	sleep: async function(ms){
+		return new Promise(resolve => setTimeout(resolve, ms));
 	},
 
 	// operation별 rate limit 체크 (key를 ip로 사용한다면 #IP 사용)
@@ -767,4 +818,13 @@ Number.prototype.secToTimeFormat = function(){
 	if(s<10) s = `0${s}`;
 
 	return `${h}:${m}:${s}`
+}
+
+function escapeEmailTemplateValue(value){
+	return value
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#39;');
 }

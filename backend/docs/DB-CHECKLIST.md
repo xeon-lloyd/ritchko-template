@@ -1,6 +1,9 @@
 # Backend DB Checklist
 
+- 트랜잭션의 `select/insert/update/count/exec`에 같은 연결을 전달했는가? commit/rollback과 finally의 release가 있는가?
+
 ## 작업 전
+- 트랜잭션이 필요한 원자성·동시성 요구가 있는지 확인한다. 단순 조회·단일 쿼리·독립 작업에 불필요하게 추가하지 않는다.
 - 입력값 검증이 DB 접근보다 앞에 오는지 확인한다.
 - 사용자 소유 데이터면 `param.loginUser.uid` 조건 또는 권한 확인 위치를 정한다.
 - update/delete 대상은 먼저 조회해 존재 여부와 권한을 확인한다.
@@ -17,6 +20,8 @@
 - DB 설정이 비어 있어도 서비스 데이터를 JSON, txt, 로컬 파일 저장소로 우회하지 않는다.
 
 ## 작업 후
+- 연결 획득부터 반환까지 외부 호출·파일 처리·긴 연산·대기·재시도가 끼어 있지 않은지 확인한다.
+- 트랜잭션 범위가 필요한 DB 작업으로 제한되고, commit/rollback 후 외부 후속 작업 전에 연결을 반환하는지 확인한다.
 - 성공/실패 분기가 response class로 정리됐는지 확인한다.
 - operation 설명, param schema, response schema가 최신 로직과 맞는지 확인한다.
 - 컬럼명 매핑 방식(`setting.sqlCamelToSnakeMapping`)과 select alias가 충돌하지 않는지 확인한다.
