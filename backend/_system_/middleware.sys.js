@@ -19,11 +19,11 @@ module.exports = async function(req, res, next){
     const body = req.body;
 
     if(body.operation == undefined){
-        return res.send(new response.BadRequest(undefined, `'operation' 속성 누락`))
+        return res.send(new response.BadRequest(`'operation' 속성 누락`))
     }
 
     if(operationSetting[body.operation] == undefined){
-        return res.send(new response.NotFound(undefined, `'${body.operation}' 식별자를 찾을 수 없음`))
+        return res.send(new response.NotFound(`'${body.operation}' 식별자를 찾을 수 없음`))
     }
 
     if(body.param==undefined) body.param = {};
