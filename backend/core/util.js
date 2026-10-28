@@ -72,7 +72,7 @@ module.exports = {
 				// 함수
 				'AVG', 'COUNT', 'SUM', 'MIN', 'MAX', 'ROUND', 'CEIL', 'FLOOR', 'ABS', 'RAND',
 				'NOW', 'CURDATE', 'CURTIME', 'DATE', 'DATEDIFF', 'DATE_ADD', 'DATE_SUB', 
-				'DAY', 'MONTH', 'YEAR', 'WEEK', 'HOUR', 'MINUTE', 'SECOND'
+				'DAY', 'MONTH', 'YEAR', 'WEEK', 'HOUR', 'MINUTE', 'SECOND', 'CAST'
 			]);
 		
 			// 상태 관리: "AS" 뒤, SELECT 리스트 별칭 보호
