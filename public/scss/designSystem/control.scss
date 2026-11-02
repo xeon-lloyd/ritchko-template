@@ -161,6 +161,7 @@ input[type="checkbox"].toggle:disabled {
 /* scroll */
 *::-webkit-scrollbar{
 	width: 7px;
+    height: 7px;
 }
 *::-webkit-scrollbar-track{
 	background: none;
